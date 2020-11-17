@@ -1,0 +1,4 @@
+.SRLImage {
+    transform: translate(-50%, -50%) !important;
+    -webkit-transform: translate(-50%, -50%) !important;
+}

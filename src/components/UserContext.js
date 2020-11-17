@@ -22,13 +22,13 @@ function UserProvider(props) {
         setToken(token);
     }, []);
 
-    const logout = () => {
+    const logout = useCallback(() => {
         setToken(null);
         setAdmin(false);
         setIsLoading(true);
         localStorage.removeItem("_token");
         history.push("/");
-    };
+    }, [history]);
 
     const handleAdmin = (status) => {
         setAdmin(status);
@@ -65,7 +65,7 @@ function UserProvider(props) {
             }
         }
         statusCheck();
-    }, [login]);
+    }, [login, logout]);
 
     return (
         <UserContext.Provider

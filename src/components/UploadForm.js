@@ -1,9 +1,9 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import axios from "axios";
-import { useState } from "react";
 import { useFormik } from "formik";
-import { useHistory, Link } from "react-router-dom";
-
+import { Link } from "react-router-dom";
+// import { useHistory } from "react-router-dom";
+import { getCharacters } from "../helpers/GrubbyAPI";
 import { makeStyles } from "@material-ui/core/styles";
 import TextField from "@material-ui/core/TextField";
 import Container from "@material-ui/core/Container";
@@ -17,6 +17,8 @@ import Thumbnail from "../components/Thumbnail";
 import TransitionsModal from "../components/Modal";
 
 import "react-circular-progressbar/dist/styles.css";
+
+const BASE_URL = process.env.REACT_APP_SERVER_URL || "http://localhost:5000";
 
 const useStyles = makeStyles((theme) => ({
     "@global": {
@@ -78,6 +80,7 @@ const useStyles = makeStyles((theme) => ({
     flex: {
         display: "flex",
         justifyContent: "center",
+        marginTop: "1vh",
     },
 }));
 
@@ -102,28 +105,24 @@ const INITIAL_VALUES = {
 
 // component that returns the form and handles the data using formik
 
-const characters = ["Grubby", "Richard", "Cory"];
+// const characters = ["Grubby", "Richard", "Cory"];
 
 const UploadForm = ({ comic = INITIAL_VALUES }) => {
-    const history = useHistory();
+    // const history = useHistory();
     const classes = useStyles();
 
     const [error, setError] = useState("");
     const [fileName, setFileName] = useState("");
+    const [characters, setCharacters] = useState([]);
     const [charInComic, setCharInComic] = useState([]);
-    const [charNotInComic, setCharNotInComic] = useState(characters);
+    const [charNotInComic, setCharNotInComic] = useState([]);
     const [progress, setProgress] = useState(0);
     const [isUploading, setIsUploading] = useState(false);
     const [alert, setAlert] = useState("");
-
-    const [open, setOpen] = useState(false);
-
-    const handleOpen = () => {
-        setOpen(true);
-    };
+    const [alertType, setAlertType] = useState("success");
 
     const handleClose = () => {
-        setOpen(false);
+        setProgress(0);
     };
 
     const handleCharacter = (name) => {
@@ -136,6 +135,18 @@ const UploadForm = ({ comic = INITIAL_VALUES }) => {
         }
     };
 
+    useEffect(() => {
+        console.log("getting characters");
+        async function getAllCharacters() {
+            let result = await getCharacters();
+            console.log(result);
+            setCharacters(result.characters);
+            setCharNotInComic(result.characters);
+        }
+
+        getAllCharacters();
+    }, []);
+
     const formik = useFormik({
         initialValues: {
             file: comic.file,
@@ -146,13 +157,17 @@ const UploadForm = ({ comic = INITIAL_VALUES }) => {
         onSubmit: async (values) => {
             try {
                 let serverProgress = 0;
-                setIsUploading(true);
+                let serverMessage = "";
+                let serverAlertType = "";
                 if (charInComic.length === 0) {
-                    console.log("failure");
+                    // console.log("failure");
                     setError("Requires at least 1 character");
                     return;
                 }
-                console.log(values);
+
+                setIsUploading(true);
+
+                // console.log(values);
 
                 let data = {
                     name: fileName,
@@ -163,82 +178,40 @@ const UploadForm = ({ comic = INITIAL_VALUES }) => {
                 const formData = new FormData();
                 formData.append("file", values.file);
                 formData.append("data", JSON.stringify(data));
-                // await axios.post("http://localhost:5000/comic/upload", formData);
 
-                console.log(data);
+                // console.log(data);
 
-                // const ws = new WebSocket(`ws://localhost:5000/comic/status`);
-                // const ws = new WebSocket(`ws://localhost:2000`);
                 const ws = new WebSocket(`ws://localhost:80`);
-                // await waitForOpenConnection(ws);
-                // ws.onopen = async function (evt) {
-                //     console.log("open", evt);
-
-                //     let data = { message: "Send me a progress report, please!" };
-                //     // ws.send(JSON.stringify(data));
-                //     await sendMessage(ws, JSON.stringify({ message: "Send me a progress report, please!" }));
-                // };
 
                 ws.onmessage = async function (evt) {
-                    console.log("message", evt);
-                    serverProgress = await JSON.parse(evt.data).progress;
-                    console.log("SERVER PROGRESS", serverProgress);
+                    // console.log("message", evt);
+                    let info = await JSON.parse(evt.data);
+                    serverProgress = info.progress;
+                    serverMessage = info.message;
+                    serverAlertType = info.type;
+                    // console.log(serverAlertType);
+                    // console.log("SERVER PROGRESS", serverProgress);
                     // setProgress(serverProgress);
-                    setProgress((progress) => serverProgress, console.log(progress));
-                    console.log("progerss", progress);
+                    setProgress(serverProgress);
+                    setAlert(serverMessage);
+                    setAlertType(serverAlertType);
+                    // console.log("progerss", progress);
+                    if (serverProgress === 100) {
+                        setIsUploading(false);
+                        // console.log("upload submitted");
+                        setError("");
+                        setAlert("Woohoo! The upload was successful! Click the button to return home.");
+                        ws.close();
+                    }
                 };
 
-                // debugger;
-                console.log("AFTER WEBSOCKET");
-                // await sendMessage(ws, JSON.stringify({ message: "Send me a progress report, please!" }));
-                // ws.send(JSON.stringify({ message: "Send me a progress report, please!" }));
+                // console.log("AFTER WEBSOCKET");
 
-                // await axios.post("http://localhost:5000/comic/upload", formData, {
-                //     onUploadProgress: function (event) {
-                //         let percentCompleted = Math.round((event.loaded * 100) / event.total);
-                //         setProgress(percentCompleted);
-                //     },
-                // });
-
-                await axios.post("http://localhost:5000/comic/upload", formData, { withCredentials: true });
-                // let count = 0;
-
-                // while (count < 4 && progress < 100) {
-                //     console.log("in while");
-                //     await sendMessage(ws, JSON.stringify({ message: "Send me a progress report, please!" }));
-                //     count++;
-                // }
-
-                // ws.onmessage = function (evt) {
-                //     console.log("message", evt);
-                //     serverProgress = JSON.parse(evt.data).progress;
-                //     console.log(serverProgress);
-                //     setProgress(serverProgress);
-                //     console.log("progerss", progress);
-                // };
-
-                // while (progress < 100) {
-                // await sendMessage(ws, JSON.stringify({ message: "Send me a progress report, please!" }));
-                // }
-                console.log("progress, progress", progress);
-
-                if (serverProgress === 100) {
-                    setIsUploading(false);
-                    console.log("upload submitted");
-                    setError("");
-                    setAlert("Woohoo! The upload was successful! Redirecting to homepage...");
-                    ws.close();
-                }
-
-                if (serverProgress < 100) {
-                    console.log("i CRY");
-                }
-
-                // setTimeout(function () {
-                //     history.push("/");
-                // }, 3000);
+                await axios.post(`${BASE_URL}/comic/upload`, formData, { withCredentials: true });
             } catch (error) {
                 console.error(error);
+                setAlert("Something went wrong. Please try again.");
+                return;
             }
         },
     });
@@ -250,7 +223,13 @@ const UploadForm = ({ comic = INITIAL_VALUES }) => {
                 <small>How exciting!</small>
             </div>
             {/* {alert && <Alert severity="success">{alert}</Alert>} */}
-            <TransitionsModal progress={progress} handleClose={handleClose} alert={alert}></TransitionsModal>
+            <TransitionsModal
+                progress={progress}
+                handleClose={handleClose}
+                alert={alert}
+                isUploading={isUploading}
+                alertType={alertType}
+            ></TransitionsModal>
             <form className={classes.form} onSubmit={formik.handleSubmit}>
                 <div>
                     <div className={classes.inputField}>
@@ -267,7 +246,6 @@ const UploadForm = ({ comic = INITIAL_VALUES }) => {
                                 setFileName(event.currentTarget.files[0].name);
                             }}
                             onBlur={formik.handleBlur}
-                            disabled={isUploading ? true : false}
                         />
                         <FormHelperText htmlFor="file">
                             {formik.touched.file && formik.errors.file ? (
@@ -317,7 +295,6 @@ const UploadForm = ({ comic = INITIAL_VALUES }) => {
                             value={formik.values.description}
                             onChange={formik.handleChange}
                             onBlur={formik.handleBlur}
-                            disabled={isUploading ? true : false}
                         />
                         <FormHelperText htmlFor="description">
                             {formik.touched.description && formik.errors.description ? (
@@ -330,9 +307,7 @@ const UploadForm = ({ comic = INITIAL_VALUES }) => {
                 </div>
 
                 <div className={classes.buttons}>
-                    <Button type="submit" disabled={isUploading ? true : false}>
-                        Upload
-                    </Button>
+                    <Button type="submit">Upload</Button>
                     <Button>
                         <Link to="/" className={classes.link}>
                             Cancel

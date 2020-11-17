@@ -5,13 +5,16 @@ import App from "./App";
 import * as serviceWorker from "./serviceWorker";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { BrowserRouter } from "react-router-dom";
+import SimpleReactLightbox from "simple-react-lightbox";
 
 ReactDOM.render(
-  <BrowserRouter>
-    <App />
-  </BrowserRouter>,
+    <BrowserRouter>
+        <SimpleReactLightbox>
+            <App />
+        </SimpleReactLightbox>
+    </BrowserRouter>,
 
-  document.getElementById("root")
+    document.getElementById("root")
 );
 
 // If you want your app to work offline and load faster, you can change

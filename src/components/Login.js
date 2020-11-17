@@ -42,8 +42,8 @@ const useStyles = makeStyles((theme) => ({
 
 const validate = (values) => {
     const errors = {};
-    if (!values.username) {
-        errors.username = "Required";
+    if (!values.email) {
+        errors.email = "Required";
     }
 
     if (!values.password) {
@@ -67,7 +67,7 @@ const Login = () => {
 
     const formik = useFormik({
         initialValues: {
-            username: "",
+            email: "",
             password: "",
         },
         validate,
@@ -98,21 +98,21 @@ const Login = () => {
 
                         <Form className="LoginForm" onSubmit={formik.handleSubmit}>
                             <FormGroup row>
-                                <Label for="username" sm="auto">
-                                    Username
+                                <Label for="email" sm="auto">
+                                    Email
                                 </Label>
                                 <Col sm={12}>
                                     <Input
                                         type="text"
-                                        name="username"
-                                        id="username"
-                                        placeholder="username"
-                                        value={formik.values.username}
+                                        name="email"
+                                        id="email"
+                                        placeholder="email"
+                                        value={formik.values.email}
                                         onChange={formik.handleChange}
                                         onBlur={formik.handleBlur}
                                     />
-                                    {formik.touched.username && formik.errors.username ? (
-                                        <div className="error">{formik.errors.username}</div>
+                                    {formik.touched.email && formik.errors.email ? (
+                                        <div className="error">{formik.errors.email}</div>
                                     ) : null}
                                 </Col>
                             </FormGroup>

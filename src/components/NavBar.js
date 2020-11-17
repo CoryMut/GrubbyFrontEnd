@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import { UserContext } from "./UserContext";
 import { logoutUser } from "../helpers/GrubbyAPI";
 import { Link } from "react-router-dom";
@@ -7,11 +7,25 @@ import { makeStyles } from "@material-ui/core/styles";
 import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
 import Typography from "@material-ui/core/Typography";
-import Button from "@material-ui/core/Button";
 import IconButton from "@material-ui/core/IconButton";
 import MenuIcon from "@material-ui/icons/Menu";
+import Drawer from "@material-ui/core/Drawer";
 
+import List from "@material-ui/core/List";
+import ListItemIcon from "@material-ui/core/ListItemIcon";
+import ListItem from "@material-ui/core/ListItem";
+import ListItemText from "@material-ui/core/ListItemText";
 import Logo from "../components/Logo";
+
+import ArrowBackIcon from "@material-ui/icons/ArrowBack";
+import HomeIcon from "@material-ui/icons/Home";
+import CloudUploadIcon from "@material-ui/icons/CloudUpload";
+import ExitToAppIcon from "@material-ui/icons/ExitToApp";
+import CollectionsBookmarkIcon from "@material-ui/icons/CollectionsBookmark";
+import PersonIcon from "@material-ui/icons/Person";
+import FavoriteIcon from "@material-ui/icons/Favorite";
+
+const drawerWidth = 240;
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -23,41 +37,146 @@ const useStyles = makeStyles((theme) => ({
     title: {
         flexGrow: 1,
         textAlign: "center",
+        [theme.breakpoints.down("sm")]: {
+            textAlign: "inherit",
+        },
     },
-    color: {
+    appBar: {
         color: "white",
+        zIndex: theme.zIndex.drawer + 1,
+        justifyContent: "center",
+    },
+    drawer: {
+        width: drawerWidth,
+        flexShrink: 0,
+    },
+    drawerPaper: {
+        width: drawerWidth,
+    },
+    drawerContainer: {
+        overflow: "auto",
+    },
+    list: {
+        width: "20vw",
+        minWidth: 250,
+    },
+    listItem: {
+        margin: "auto",
+    },
+    bottomItem: {
+        position: "fixed",
+        bottom: 0,
+        width: drawerWidth,
     },
 }));
 
 const NavBar = () => {
     const classes = useStyles();
-
     const { isLoggedIn, logout, isAdmin } = useContext(UserContext);
+    const [menu, setMenu] = useState(false);
+
+    const openMenu = () => {
+        setMenu(true);
+    };
+
+    const closeMenu = () => {
+        setMenu(false);
+    };
 
     const handleLogout = async () => {
         await logoutUser();
         logout();
+        closeMenu();
     };
 
     return (
         <div className={classes.root}>
-            <AppBar position="sticky" className={classes.color} color="inherit">
+            <AppBar position="sticky" className={classes.appBar} color="inherit">
                 <Toolbar>
-                    <IconButton edge="start" className={classes.menuButton} aria-label="menu">
+                    <IconButton edge="start" className={classes.menuButton} aria-label="menu" onClick={openMenu}>
                         <MenuIcon />
                     </IconButton>
                     <Typography variant="h6" className={classes.title}>
                         <Logo></Logo>
                     </Typography>
-                    {isAdmin && (
-                        <Link to="/upload">
-                            <Button>Upload</Button>
-                        </Link>
-                    )}
-                    {isLoggedIn && <Button onClick={handleLogout}>Logout</Button>}
-                    {!isLoggedIn && <Button href="/login">Login</Button>}
                 </Toolbar>
             </AppBar>
+            <Drawer
+                anchor="left"
+                open={menu}
+                onClose={closeMenu}
+                className={classes.drawer}
+                classes={{
+                    paper: classes.drawerPaper,
+                }}
+            >
+                <div className={classes.drawerContainer}>
+                    <List>
+                        <ListItem button onClick={closeMenu}>
+                            <ListItemIcon>
+                                <ArrowBackIcon></ArrowBackIcon>
+                            </ListItemIcon>
+                            <ListItemText></ListItemText>
+                        </ListItem>
+
+                        <ListItem button component={Link} to="/" onClick={closeMenu}>
+                            <ListItemIcon>
+                                <HomeIcon></HomeIcon>
+                            </ListItemIcon>
+                            <ListItemText primary="Home"></ListItemText>
+                        </ListItem>
+
+                        <ListItem button component={Link} to="/all" onClick={closeMenu}>
+                            <ListItemIcon>
+                                <CollectionsBookmarkIcon></CollectionsBookmarkIcon>
+                            </ListItemIcon>
+                            <ListItemText primary="All Comics"></ListItemText>
+                        </ListItem>
+
+                        {isLoggedIn && (
+                            <ListItem button component={Link} onClick={closeMenu} to="/favorites">
+                                <ListItemIcon>
+                                    <FavoriteIcon></FavoriteIcon>
+                                </ListItemIcon>
+                                <ListItemText primary="Favorites"></ListItemText>
+                            </ListItem>
+                        )}
+
+                        {!isLoggedIn && (
+                            <ListItem
+                                button
+                                component={Link}
+                                to="/login"
+                                onClick={closeMenu}
+                                className={classes.bottomItem}
+                            >
+                                <ListItemIcon>
+                                    <PersonIcon></PersonIcon>
+                                </ListItemIcon>
+                                <ListItemText primary="Login"></ListItemText>
+                            </ListItem>
+                        )}
+
+                        {isLoggedIn && (
+                            <ListItem button onClick={handleLogout} className={classes.bottomItem}>
+                                <ListItemIcon>
+                                    <ExitToAppIcon></ExitToAppIcon>
+                                </ListItemIcon>
+                                <ListItemText primary="Logout"></ListItemText>
+                            </ListItem>
+                        )}
+
+                        {isAdmin && (
+                            <ListItem button component={Link} to="/upload" onClick={closeMenu}>
+                                <ListItemIcon>
+                                    <CloudUploadIcon></CloudUploadIcon>
+                                </ListItemIcon>
+                                <ListItemText primary="Upload"></ListItemText>
+                            </ListItem>
+                        )}
+                    </List>
+                </div>
+            </Drawer>
         </div>
     );
 };

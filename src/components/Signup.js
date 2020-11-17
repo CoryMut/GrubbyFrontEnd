@@ -1,7 +1,9 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
+import { UserContext } from "./UserContext";
 import { useHistory } from "react-router-dom";
-import { useFormik } from "formik";
 
+import { useFormik } from "formik";
+import * as Yup from "yup";
 import { registerUser } from "../helpers/GrubbyAPI";
 
 import { Col, Form, FormGroup, Label, Input } from "reactstrap";
@@ -37,48 +39,55 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-const validate = (values) => {
-    const errors = {};
-    if (!values.username) {
-        errors.username = "Required";
-    }
+// const validate = (values) => {
+//     const errors = {};
+//     if (!values.username) {
+//         errors.username = "Required";
+//     }
 
-    if (!values.password) {
-        errors.password = "Required";
-    }
+//     if (!values.password) {
+//         errors.password = "Required";
+//     }
 
-    if (!values.email) {
-        errors.email = "Required";
-    }
+//     if (!values.email) {
+//         errors.email = "Required";
+//     }
 
-    return errors;
-};
+//     return errors;
+// };
+
+const SignupSchema = Yup.object().shape({
+    username: Yup.string().min(2, "Too Short!").max(30, "Too Long!").required("Required"),
+    password: Yup.string().min(7, "Too Short!").max(50, "Too Long!").required("Required"),
+    email: Yup.string().email("Invalid email").required("Required"),
+});
 
 const Signup = () => {
-    // const history = useHistory();
+    const history = useHistory();
     const classes = useStyles();
-
-    // const dispatch = useDispatch();
+    const authContext = useContext(UserContext);
     const [error, setError] = useState("");
 
-    // if (window.localStorage.getItem("_token")) {
-    //     history.push("/");
-    // }
-
-    // function to handle data validation with formik
     const formik = useFormik({
         initialValues: {
             username: "",
             password: "",
             email: "",
         },
-        validate,
+        validationSchema: SignupSchema,
         onSubmit: async (values) => {
             try {
-                await registerUser(values);
-                // history.push("/");
+                // await registerUser(values);
+
+                let { token, user } = await registerUser(values);
+                console.log(token, user);
+                authContext.login(token);
+                authContext.handleAdmin(user.is_admin);
+
+                history.push("/");
             } catch (error) {
-                setError("Invalid Credentials");
+                // setError("Invalid Credentials");
+                setError(error);
             }
         },
     });
@@ -153,7 +162,7 @@ const Signup = () => {
                             </FormGroup>
                             <FormGroup row>
                                 <Col>
-                                    <Button variant="contained" onClick={formik.handleSubmit}>
+                                    <Button variant="contained" type="submit" onClick={formik.handleSubmit}>
                                         Signup
                                     </Button>
                                 </Col>

@@ -2,11 +2,14 @@ import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import { Link } from "react-router-dom";
 
-const useStyles = makeStyles(() => ({
+const useStyles = makeStyles((theme) => ({
     logo: {
         cursor: "pointer",
         maxWidth: "325px",
         width: "100%",
+        [theme.breakpoints.down("md")]: {
+            width: "80%",
+        },
     },
 }));
 

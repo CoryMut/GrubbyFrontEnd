@@ -6,9 +6,17 @@ const BASE_URL = process.env.REACT_APP_SERVER_URL || "http://localhost:5000";
 const CDN = process.env.REACT_APP_CDN;
 
 const HomePage = () => {
-    const [src, setSrc] = useState(`${CDN}/960/Grubby_1.jpg`);
+    const [src, setSrc] = useState("");
     const [allImages, setAllImages] = useState([]);
     let srcSet = allImages.join();
+
+    const handlePreviousComic = () => {
+        console.log("loading previous comic");
+    };
+
+    const handleNextComic = () => {
+        console.log("loading next comic");
+    };
 
     useEffect(() => {
         async function getComic() {
@@ -20,6 +28,7 @@ const HomePage = () => {
                 sizes.forEach((size) => urls.push(`${CDN}/${size}/${result.data.comic.name} ${size}w`));
                 setAllImages(urls);
             } catch (error) {
+                setSrc(`${CDN}/960/Grubby_1.jpg`);
                 return;
             }
         }
@@ -27,7 +36,14 @@ const HomePage = () => {
         getComic();
     }, []);
 
-    return <Comic src={src} srcSet={srcSet}></Comic>;
+    return (
+        <Comic
+            src={src}
+            srcSet={srcSet}
+            handlePreviousComic={handlePreviousComic}
+            handleNextComic={handleNextComic}
+        ></Comic>
+    );
 };
 
 export default HomePage;

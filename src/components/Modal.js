@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 import { makeStyles } from "@material-ui/core/styles";
 import Modal from "@material-ui/core/Modal";
 import Backdrop from "@material-ui/core/Backdrop";
@@ -6,6 +7,7 @@ import Fade from "@material-ui/core/Fade";
 import { CircularProgressbar } from "react-circular-progressbar";
 import { Alert } from "@material-ui/lab";
 import Button from "@material-ui/core/Button";
+import VisibilitySensor from "react-visibility-sensor";
 
 const useStyles = makeStyles((theme) => ({
     modal: {
@@ -32,9 +34,11 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-const TransitionsModal = ({ progress, handleClose, alert }) => {
+const TransitionsModal = ({ progress, handleClose, alert, isUploading, alertType }) => {
     const classes = useStyles();
-    let timeToOpen = progress ? true : false;
+    const timeToOpen = progress ? true : false;
+    const error = alertType === "error" ? true : false;
+
     return (
         <div>
             <Modal
@@ -51,19 +55,32 @@ const TransitionsModal = ({ progress, handleClose, alert }) => {
             >
                 <Fade in={timeToOpen}>
                     <div className={classes.paper}>
-                        {alert && <Alert severity="success">{alert}</Alert>}
+                        {alert && <Alert severity={`${alertType}`}>{alert}</Alert>}
                         {!alert && (
                             <>
                                 <h2 id="transition-modal-title">Uploading Comic...</h2>
-                                <p id="transition-modal-description">react-transition-group animates me.</p>
                             </>
                         )}
                         <div className={classes.flex}>
                             <div className={classes.progress}>
-                                <CircularProgressbar value={progress} text={`${progress}%`} />
+                                <VisibilitySensor>
+                                    {({ isVisible }) => <CircularProgressbar value={progress} text={`${progress}%`} />}
+                                    {/* <CircularProgressbar value={progress} text={`${progress}%`} /> */}
+                                </VisibilitySensor>
                             </div>
                         </div>
-                        {alert && <Button>Close</Button>}
+                        <div className={classes.flex}>
+                            {!isUploading && (
+                                <Link to="/">
+                                    <Button>Return Home</Button>
+                                </Link>
+                            )}
+                        </div>
+                        {error && (
+                            <div className={classes.flex}>
+                                <Button onClick={() => handleClose()}>Cancel</Button>
+                            </div>
+                        )}
                     </div>
                 </Fade>
             </Modal>

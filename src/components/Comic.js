@@ -1,6 +1,12 @@
 import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
 
+// import ArrowForwardIosIcon from "@material-ui/icons/ArrowForwardIos";
+// import ArrowBackIosIcon from "@material-ui/icons/ArrowBackIos";
+// import SkipNextIcon from "@material-ui/icons/SkipNext";
+// import SkipPreviousIcon from "@material-ui/icons/SkipPrevious";
+// import Button from "@material-ui/core/Button";
+
 const useStyles = makeStyles((theme) => ({
     comic: {
         border: "2px solid black",
@@ -9,7 +15,7 @@ const useStyles = makeStyles((theme) => ({
             maxWidth: "760px",
         },
         maxWidth: "760px",
-        margin: "1vh 1vw",
+        margin: "0 1vw",
     },
     flex: {
         display: "flex",
@@ -19,27 +25,30 @@ const useStyles = makeStyles((theme) => ({
         [theme.breakpoints.up("sm")]: {
             minHeight: "885px",
         },
+        [theme.breakpoints.down("md")]: {
+            height: "80vh",
+        },
+        [theme.breakpoints.up("lg")]: {
+            height: "90vh",
+        },
     },
 }));
 
-const Comic = ({ src, srcSet }) => {
+const Comic = ({ src, srcSet, handlePreviousComic, handleNextComic }) => {
     const classes = useStyles();
 
     // return <img className={classes.comic} src={src}></img>;
     return (
         <div className={classes.flex}>
-            <img
-                className={classes.comic}
-                // srcSet="
-                //     https://grubbythegrape.sfo2.cdn.digitaloceanspaces.com/grubbythegrape-283/Grubby_1.jpg 283w,
-                //     https://grubbythegrape.sfo2.cdn.digitaloceanspaces.com/grubbythegrape-365/Grubby_1.jpg 365w,
-                //     https://grubbythegrape.sfo2.cdn.digitaloceanspaces.com/grubbythegrape-754/Grubby_1.jpg 754w,
-                //     https://grubbythegrape.sfo2.cdn.digitaloceanspaces.com/grubbythegrape-857/Grubby_1.jpg 857w
-                // "
-                srcSet={srcSet}
-                src={src}
-                alt="Grubby Comic"
-            />
+            {/* <SkipPreviousIcon></SkipPreviousIcon>
+            <Button onClick={handlePreviousComic}>
+                <ArrowBackIosIcon></ArrowBackIosIcon>
+            </Button> */}
+            <img className={classes.comic} srcSet={srcSet} src={src} alt="Grubby Comic" />
+            {/* <Button onClick={handleNextComic}>
+                <ArrowForwardIosIcon></ArrowForwardIosIcon>
+            </Button>
+            <SkipNextIcon></SkipNextIcon> */}
         </div>
     );
 };

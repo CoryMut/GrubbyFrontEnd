@@ -6,7 +6,7 @@ const BASE_URL = process.env.REACT_APP_SERVER_URL || "http://localhost:5000";
 const CDN = process.env.REACT_APP_CDN;
 
 const HomePage = () => {
-    const [src, setSrc] = useState("");
+    const [src, setSrc] = useState("https://grubbythegrape.sfo2.cdn.digitaloceanspaces.com/960/blur.jpg");
     const [allImages, setAllImages] = useState([]);
     let srcSet = allImages.join();
 

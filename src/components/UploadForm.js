@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useFormik } from "formik";
 import { Link } from "react-router-dom";
-// import { useHistory } from "react-router-dom";
 import { getCharacters } from "../helpers/GrubbyAPI";
 import { makeStyles } from "@material-ui/core/styles";
 import TextField from "@material-ui/core/TextField";
@@ -10,7 +9,6 @@ import Container from "@material-ui/core/Container";
 import InputLabel from "@material-ui/core/InputLabel";
 import FormHelperText from "@material-ui/core/FormHelperText";
 import Button from "@material-ui/core/Button";
-// import { Alert } from "@material-ui/lab";
 
 import CharacterCard from "../components/CharacterCard";
 import Thumbnail from "../components/Thumbnail";
@@ -103,12 +101,7 @@ const INITIAL_VALUES = {
     description: "",
 };
 
-// component that returns the form and handles the data using formik
-
-// const characters = ["Grubby", "Richard", "Cory"];
-
 const UploadForm = ({ comic = INITIAL_VALUES }) => {
-    // const history = useHistory();
     const classes = useStyles();
 
     const [error, setError] = useState("");
@@ -136,7 +129,6 @@ const UploadForm = ({ comic = INITIAL_VALUES }) => {
     };
 
     useEffect(() => {
-        console.log("getting characters");
         async function getAllCharacters() {
             let result = await getCharacters();
             console.log(result);
@@ -160,14 +152,11 @@ const UploadForm = ({ comic = INITIAL_VALUES }) => {
                 let serverMessage = "";
                 let serverAlertType = "";
                 if (charInComic.length === 0) {
-                    // console.log("failure");
                     setError("Requires at least 1 character");
                     return;
                 }
 
                 setIsUploading(true);
-
-                // console.log(values);
 
                 let data = {
                     name: fileName,
@@ -179,33 +168,24 @@ const UploadForm = ({ comic = INITIAL_VALUES }) => {
                 formData.append("file", values.file);
                 formData.append("data", JSON.stringify(data));
 
-                // console.log(data);
-
                 const ws = new WebSocket(`ws://localhost:80`);
 
                 ws.onmessage = async function (evt) {
-                    // console.log("message", evt);
                     let info = await JSON.parse(evt.data);
                     serverProgress = info.progress;
                     serverMessage = info.message;
                     serverAlertType = info.type;
-                    // console.log(serverAlertType);
-                    // console.log("SERVER PROGRESS", serverProgress);
-                    // setProgress(serverProgress);
+
                     setProgress(serverProgress);
                     setAlert(serverMessage);
                     setAlertType(serverAlertType);
-                    // console.log("progerss", progress);
                     if (serverProgress === 100) {
                         setIsUploading(false);
-                        // console.log("upload submitted");
                         setError("");
                         setAlert("Woohoo! The upload was successful! Click the button to return home.");
                         ws.close();
                     }
                 };
-
-                // console.log("AFTER WEBSOCKET");
 
                 await axios.post(`${BASE_URL}/comic/upload`, formData, { withCredentials: true });
             } catch (error) {
@@ -222,7 +202,6 @@ const UploadForm = ({ comic = INITIAL_VALUES }) => {
                 <h2 className={classes.text}>Upload Comic</h2>
                 <small>How exciting!</small>
             </div>
-            {/* {alert && <Alert severity="success">{alert}</Alert>} */}
             <TransitionsModal
                 progress={progress}
                 handleClose={handleClose}
@@ -243,7 +222,11 @@ const UploadForm = ({ comic = INITIAL_VALUES }) => {
                             fullWidth
                             onChange={(event) => {
                                 formik.setFieldValue("file", event.currentTarget.files[0]);
-                                setFileName(event.currentTarget.files[0].name);
+                                if (event.currentTarget.files[0]) {
+                                    setFileName(event.currentTarget.files[0].name);
+                                } else {
+                                    setFileName("");
+                                }
                             }}
                             onBlur={formik.handleBlur}
                         />

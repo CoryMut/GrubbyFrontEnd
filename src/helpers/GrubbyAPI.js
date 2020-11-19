@@ -58,6 +58,7 @@ export async function getUserInfo(username) {
 
 export async function checkTokenStatus(token) {
     try {
+        console.log("checking token status");
         let result = await axios.post(`${BASE_URL}/checkToken`, { _token: token }, { withCredentials: true });
         return result.data;
     } catch (error) {

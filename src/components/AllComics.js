@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { getAllComics, searchComics } from "../helpers/GrubbyAPI";
+import { getAllComics } from "../helpers/GrubbyAPI";
 
 import { makeStyles } from "@material-ui/core/styles";
 import Grid from "@material-ui/core/Grid";
@@ -7,7 +7,7 @@ import Container from "@material-ui/core/Container";
 import Alert from "@material-ui/lab/Alert";
 
 import ComicCard from "../components/ComicCard";
-import SearchBar from "../components/SearchBar";
+import Search from "../components/Search";
 
 import { SRLWrapper } from "simple-react-lightbox";
 
@@ -22,12 +22,12 @@ const options = {
         disablePanzoom: true,
         disableWheelControls: true,
         hideControlsAfter: 3000,
-        lightboxTransitionSpeed: 0.3,
-        lightboxTransitionTimingFunction: "linear",
+        lightboxTransitionSpeed: 0.05,
+        lightboxTransitionTimingFunction: "anticipate",
         overlayColor: "rgba(0, 0, 0, 0.9)",
         slideAnimationType: "slide",
-        slideSpringValues: [1000, 200],
-        slideTransitionSpeed: 0.2,
+        slideSpringValues: [2000, 200],
+        slideTransitionSpeed: 0.3,
         slideTransitionTimingFunction: "easeIn",
     },
     buttons: {
@@ -86,57 +86,10 @@ const useStyles = makeStyles((theme) => ({
 
 const AllComics = () => {
     const classes = useStyles();
-    const [allComics, setAllComics] = useState([]);
-    const [searchTerm, setSearchTerm] = useState("");
-    const [previous, setPrevious] = useState("");
-    const [submitStatus, setSubmitStatus] = useState(false);
-    const [displayComics, setDisplayComics] = useState([]);
     const [alert, setAlert] = useState("");
-    const [disabled, setDisabled] = useState(false);
+    const [allComics, setAllComics] = useState([]);
+    const [displayComics, setDisplayComics] = useState([]);
 
-    const handleChange = (event) => {
-        if (event.target.value === "") {
-            setAlert("");
-            setDisplayComics(allComics);
-        }
-
-        setSearchTerm(event.target.value);
-
-        if (previous !== searchTerm) {
-            setSubmitStatus(false);
-        }
-    };
-
-    const handleClear = (event) => {
-        setSearchTerm("");
-        setAlert("");
-        setDisplayComics(allComics);
-    };
-
-    const handleSubmit = async (event) => {
-        try {
-            event.preventDefault();
-
-            if (previous === searchTerm) {
-                return;
-            }
-
-            setSubmitStatus(true);
-            setAlert("");
-            let result = await searchComics(searchTerm);
-            let { results } = result;
-
-            if (results.length === 0) {
-                setAlert({ type: "warning", message: `No comics found using ${searchTerm}` });
-            }
-
-            setDisplayComics(results);
-            setPrevious(searchTerm);
-        } catch (error) {
-            setAlert({ type: "error", message: ` Oh no! Something went wrong! Please try again.` });
-            return;
-        }
-    };
     useEffect(() => {
         async function getComics() {
             try {
@@ -145,7 +98,7 @@ const AllComics = () => {
                 setAllComics(comics);
                 setDisplayComics(comics);
             } catch (error) {
-                setDisabled(true);
+                // setDisabled(true);
                 setAlert({
                     type: "error",
                     message: `Uh oh, something went wrong fetching the comic data. Please try refreshing the page.`,
@@ -160,14 +113,7 @@ const AllComics = () => {
     return (
         <div className={classes.root}>
             <Container maxWidth="lg">
-                <SearchBar
-                    handleSubmit={handleSubmit}
-                    handleChange={handleChange}
-                    searchTerm={searchTerm}
-                    submitStatus={submitStatus}
-                    handleClear={handleClear}
-                    disabled={disabled}
-                ></SearchBar>
+                <Search setDisplayComics={setDisplayComics} setAlert={setAlert} allComics={allComics}></Search>
                 {alert && (
                     <Alert className={classes.alert} severity={alert.type}>
                         {alert.message}

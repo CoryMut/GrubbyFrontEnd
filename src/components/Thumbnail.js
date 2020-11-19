@@ -4,7 +4,8 @@ import { makeStyles } from "@material-ui/core/styles";
 const useStyles = makeStyles(() => ({
     thumbnail: {
         minWidth: "325px",
-        width: "35vw",
+        width: "100%",
+        maxWidth: "35vw",
         display: "inline-block",
     },
     flex: {

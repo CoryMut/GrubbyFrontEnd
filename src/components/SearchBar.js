@@ -24,7 +24,9 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-const SearchBar = ({ handleChange, handleSubmit, searchTerm, submitStatus, handleClear, disabled }) => {
+// { handleChange, handleSubmit, searchTerm, submitStatus, handleClear, disabled }
+
+const SearchBar = ({ handleChange, handleClear, handleSubmit, submitStatus, searchTerm }) => {
     const classes = useStyles();
 
     return (
@@ -53,7 +55,6 @@ const SearchBar = ({ handleChange, handleSubmit, searchTerm, submitStatus, handl
                             </IconButton>
                         </InputAdornment>
                     }
-                    disabled={disabled}
                 />
             </form>
         </div>

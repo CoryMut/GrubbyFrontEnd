@@ -14,9 +14,7 @@ const defaultOptions = {
 };
 
 function AdminRoute({ exact, path, children }) {
-    console.log("in admin route");
     const { isAdmin, isLoading, isLoggedIn } = useContext(UserContext);
-    console.log(isAdmin, isLoading, isLoggedIn);
 
     if (!isLoggedIn && !isLoading) {
         return <Redirect to="/login?d=upload"></Redirect>;

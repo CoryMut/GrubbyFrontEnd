@@ -24,6 +24,7 @@ import ExitToAppIcon from "@material-ui/icons/ExitToApp";
 import CollectionsBookmarkIcon from "@material-ui/icons/CollectionsBookmark";
 import PersonIcon from "@material-ui/icons/Person";
 import FavoriteIcon from "@material-ui/icons/Favorite";
+import SettingsIcon from "@material-ui/icons/Settings";
 
 const drawerWidth = 240;
 
@@ -37,7 +38,7 @@ const useStyles = makeStyles((theme) => ({
     title: {
         flexGrow: 1,
         textAlign: "center",
-        [theme.breakpoints.down("sm")]: {
+        [theme.breakpoints.down("xs")]: {
             textAlign: "inherit",
         },
     },
@@ -45,6 +46,9 @@ const useStyles = makeStyles((theme) => ({
         color: "white",
         zIndex: theme.zIndex.drawer + 1,
         justifyContent: "center",
+        position: "sticky",
+        top: "0px",
+        left: "0px",
     },
     drawer: {
         width: drawerWidth,
@@ -90,7 +94,8 @@ const NavBar = () => {
     };
 
     return (
-        <div className={classes.root}>
+        // <div className={classes.root}>
+        <>
             <AppBar position="sticky" className={classes.appBar} color="inherit">
                 <Toolbar>
                     <IconButton edge="start" className={classes.menuButton} aria-label="menu" onClick={openMenu}>
@@ -174,10 +179,19 @@ const NavBar = () => {
                                 <ListItemText primary="Upload"></ListItemText>
                             </ListItem>
                         )}
+                        {isAdmin && (
+                            <ListItem button component={Link} to="/admin" onClick={closeMenu}>
+                                <ListItemIcon>
+                                    <SettingsIcon></SettingsIcon>
+                                </ListItemIcon>
+                                <ListItemText primary="Admin Portal"></ListItemText>
+                            </ListItem>
+                        )}
                     </List>
                 </div>
             </Drawer>
-        </div>
+            {/* </div> */}
+        </>
     );
 };
 

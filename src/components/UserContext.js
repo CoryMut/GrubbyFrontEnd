@@ -37,7 +37,7 @@ function UserProvider(props) {
     const handleLoading = (status) => {
         setTimeout(() => {
             setIsLoading(status);
-        }, 1200);
+        }, 800);
     };
 
     useEffect(() => {

@@ -67,9 +67,14 @@ const options = {
 };
 
 const useStyles = makeStyles((theme) => ({
+    "@global": {
+        body: {
+            backgroundImage: "url(https://grubbythegrape.sfo2.cdn.digitaloceanspaces.com/assets/assets/purple.png)",
+        },
+    },
     root: {
         display: "flex",
-        marginTop: "1vh",
+        marginTop: "2vh",
         marginBottom: "5vh",
     },
     appBar: {

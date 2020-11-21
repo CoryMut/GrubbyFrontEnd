@@ -9,11 +9,11 @@ const CDN = process.env.REACT_APP_CDN;
 
 const useStyles = makeStyles({
     root: {
-        marginTop: "1vh",
+        marginTop: "4vh",
         height: "100%",
     },
     image: {
-        maxHeight: "384px",
+        // maxHeight: "384px",
         width: "100%",
     },
 });

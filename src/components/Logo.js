@@ -8,7 +8,7 @@ const useStyles = makeStyles((theme) => ({
         maxWidth: "325px",
         width: "100%",
         [theme.breakpoints.down("md")]: {
-            width: "80%",
+            width: "90%",
         },
     },
 }));

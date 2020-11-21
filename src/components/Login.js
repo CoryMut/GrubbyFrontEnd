@@ -74,7 +74,6 @@ const Login = () => {
         onSubmit: async (values) => {
             try {
                 let { token, user } = await loginUser(values);
-                console.log(user);
                 authContext.login(token);
                 authContext.handleAdmin(user.is_admin);
 

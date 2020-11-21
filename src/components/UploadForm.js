@@ -3,6 +3,7 @@ import axios from "axios";
 import { useFormik } from "formik";
 import { Link } from "react-router-dom";
 import { getCharacters } from "../helpers/GrubbyAPI";
+
 import { makeStyles } from "@material-ui/core/styles";
 import TextField from "@material-ui/core/TextField";
 import Container from "@material-ui/core/Container";
@@ -240,7 +241,7 @@ const UploadForm = ({ comic = INITIAL_VALUES }) => {
                     </div>
                     <Thumbnail file={formik.values.file} progress={progress}></Thumbnail>
                     <div className={classes.inputField}>
-                        <InputLabel htmlFor="description">Characters</InputLabel>
+                        <InputLabel htmlFor="characters">Characters</InputLabel>
                         <div id="characters" name="characters" margin="normal" className={classes.characters}>
                             {charInComic.map((character) => (
                                 <CharacterCard

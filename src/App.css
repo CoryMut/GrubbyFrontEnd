@@ -1,9 +1,18 @@
 body {
-    background-image: url("https://grubbythegrape.sfo2.cdn.digitaloceanspaces.com/assets/assets/purple.png");
+    /* background-image: url("https://grubbythegrape.sfo2.cdn.digitaloceanspaces.com/assets/assets/purple.png"); */
     min-height: 100vh;
 }
 
-.btn:focus {
-    outline: none !important;
+button:focus {
     box-shadow: none !important;
+    outline: none !important;
+}
+
+/* .App {
+    text-align: center;
+} */
+
+@font-face {
+    font-family: "comicfont";
+    src: url("https://grubbythegrape.sfo2.cdn.digitaloceanspaces.com/assets/assets/ComicMarkerDeluxe-v4Z4.ttf");
 }

@@ -22,6 +22,7 @@ const useStyles = makeStyles((theme) => ({
         alignItems: "center",
         justifyContent: "center",
         height: "90vh",
+        margin: "0 2vw",
         [theme.breakpoints.up("sm")]: {
             minHeight: "885px",
         },

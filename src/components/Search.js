@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import SearchBar from "../components/SearchBar";
 import { searchComics } from "../helpers/GrubbyAPI";
 
-const Search = ({ setDisplayComics, setAlert, allComics }) => {
+const Search = ({ setDisplayComics, setAlert, allComics, setCount }) => {
     const [previous, setPrevious] = useState("");
     const [searchTerm, setSearchTerm] = useState("");
     const [submitStatus, setSubmitStatus] = useState(false);
@@ -22,7 +22,6 @@ const Search = ({ setDisplayComics, setAlert, allComics }) => {
     };
 
     const handleClear = (event) => {
-        console.log("handleClear");
         setSearchTerm("");
         setAlert("");
         setDisplayComics(allComics);
@@ -39,13 +38,14 @@ const Search = ({ setDisplayComics, setAlert, allComics }) => {
             setSubmitStatus(true);
             setAlert("");
             let result = await searchComics(searchTerm);
-            let { results } = result;
+            let { results, count } = result;
 
             if (results.length === 0) {
                 setAlert({ type: "warning", message: `No comics found using ${searchTerm}` });
             }
 
             setDisplayComics(results);
+            setCount(count);
             setPrevious(searchTerm);
         } catch (error) {
             setAlert({ type: "error", message: ` Oh no! Something went wrong! Please try again.` });

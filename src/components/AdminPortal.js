@@ -87,7 +87,6 @@ const AdminPortal = () => {
     };
 
     useEffect(() => {
-        console.log("use effect admin portal");
         async function getComics() {
             try {
                 let result = await getAllAdminComics();

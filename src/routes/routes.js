@@ -1,6 +1,7 @@
 import React from "react";
 import { Route, Switch, Redirect } from "react-router-dom";
 import AdminRoute from "./AdminRoute";
+import AuthRoute from "./AuthRoute";
 
 import HomePage from "../components/HomePage";
 import UploadForm from "../components/UploadForm";
@@ -9,6 +10,7 @@ import Signup from "../components/Signup";
 import AllComics from "../components/AllComics";
 import Fancy from "../components/Fancy";
 import AdminPortal from "../components/AdminPortal";
+import Favorites from "../components/Favorites";
 
 const Routes = () => {
     return (
@@ -17,7 +19,6 @@ const Routes = () => {
                 {/* <HomePage /> */}
                 <Fancy />
             </Route>
-
             <Route exact path="/login">
                 <Login></Login>
             </Route>
@@ -27,6 +28,9 @@ const Routes = () => {
             <Route exact path="/all">
                 <AllComics></AllComics>
             </Route>
+            <AuthRoute exact path="/favorites">
+                <Favorites />
+            </AuthRoute>
             <AdminRoute exact path="/upload">
                 <UploadForm />
             </AdminRoute>

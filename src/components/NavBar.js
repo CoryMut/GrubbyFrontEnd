@@ -3,6 +3,7 @@ import { UserContext } from "./UserContext";
 import { logoutUser } from "../helpers/GrubbyAPI";
 import { Link } from "react-router-dom";
 
+import useMediaQuery from "@material-ui/core/useMediaQuery";
 import { makeStyles } from "@material-ui/core/styles";
 import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
@@ -42,6 +43,9 @@ const useStyles = makeStyles((theme) => ({
             textAlign: "inherit",
         },
     },
+    centerTitle: {
+        textAlign: "none",
+    },
     appBar: {
         color: "white",
         zIndex: theme.zIndex.drawer + 1,
@@ -75,6 +79,8 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const NavBar = () => {
+    const matches = useMediaQuery("(max-width:320px)");
+
     const classes = useStyles();
     const { isLoggedIn, logout, isAdmin } = useContext(UserContext);
     const [menu, setMenu] = useState(false);
@@ -101,7 +107,7 @@ const NavBar = () => {
                     <IconButton edge="start" className={classes.menuButton} aria-label="menu" onClick={openMenu}>
                         <MenuIcon />
                     </IconButton>
-                    <Typography variant="h6" className={classes.title}>
+                    <Typography variant="h6" className={matches ? classes.centerTitle : classes.title}>
                         <Logo></Logo>
                     </Typography>
                 </Toolbar>
@@ -131,7 +137,7 @@ const NavBar = () => {
                             <ListItemText primary="Home"></ListItemText>
                         </ListItem>
 
-                        <ListItem button component={Link} to="/all" onClick={closeMenu}>
+                        <ListItem button component={Link} to="/all?page=1" onClick={closeMenu}>
                             <ListItemIcon>
                                 <CollectionsBookmarkIcon></CollectionsBookmarkIcon>
                             </ListItemIcon>

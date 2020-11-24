@@ -68,9 +68,9 @@ export async function checkTokenStatus(token) {
     }
 }
 
-export async function getAllComics() {
+export async function getAllComics(page) {
     try {
-        let result = await axios.get(`${BASE_URL}/comic/all`, { withCredentials: true });
+        let result = await axios.get(`${BASE_URL}/comic/all?page=${page}`, { withCredentials: true });
         return result.data;
     } catch (error) {
         console.error("API Error:", error.response);

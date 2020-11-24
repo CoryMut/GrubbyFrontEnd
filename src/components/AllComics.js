@@ -1,10 +1,12 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import { getAllComics } from "../helpers/GrubbyAPI";
+import { useHistory, useLocation } from "react-router-dom";
 
 import { makeStyles } from "@material-ui/core/styles";
 import Grid from "@material-ui/core/Grid";
 import Container from "@material-ui/core/Container";
 import Alert from "@material-ui/lab/Alert";
+import Pagination from "@material-ui/lab/Pagination";
 
 import ComicCard from "../components/ComicCard";
 import Search from "../components/Search";
@@ -75,7 +77,7 @@ const useStyles = makeStyles((theme) => ({
     root: {
         display: "flex",
         marginTop: "2vh",
-        marginBottom: "5vh",
+        flexDirection: "column",
     },
     appBar: {
         zIndex: theme.zIndex.drawer + 1,
@@ -87,23 +89,77 @@ const useStyles = makeStyles((theme) => ({
     alert: {
         marginTop: "2vh",
     },
+    pagination: {
+        display: "flex",
+        justifyContent: "center",
+        marginTop: "10vh",
+        marginBottom: "5vh",
+    },
 }));
+
+function useQuery() {
+    return new URLSearchParams(useLocation().search);
+}
 
 const AllComics = () => {
     const classes = useStyles();
+    const history = useHistory();
+    const query = useQuery();
+    const top = useRef();
     const [alert, setAlert] = useState("");
     const [allComics, setAllComics] = useState([]);
     const [displayComics, setDisplayComics] = useState([]);
+    const [page, setPage] = useState(Number(query.get("page")) || 1);
+    const [count, setCount] = useState(10);
+
+    const handleChange = (event) => {
+        if (event.target.tagName === "BUTTON") {
+            history.push({
+                pathname: "/all",
+                search: `?page=${event.target.innerText}`,
+            });
+            setPage(event.target.innerText);
+        } else if (event.target.tagName === "svg") {
+            if (event.target.children[0].getAttribute("d").includes("M10")) {
+                setPage((page) => page + 1);
+                history.push({
+                    pathname: "/all",
+                    search: `?page=${+page + 1}`,
+                });
+            } else if (event.target.children[0].getAttribute("d").includes("M15")) {
+                setPage((page) => +page - 1);
+                history.push({
+                    pathname: "/all",
+                    search: `?page=${+page - 1}`,
+                });
+            }
+        } else if (event.target.tagName === "path") {
+            if (event.target.getAttribute("d").includes("M10")) {
+                setPage((page) => +page + 1);
+                history.push({
+                    pathname: "/all",
+                    search: `?page=${+page + 1}`,
+                });
+            } else if (event.target.getAttribute("d").includes("M15")) {
+                setPage((page) => +page - 1);
+                history.push({
+                    pathname: "/all",
+                    search: `?page=${page - 1}`,
+                });
+            }
+        }
+    };
 
     useEffect(() => {
         async function getComics() {
             try {
-                let result = await getAllComics();
-                let { comics } = result;
+                let result = await getAllComics(page);
+                let { comics, count } = result;
                 setAllComics(comics);
                 setDisplayComics(comics);
+                setCount(count);
+                top.current.scrollIntoView();
             } catch (error) {
-                // setDisabled(true);
                 setAlert({
                     type: "error",
                     message: `Uh oh, something went wrong fetching the comic data. Please try refreshing the page.`,
@@ -113,34 +169,51 @@ const AllComics = () => {
             }
         }
         getComics();
-    }, []);
+    }, [page]);
 
     return (
-        <div className={classes.root}>
-            <Container maxWidth="lg">
-                <Search setDisplayComics={setDisplayComics} setAlert={setAlert} allComics={allComics}></Search>
-                {alert && (
-                    <Alert className={classes.alert} severity={alert.type}>
-                        {alert.message}
-                    </Alert>
-                )}
+        <>
+            <div className={classes.root} ref={top}>
+                <Container maxWidth="lg">
+                    <Search
+                        setDisplayComics={setDisplayComics}
+                        setAlert={setAlert}
+                        allComics={allComics}
+                        setCount={setCount}
+                    ></Search>
+                    {alert && (
+                        <Alert className={classes.alert} severity={alert.type}>
+                            {alert.message}
+                        </Alert>
+                    )}
 
-                <SRLWrapper options={options}>
-                    <Grid container spacing={3}>
-                        {displayComics.map((comic) => (
-                            <Grid item xs={12} lg={3} md={4} sm={6} key={comic.comic_id}>
-                                <ComicCard
-                                    description={comic.description}
-                                    name={comic.name}
-                                    comicID={comic.comic_id}
-                                    image={`${CDN}/384/${comic.name}`}
-                                ></ComicCard>
-                            </Grid>
-                        ))}
-                    </Grid>
-                </SRLWrapper>
-            </Container>
-        </div>
+                    <SRLWrapper options={options}>
+                        <Grid container spacing={3}>
+                            {displayComics.map((comic) => (
+                                <Grid item xs={12} lg={3} md={4} sm={6} key={comic.comic_id}>
+                                    <ComicCard
+                                        description={comic.description}
+                                        name={comic.name}
+                                        comicID={comic.comic_id}
+                                        image={`${CDN}/384/${comic.name}`}
+                                    ></ComicCard>
+                                </Grid>
+                            ))}
+                        </Grid>
+                    </SRLWrapper>
+                </Container>
+            </div>
+            <div className={classes.pagination}>
+                <Pagination
+                    count={count}
+                    variant="outlined"
+                    shape="rounded"
+                    size="large"
+                    page={Number(page)}
+                    onChange={handleChange}
+                />
+            </div>
+        </>
     );
 };
 

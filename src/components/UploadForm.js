@@ -18,6 +18,8 @@ import TransitionsModal from "../components/Modal";
 import "react-circular-progressbar/dist/styles.css";
 
 const BASE_URL = process.env.REACT_APP_SERVER_URL || "http://localhost:5000";
+const WS_URL = process.env.REACT_APP_WS || "ws://localhost";
+const WS_PORT = process.env.REACT_APP_WS_PORT || 80;
 
 const useStyles = makeStyles((theme) => ({
     "@global": {
@@ -168,7 +170,8 @@ const UploadForm = ({ comic = INITIAL_VALUES }) => {
                 formData.append("file", values.file);
                 formData.append("data", JSON.stringify(data));
 
-                const ws = new WebSocket(`ws://localhost:80`);
+                // const ws = new WebSocket(`ws://localhost:80`);
+                const ws = new WebSocket(`${WS_URL}:${WS_PORT}`);
 
                 ws.onmessage = async function (evt) {
                     let info = await JSON.parse(evt.data);

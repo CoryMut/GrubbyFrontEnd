@@ -1,0 +1,134 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`should test NavBar component 1`] = `
+<Fragment>
+  <WithStyles(ForwardRef(AppBar))
+    className="makeStyles-appBar-5"
+    color="inherit"
+    position="sticky"
+  >
+    <WithStyles(ForwardRef(Toolbar))>
+      <WithStyles(ForwardRef(IconButton))
+        aria-label="menu"
+        className="makeStyles-menuButton-2"
+        edge="start"
+        onClick={[Function]}
+      >
+        <MenuIcon />
+      </WithStyles(ForwardRef(IconButton))>
+      <WithStyles(ForwardRef(Typography))
+        className="makeStyles-title-3"
+        variant="h6"
+      >
+        <Logo />
+      </WithStyles(ForwardRef(Typography))>
+    </WithStyles(ForwardRef(Toolbar))>
+  </WithStyles(ForwardRef(AppBar))>
+  <WithStyles(ForwardRef(Drawer))
+    anchor="left"
+    className="makeStyles-drawer-6"
+    classes={
+      Object {
+        "paper": "makeStyles-drawerPaper-7",
+      }
+    }
+    onClose={[Function]}
+    open={false}
+  >
+    <div
+      className="makeStyles-drawerContainer-8"
+    >
+      <WithStyles(ForwardRef(List))>
+        <WithStyles(ForwardRef(ListItem))
+          button={true}
+          onClick={[Function]}
+        >
+          <WithStyles(ForwardRef(ListItemIcon))>
+            <ArrowBackIcon />
+          </WithStyles(ForwardRef(ListItemIcon))>
+          <WithStyles(ForwardRef(ListItemText)) />
+        </WithStyles(ForwardRef(ListItem))>
+        <WithStyles(ForwardRef(ListItem))
+          button={true}
+          component={
+            Object {
+              "$$typeof": Symbol(react.forward_ref),
+              "displayName": "Link",
+              "propTypes": Object {
+                "innerRef": [Function],
+                "onClick": [Function],
+                "replace": [Function],
+                "target": [Function],
+                "to": [Function],
+              },
+              "render": [Function],
+            }
+          }
+          onClick={[Function]}
+          to="/"
+        >
+          <WithStyles(ForwardRef(ListItemIcon))>
+            <HomeIcon />
+          </WithStyles(ForwardRef(ListItemIcon))>
+          <WithStyles(ForwardRef(ListItemText))
+            primary="Home"
+          />
+        </WithStyles(ForwardRef(ListItem))>
+        <WithStyles(ForwardRef(ListItem))
+          button={true}
+          component={
+            Object {
+              "$$typeof": Symbol(react.forward_ref),
+              "displayName": "Link",
+              "propTypes": Object {
+                "innerRef": [Function],
+                "onClick": [Function],
+                "replace": [Function],
+                "target": [Function],
+                "to": [Function],
+              },
+              "render": [Function],
+            }
+          }
+          onClick={[Function]}
+          to="/all?page=1"
+        >
+          <WithStyles(ForwardRef(ListItemIcon))>
+            <CollectionsBookmarkIcon />
+          </WithStyles(ForwardRef(ListItemIcon))>
+          <WithStyles(ForwardRef(ListItemText))
+            primary="All Comics"
+          />
+        </WithStyles(ForwardRef(ListItem))>
+        <WithStyles(ForwardRef(ListItem))
+          button={true}
+          className="makeStyles-bottomItem-11"
+          component={
+            Object {
+              "$$typeof": Symbol(react.forward_ref),
+              "displayName": "Link",
+              "propTypes": Object {
+                "innerRef": [Function],
+                "onClick": [Function],
+                "replace": [Function],
+                "target": [Function],
+                "to": [Function],
+              },
+              "render": [Function],
+            }
+          }
+          onClick={[Function]}
+          to="/login"
+        >
+          <WithStyles(ForwardRef(ListItemIcon))>
+            <PersonIcon />
+          </WithStyles(ForwardRef(ListItemIcon))>
+          <WithStyles(ForwardRef(ListItemText))
+            primary="Login"
+          />
+        </WithStyles(ForwardRef(ListItem))>
+      </WithStyles(ForwardRef(List))>
+    </div>
+  </WithStyles(ForwardRef(Drawer))>
+</Fragment>
+`;

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 
-import Comic from "../components/Comic";
+import AdminComic from "../components/AdminComic";
 import ComicForm from "../components/ComicForm";
 
 import { getAllAdminComics } from "../helpers/GrubbyAPI";
@@ -92,15 +92,18 @@ const AdminPortal = () => {
                 let result = await getAllAdminComics();
                 let { comics } = result;
                 setComics(comics);
-                setSelectedComic(`${CDN}/960/${comics[0].name}`);
-                setComicInfo((comicInfo) => {
-                    return { ...comicInfo, name: comics[0].name, description: comics[0].description, id: 1 };
-                });
+                if (comics.length > 0) {
+                    setSelectedComic(`${CDN}/960/${comics[0].name}`);
+                    setComicInfo((comicInfo) => {
+                        return { ...comicInfo, name: comics[0].name, description: comics[0].description, id: 1 };
+                    });
+                }
+
                 setTimeout(() => {
                     setIsLoading(false);
                 }, 800);
             } catch (error) {
-                console.log(error);
+                console.error(error);
                 return;
             }
         }
@@ -126,7 +129,15 @@ const AdminPortal = () => {
                 </div>
             )}
 
-            {!isLoading && (
+            {!isLoading && comics.length === 0 && (
+                <div>
+                    <Typography variant="h4" className={classes.title}>
+                        No comics found!
+                    </Typography>
+                </div>
+            )}
+
+            {!isLoading && comics.length > 0 && (
                 <div className={classes.container}>
                     <div>
                         <Typography variant="h4" className={classes.title}>
@@ -147,7 +158,8 @@ const AdminPortal = () => {
                                             <ListItemIcon>
                                                 <LabelIcon />
                                             </ListItemIcon>
-                                            <ListItemText primary={comic.name} />
+                                            {/* <ListItemText primary={comic.name} /> */}
+                                            <ListItemText primary={"Grubby #" + comic.comic_id} />
                                         </ListItem>
                                         <Divider className={classes.root} />
                                     </div>
@@ -155,7 +167,7 @@ const AdminPortal = () => {
                             </List>
                         </div>
                         <div className={classes.comic}>
-                            <Comic src={selectedComic}></Comic>
+                            <AdminComic src={selectedComic}></AdminComic>
                             <ComicForm
                                 name={comicInfo.name}
                                 description={comicInfo.description}

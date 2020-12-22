@@ -1,5 +1,5 @@
-import React, { useEffect, useState, useRef } from "react";
-import { getAllComics } from "../helpers/GrubbyAPI";
+import React, { useEffect, useState } from "react";
+import { getAllComics, searchComics } from "../helpers/GrubbyAPI";
 import { useHistory, useLocation } from "react-router-dom";
 
 import { makeStyles } from "@material-ui/core/styles";
@@ -104,31 +104,47 @@ function useQuery() {
 const AllComics = () => {
     const classes = useStyles();
     const history = useHistory();
-    const query = useQuery();
-    const top = useRef();
+    const q = useQuery();
     const [alert, setAlert] = useState("");
     const [allComics, setAllComics] = useState([]);
     const [displayComics, setDisplayComics] = useState([]);
-    const [page, setPage] = useState(Number(query.get("page")) || 1);
+    const [page, setPage] = useState(Number(q.get("page")) || 1);
     const [count, setCount] = useState(10);
+    const [query, setQuery] = useState(q.get("q") || null);
 
     const handleChange = (event) => {
         if (event.target.tagName === "BUTTON") {
-            history.push({
-                pathname: "/all",
-                search: `?page=${event.target.innerText}`,
-            });
-            setPage(event.target.innerText);
+            if (event.target.tagName.children) {
+                if (event.target.children[0].children[0].getAttribute("d").includes("M10")) {
+                    setPage((page) => +page + 1);
+                    history.replace({
+                        pathname: "/all",
+                        search: query ? `?page=${+page + 1}&q=${query}` : `?page=${+page + 1}`,
+                    });
+                } else if (event.target.children[0].children[0].getAttribute("d").includes("M15")) {
+                    setPage((page) => +page - 1);
+                    history.replace({
+                        pathname: "/all",
+                        search: `?page=${+page - 1}`,
+                    });
+                }
+            } else {
+                history.replace({
+                    pathname: "/all",
+                    search: query ? `?page=${event.target.innerText}&q=${query}` : `?page=${event.target.innerText}`,
+                });
+                setPage(Number(event.target.innerText));
+            }
         } else if (event.target.tagName === "svg") {
             if (event.target.children[0].getAttribute("d").includes("M10")) {
-                setPage((page) => page + 1);
-                history.push({
+                setPage((page) => +page + 1);
+                history.replace({
                     pathname: "/all",
                     search: `?page=${+page + 1}`,
                 });
             } else if (event.target.children[0].getAttribute("d").includes("M15")) {
                 setPage((page) => +page - 1);
-                history.push({
+                history.replace({
                     pathname: "/all",
                     search: `?page=${+page - 1}`,
                 });
@@ -136,13 +152,13 @@ const AllComics = () => {
         } else if (event.target.tagName === "path") {
             if (event.target.getAttribute("d").includes("M10")) {
                 setPage((page) => +page + 1);
-                history.push({
+                history.replace({
                     pathname: "/all",
                     search: `?page=${+page + 1}`,
                 });
             } else if (event.target.getAttribute("d").includes("M15")) {
                 setPage((page) => +page - 1);
-                history.push({
+                history.replace({
                     pathname: "/all",
                     search: `?page=${page - 1}`,
                 });
@@ -153,12 +169,17 @@ const AllComics = () => {
     useEffect(() => {
         async function getComics() {
             try {
-                let result = await getAllComics(page);
+                let result;
+                if (query) {
+                    result = await searchComics(query, page);
+                } else {
+                    result = await getAllComics(page);
+                }
                 let { comics, count } = result;
                 setAllComics(comics);
                 setDisplayComics(comics);
                 setCount(count);
-                top.current.scrollIntoView();
+                window.scrollTo(0, 0);
             } catch (error) {
                 setAlert({
                     type: "error",
@@ -169,13 +190,17 @@ const AllComics = () => {
             }
         }
         getComics();
-    }, [page]);
+    }, [page, query]);
 
     return (
         <>
-            <div className={classes.root} ref={top}>
+            <div className={classes.root}>
                 <Container maxWidth="lg">
                     <Search
+                        query={query}
+                        page={page}
+                        setPage={setPage}
+                        setQuery={setQuery}
                         setDisplayComics={setDisplayComics}
                         setAlert={setAlert}
                         allComics={allComics}

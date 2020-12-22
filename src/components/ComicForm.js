@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useFormik } from "formik";
 
-import { updateComic } from "../helpers/GrubbyAPI";
+import { updateComic, deleteAll } from "../helpers/GrubbyAPI";
 
 import { makeStyles } from "@material-ui/core/styles";
 import TextField from "@material-ui/core/TextField";
@@ -46,6 +46,10 @@ const useStyles = makeStyles((theme) => ({
     buttons: {
         marginTop: "1rem",
     },
+
+    button: {
+        marginRight: "1rem",
+    },
 }));
 
 const validate = (values) => {
@@ -76,6 +80,11 @@ const ComicForm = ({ name, description, id, setComics, comics }) => {
         setError(false);
     };
 
+    const handleDelete = async () => {
+        let result = await deleteAll(id);
+        return;
+    };
+
     const formik = useFormik({
         initialValues: {
             name: name,
@@ -88,17 +97,13 @@ const ComicForm = ({ name, description, id, setComics, comics }) => {
                 if (description === values.description) {
                     return;
                 }
-                console.log("fired shot");
                 let result = await updateComic(id, values);
-                console.log(result);
                 const copy = [...comics];
                 copy[id - 1] = { comic_id: id, name: values.name, description: values.description };
                 setComics([...copy]);
                 setOpen(true);
                 return;
-                // Grubby makes a small business out of Play-Doh.
             } catch (error) {
-                console.log(error);
                 setError(true);
                 return;
             }
@@ -150,8 +155,11 @@ const ComicForm = ({ name, description, id, setComics, comics }) => {
                 </div>
 
                 <div className={classes.buttons}>
-                    <Button type="submit" variant="contained" color="primary">
+                    <Button className={classes.button} type="submit" variant="contained" color="primary">
                         Update Comic
+                    </Button>
+                    <Button className={classes.button} variant="contained" color="secondary" onClick={handleDelete}>
+                        Delete Comic
                     </Button>
                 </div>
             </form>

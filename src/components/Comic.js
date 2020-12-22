@@ -1,6 +1,6 @@
 import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
-
+import GlobalEmojiBar from "../components/GlobalEmojiBar";
 // import ArrowForwardIosIcon from "@material-ui/icons/ArrowForwardIos";
 // import ArrowBackIosIcon from "@material-ui/icons/ArrowBackIos";
 // import SkipNextIcon from "@material-ui/icons/SkipNext";
@@ -15,7 +15,7 @@ const useStyles = makeStyles((theme) => ({
             maxWidth: "760px",
         },
         maxWidth: "760px",
-        margin: "0 1vw",
+        margin: "0vh 1vw",
     },
     flex: {
         display: "flex",
@@ -23,6 +23,7 @@ const useStyles = makeStyles((theme) => ({
         justifyContent: "center",
         height: "90vh",
         margin: "0 2vw",
+        flexDirection: "column",
         [theme.breakpoints.up("sm")]: {
             minHeight: "885px",
         },
@@ -35,7 +36,7 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-const Comic = ({ src, srcSet, handlePreviousComic, handleNextComic }) => {
+const Comic = ({ src, srcSet, handlePreviousComic, handleNextComic, id, chipData, setChipData }) => {
     const classes = useStyles();
 
     // return <img className={classes.comic} src={src}></img>;
@@ -50,6 +51,8 @@ const Comic = ({ src, srcSet, handlePreviousComic, handleNextComic }) => {
                 <ArrowForwardIosIcon></ArrowForwardIosIcon>
             </Button>
             <SkipNextIcon></SkipNextIcon> */}
+            <GlobalEmojiBar id={id} chipData={chipData} setChipData={setChipData}></GlobalEmojiBar>
+            {/* <EmojiBar></EmojiBar> */}
         </div>
     );
 };

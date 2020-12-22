@@ -16,6 +16,7 @@ function UserProvider(props) {
     const history = useHistory();
     const [token, setToken] = useState(null);
     const [admin, setAdmin] = useState(false);
+    const [user, setUser] = useState(null);
     const [isLoading, setIsLoading] = useState(true);
 
     const login = useCallback((token) => {
@@ -26,12 +27,17 @@ function UserProvider(props) {
         setToken(null);
         setAdmin(false);
         setIsLoading(true);
+        setUser(null);
         localStorage.removeItem("_token");
         history.push("/");
     }, [history]);
 
     const handleAdmin = (status) => {
         setAdmin(status);
+    };
+
+    const handleUser = (username) => {
+        setUser(username);
     };
 
     const handleLoading = (status) => {
@@ -53,6 +59,7 @@ function UserProvider(props) {
                     throw Error("No token");
                 }
                 let result = await checkTokenStatus(storedData);
+                handleUser(result.user);
                 handleAdmin(result.isAdmin);
                 handleLoading(false);
                 return;
@@ -76,6 +83,8 @@ function UserProvider(props) {
                 login: login,
                 logout: logout,
                 isLoading: isLoading,
+                user: user,
+                handleUser: handleUser,
             }}
         >
             {props.children}

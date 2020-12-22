@@ -3,12 +3,11 @@ import { Route, Switch, Redirect } from "react-router-dom";
 import AdminRoute from "./AdminRoute";
 import AuthRoute from "./AuthRoute";
 
-import HomePage from "../components/HomePage";
 import UploadForm from "../components/UploadForm";
 import Login from "../components/Login";
 import Signup from "../components/Signup";
 import AllComics from "../components/AllComics";
-import Fancy from "../components/Fancy";
+import HomePage from "../components/HomePage";
 import AdminPortal from "../components/AdminPortal";
 import Favorites from "../components/Favorites";
 
@@ -16,8 +15,7 @@ const Routes = () => {
     return (
         <Switch>
             <Route exact path="/">
-                {/* <HomePage /> */}
-                <Fancy />
+                <HomePage />
             </Route>
             <Route exact path="/login">
                 <Login></Login>

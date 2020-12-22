@@ -26,9 +26,9 @@ const ScrollArrow = () => {
         };
     }, [checkScrollTop]);
 
-    const scrollTop = () => {
-        window.scrollTo({ top: 0, behavior: "smooth" });
-    };
+    // const scrollTop = () => {
+    //     window.scrollTo({ top: 0, behavior: "smooth" });
+    // };
 
     return (
         <div style={{ display: "flex", justifyContent: "center" }}>

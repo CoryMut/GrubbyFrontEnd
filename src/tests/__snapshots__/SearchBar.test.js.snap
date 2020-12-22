@@ -1,0 +1,36 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`should test NavBar component 1`] = `
+<div
+  className="makeStyles-search-1"
+>
+  <form>
+    <WithStyles(ForwardRef(InputBase))
+      classes={
+        Object {
+          "input": "makeStyles-inputInput-2",
+          "root": undefined,
+        }
+      }
+      endAdornment={
+        <ForwardRef(WithStyles)
+          position="start"
+        >
+          <ForwardRef(WithStyles)>
+            <UNDEFINED
+              className="makeStyles-searchIcon-3"
+            />
+          </ForwardRef(WithStyles)>
+        </ForwardRef(WithStyles)>
+      }
+      fullWidth={true}
+      inputProps={
+        Object {
+          "aria-label": "search",
+        }
+      }
+      placeholder="Search by keyword or character!"
+    />
+  </form>
+</div>
+`;

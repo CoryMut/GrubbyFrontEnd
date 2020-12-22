@@ -1,0 +1,54 @@
+App 
+├── NavBar 
+├── UserContext 
+└─┬ Routes
+  |
+  ├─┬ AllComics
+  | └── ComicCard
+  | └─┬ Search
+  |   └─ SearchBar
+  |
+  ├─┬ HomePage
+  | └── Carousel
+  | └── ScrollArrow
+  | └─┬ DisplayComic
+  |   └─┬ Comic
+  |     └── GlobalEmojiBar
+  |
+  ├── Login
+  |
+  ├── Signup
+  |
+  ├─┬ AdminRoute
+  | └─┬ AdminPortal
+  |   └── ComicForm
+  | └─┬ UploadForm
+  |   └── CharacterCard
+  |   └── Modal
+  |   └── Thumbnail
+  |
+  ├─┬ AuthRoute
+  | └── Favorites
+
+
+The purpose of this site was to create a place to display my clients comics featuring a character named Grubby the Grape.
+
+The site is currently deployed at beta.grubbythegrape.com
+
+The site supports displaying the latest comic on the homepage, but also allows access to all 181 comics via the All Comics menu option.
+
+All the comics are searchable and uses pagination.
+
+Making an account is optionable, but it allows users to favorite (coming soon!) and to 'react' to the comic using a supported emoji!
+
+Three routes are protected (two require admin and one requires auth).
+
+UploadForm and the AdminPortal are admin protected and this is where the client can go to edit properties of the comics (such as description).
+The UploadForm allows the user to upload the comic and set certain properties of the comic (like the characters involved).
+
+Uploading involves receiving the file form the client but also resizes that image for use with srcSet as well as uploading it to a CDN
+for storage. The client is shown a progress bar for all three tasks, not just the initial upload of the file. This is done on the backend
+using a secured websocket.
+
+App is styled using material-ui.
+Styles are largely kept in the component, rare exceptions include components reused from previous projects that did not use material-ui.

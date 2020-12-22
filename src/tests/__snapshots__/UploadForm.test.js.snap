@@ -1,0 +1,124 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`should test UploadForm component 1`] = `
+<WithStyles(ForwardRef(Container))
+  className="makeStyles-container-11"
+  maxWidth="md"
+>
+  <div
+    className="makeStyles-title-12"
+  >
+    <h2
+      className="makeStyles-text-6"
+    >
+      Upload Comic
+    </h2>
+    <small>
+      How exciting!
+    </small>
+  </div>
+  <TransitionsModal
+    alert=""
+    alertType="success"
+    handleClose={[Function]}
+    isUploading={false}
+    progress={0}
+  />
+  <form
+    className="makeStyles-form-3"
+    onSubmit={[Function]}
+  >
+    <div>
+      <div
+        className="makeStyles-inputField-4"
+      >
+        <WithStyles(ForwardRef(InputLabel))
+          htmlFor="file"
+        >
+          Upload File
+        </WithStyles(ForwardRef(InputLabel))>
+        <WithStyles(ForwardRef(TextField))
+          fullWidth={true}
+          id="file"
+          margin="normal"
+          name="file"
+          onBlur={[Function]}
+          onChange={[Function]}
+          placeholder="Upload File"
+          type="file"
+        />
+        <WithStyles(ForwardRef(FormHelperText))
+          htmlFor="file"
+        >
+          Choose the new comic to be uploaded.
+        </WithStyles(ForwardRef(FormHelperText))>
+      </div>
+      <Thumbnail
+        file=""
+        progress={0}
+      />
+      <div
+        className="makeStyles-inputField-4"
+      >
+        <WithStyles(ForwardRef(InputLabel))
+          htmlFor="characters"
+        >
+          Characters
+        </WithStyles(ForwardRef(InputLabel))>
+        <div
+          className="makeStyles-characters-13"
+          id="characters"
+          margin="normal"
+          name="characters"
+        />
+        <WithStyles(ForwardRef(FormHelperText))
+          htmlFor="characters"
+        >
+          Add the characters who are in the comic by clicking on the character's name!
+        </WithStyles(ForwardRef(FormHelperText))>
+      </div>
+      <div
+        className="makeStyles-inputField-4"
+      >
+        <WithStyles(ForwardRef(InputLabel))
+          htmlFor="description"
+        >
+          Description
+        </WithStyles(ForwardRef(InputLabel))>
+        <WithStyles(ForwardRef(TextField))
+          fullWidth={true}
+          id="description"
+          margin="normal"
+          name="description"
+          onBlur={[Function]}
+          onChange={[Function]}
+          placeholder="Description of post"
+          value=""
+        />
+        <WithStyles(ForwardRef(FormHelperText))
+          htmlFor="description"
+        >
+          This helps provide the alt text for the image and helps with search.
+        </WithStyles(ForwardRef(FormHelperText))>
+      </div>
+    </div>
+    <div
+      className="makeStyles-buttons-14"
+    >
+      <WithStyles(ForwardRef(Button))
+        type="submit"
+      >
+        Upload
+      </WithStyles(ForwardRef(Button))>
+      <WithStyles(ForwardRef(Button))>
+        <Link
+          className="makeStyles-link-8"
+          to="/"
+        >
+          Cancel
+        </Link>
+      </WithStyles(ForwardRef(Button))>
+    </div>
+  </form>
+</WithStyles(ForwardRef(Container))>
+`;

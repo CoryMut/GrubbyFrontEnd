@@ -132,7 +132,6 @@ const UploadForm = ({ comic = INITIAL_VALUES }) => {
     useEffect(() => {
         async function getAllCharacters() {
             let result = await getCharacters();
-            console.log(result);
             setCharacters(result.characters);
             setCharNotInComic(result.characters);
         }

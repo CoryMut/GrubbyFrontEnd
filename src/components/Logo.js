@@ -1,6 +1,6 @@
 import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 
 const useStyles = makeStyles((theme) => ({
     logo: {
@@ -15,15 +15,24 @@ const useStyles = makeStyles((theme) => ({
 
 const Logo = () => {
     const classes = useStyles();
+    const location = useLocation();
+
+    const handleClick = () => {
+        if (location.pathname === "/") {
+            window.scrollTo({ top: 0, behavior: "smooth" });
+        }
+    };
 
     return (
-        <Link to="/">
-            <img
-                className={classes.logo}
-                src="https://grubbythegrape.sfo2.cdn.digitaloceanspaces.com/assets/assets/logo/logo%28325x55%29.png"
-                alt="Grubby the Grape logo"
-            ></img>
-        </Link>
+        <>
+            <Link to="/" onClick={handleClick}>
+                <img
+                    className={classes.logo}
+                    src="https://grubbythegrape.sfo2.cdn.digitaloceanspaces.com/assets/assets/logo/logo%28325x55%29.png"
+                    alt="Grubby the Grape logo"
+                ></img>
+            </Link>
+        </>
     );
 };
 

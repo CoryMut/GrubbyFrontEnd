@@ -1,0 +1,189 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`should test AllComics component 1`] = `
+<Fragment>
+  <div
+    className="makeStyles-root-1"
+  >
+    <WithStyles(ForwardRef(Container))
+      maxWidth="lg"
+    >
+      <Search
+        allComics={Array []}
+        page={1}
+        query={null}
+        setAlert={[Function]}
+        setCount={[Function]}
+        setDisplayComics={[Function]}
+        setPage={[Function]}
+        setQuery={[Function]}
+      />
+      <bound 
+        customCaptions={
+          Array [
+            Object {},
+          ]
+        }
+        defaultCallbacks={
+          Object {
+            "onCountSlides": [Function],
+            "onLightboxClosed": [Function],
+            "onLightboxOpened": [Function],
+            "onSlideChange": [Function],
+          }
+        }
+        defaultOptions={
+          Object {
+            "buttons": Object {
+              "backgroundColor": "rgba(30,30,36,0.8)",
+              "iconColor": "rgba(255, 255, 255, 0.8)",
+              "iconPadding": "5px",
+              "showAutoplayButton": true,
+              "showCloseButton": true,
+              "showDownloadButton": true,
+              "showFullscreenButton": true,
+              "showNextButton": true,
+              "showPrevButton": true,
+              "showThumbnailsButton": true,
+              "size": "40px",
+            },
+            "caption": Object {
+              "captionAlignment": "start",
+              "captionColor": "#FFFFFF",
+              "captionContainerPadding": "0",
+              "captionFontFamily": "inherit",
+              "captionFontSize": "inherit",
+              "captionFontStyle": "inherit",
+              "captionFontWeight": "inherit",
+              "captionTextTransform": "inherit",
+              "showCaption": true,
+            },
+            "progressBar": Object {
+              "backgroundColor": "#f2f2f2",
+              "fillColor": "#000000",
+              "height": "3px",
+              "showProgressBar": true,
+            },
+            "settings": Object {
+              "autoplaySpeed": 3000,
+              "disableKeyboardControls": false,
+              "disablePanzoom": false,
+              "disableWheelControls": false,
+              "hideControlsAfter": 3000,
+              "lightboxTransitionSpeed": 0.3,
+              "lightboxTransitionTimingFunction": "linear",
+              "overlayColor": "rgba(0, 0, 0, 0.9)",
+              "slideAnimationType": "fade",
+              "slideSpringValues": Array [
+                300,
+                200,
+              ],
+              "slideTransitionSpeed": 0.6,
+              "slideTransitionTimingFunction": "linear",
+            },
+            "thumbnails": Object {
+              "showThumbnails": true,
+              "thumbnailsAlignment": "center",
+              "thumbnailsContainerBackgroundColor": "transparent",
+              "thumbnailsContainerPadding": "0",
+              "thumbnailsGap": "0 1px",
+              "thumbnailsOpacity": 0.4,
+              "thumbnailsPosition": "bottom",
+              "thumbnailsSize": Array [
+                "100px",
+                "80px",
+              ],
+            },
+            "translations": Object {
+              "autoplayText": "Play",
+              "closeText": "Close",
+              "downloadText": "Download",
+              "fullscreenText": "Full screen",
+              "nextText": "Next",
+              "pauseText": "Pause",
+              "previousText": "Previous",
+              "thumbnailsText": "Hide thumbnails",
+              "zoomOutText": "Zoom Out",
+            },
+          }
+        }
+        options={
+          Object {
+            "buttons": Object {
+              "backgroundColor": "rgba(30,30,36,0.8)",
+              "iconColor": "rgba(255, 255, 255, 0.8)",
+              "iconPadding": "5px",
+              "showAutoplayButton": false,
+              "showCloseButton": true,
+              "showDownloadButton": false,
+              "showFullscreenButton": false,
+              "showNextButton": true,
+              "showPrevButton": true,
+              "showThumbnailsButton": false,
+              "size": "40px",
+            },
+            "caption": Object {
+              "captionAlignment": "start",
+              "captionColor": "#FFFFFF",
+              "captionContainerPadding": "0",
+              "captionFontFamily": "inherit",
+              "captionFontSize": "inherit",
+              "captionFontStyle": "inherit",
+              "captionFontWeight": "inherit",
+              "captionTextTransform": "inherit",
+              "showCaption": true,
+            },
+            "settings": Object {
+              "autoplaySpeed": 3000,
+              "disableKeyboardControls": false,
+              "disablePanzoom": true,
+              "disableWheelControls": true,
+              "hideControlsAfter": 3000,
+              "lightboxTransitionSpeed": 0.05,
+              "lightboxTransitionTimingFunction": "anticipate",
+              "overlayColor": "rgba(0, 0, 0, 0.9)",
+              "slideAnimationType": "slide",
+              "slideSpringValues": Array [
+                2000,
+                200,
+              ],
+              "slideTransitionSpeed": 0.3,
+              "slideTransitionTimingFunction": "easeIn",
+            },
+            "thumbnails": Object {
+              "showThumbnails": false,
+              "thumbnailsAlignment": "center",
+              "thumbnailsContainerBackgroundColor": "transparent",
+              "thumbnailsContainerPadding": "0",
+              "thumbnailsGap": "1px",
+              "thumbnailsOpacity": 0.4,
+              "thumbnailsPosition": "left",
+              "thumbnailsSize": Array [
+                "100px",
+                "80px",
+              ],
+            },
+          }
+        }
+      >
+        <WithStyles(ForwardRef(Grid))
+          container={true}
+          spacing={3}
+        />
+      </bound >
+    </WithStyles(ForwardRef(Container))>
+  </div>
+  <div
+    className="makeStyles-pagination-5"
+  >
+    <WithStyles(ForwardRef(Pagination))
+      count={10}
+      onChange={[Function]}
+      page={1}
+      shape="rounded"
+      size="large"
+      variant="outlined"
+    />
+  </div>
+</Fragment>
+`;

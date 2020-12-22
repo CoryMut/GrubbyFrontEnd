@@ -1,0 +1,8 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`should test NavBar component 1`] = `
+<WithStyles(ForwardRef(Button))
+  className="makeStyles-lightCard-1"
+  onClick={[Function]}
+/>
+`;

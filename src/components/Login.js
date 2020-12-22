@@ -76,6 +76,7 @@ const Login = () => {
                 let { token, user } = await loginUser(values);
                 authContext.login(token);
                 authContext.handleAdmin(user.is_admin);
+                authContext.handleUser(user.username);
 
                 if (destination) {
                     history.push(`/${destination}`);

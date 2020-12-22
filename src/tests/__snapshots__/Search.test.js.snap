@@ -1,0 +1,11 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`should test NavBar component 1`] = `
+<SearchBar
+  handleChange={[Function]}
+  handleClear={[Function]}
+  handleSubmit={[Function]}
+  searchTerm=""
+  submitStatus={false}
+/>
+`;

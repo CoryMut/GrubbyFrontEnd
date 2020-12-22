@@ -96,13 +96,14 @@ export async function getCharacters() {
     }
 }
 
-export async function searchComics(searchTerm) {
+export async function searchComics(searchTerm, page = 1) {
     try {
         let result = await axios.get(
             `${BASE_URL}/comic/search`,
             {
                 params: {
                     searchTerm,
+                    page,
                 },
             },
             { withCredentials: true }
@@ -116,9 +117,70 @@ export async function searchComics(searchTerm) {
 
 export async function updateComic(comic_id, data) {
     try {
-        console.log(data);
         let result = await axios.patch(`${BASE_URL}/comic/${comic_id}`, { data: data }, { withCredentials: true });
         return result.data;
+    } catch (error) {
+        console.error("API Error:", error.response);
+        return;
+    }
+}
+
+export async function getGlobalEmote(emotes, id) {
+    try {
+        let labels = [];
+        emotes.forEach((emote) => {
+            labels.push(emote.label);
+        });
+        labels = labels.join("&");
+        let result = await axios.get(`${BASE_URL}/comic/${id}/emotes`, {
+            params: {
+                labels,
+            },
+        });
+        console.log(result);
+        return result.data.emotes;
+    } catch (error) {
+        console.error("API Error:", error.response);
+        return;
+    }
+}
+
+export async function getUserEmoteData(id, user) {
+    try {
+        let result = await axios.get(`${BASE_URL}/comic/${id}/${user}`);
+        return result.data.reaction;
+    } catch (error) {
+        console.error("API Error:", error.response);
+        return;
+    }
+}
+
+export async function sendUserEmoteData(data) {
+    try {
+        let { id, user } = data;
+        let result = await axios.post(`${BASE_URL}/comic/${id}/${user}`, { data });
+        return result.data.reaction;
+    } catch (error) {
+        console.error("API Error:", error.response);
+        return;
+    }
+}
+
+export async function updateUserEmoteData(data) {
+    try {
+        let { id, user } = data;
+        let result = await axios.patch(`${BASE_URL}/comic/${id}/${user}`, { data });
+        return result.data.reaction;
+    } catch (error) {
+        console.error("API Error:", error.response);
+        return;
+    }
+}
+
+export async function deleteAll(comic_id) {
+    try {
+        let result = await axios.delete(`${BASE_URL}/comic/${comic_id}`);
+        return result.message;
     } catch (error) {
         console.error("API Error:", error.response);
         return;

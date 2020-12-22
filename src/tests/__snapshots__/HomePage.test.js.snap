@@ -1,0 +1,176 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`should test NavBar component 1`] = `
+<Fragment>
+  <div
+    name="top"
+    style={
+      Object {
+        "padding": "4px",
+      }
+    }
+  >
+    <div
+      style={
+        Object {
+          "border": "6px solid black",
+          "borderRadius": "6px",
+        }
+      }
+    >
+      <WithStyles(ForwardRef(Grid))
+        alignItems="center"
+        className="makeStyles-jumbotron-1"
+        container={true}
+        direction="row"
+        justify="space-evenly"
+      >
+        <WithStyles(ForwardRef(Grid))
+          item={true}
+        >
+          <div
+            style={
+              Object {
+                "position": "relative",
+              }
+            }
+          >
+            <div
+              className="makeStyles-speechBubbleContainer-15"
+            >
+              <WithStyles(ForwardRef(Typography))
+                className="makeStyles-textTwo-9"
+                variant="caption"
+              >
+                Hi! I'm Grubby and this is my website, thanks for checking it out! You can find my newest adventure every Monday and Wednesday, except during 2020. 
+                <br />
+                <br />
+                2020 can go to hell.
+                 
+                <span
+                  style={
+                    Object {
+                      "marginLeft": "9px",
+                    }
+                  }
+                >
+                  Wear a mask.
+                </span>
+              </WithStyles(ForwardRef(Typography))>
+            </div>
+            <div>
+              <CachedIcon
+                className="makeStyles-speechIcon-14"
+                onClick={[Function]}
+              />
+            </div>
+            <img
+              alt="Grubby with a speech bubble"
+              className="makeStyles-speechBubbleImg-7"
+              src="https://grubbythegrape.sfo2.cdn.digitaloceanspaces.com/assets/assets/grubby_crop.png"
+            />
+            <Link
+              activeClass="active"
+              duration={500}
+              offset={-70}
+              smooth={true}
+              spy={true}
+              to="latest_comic"
+            >
+              <img
+                alt="Comic Starburst"
+                className="makeStyles-starburst-11"
+                src="https://grubbythegrape.sfo2.cdn.digitaloceanspaces.com/assets/assets/starburst_caption_smaller.png"
+              />
+            </Link>
+          </div>
+        </WithStyles(ForwardRef(Grid))>
+        <WithStyles(ForwardRef(Grid))
+          item={true}
+        >
+          <WithStyles(Carousel)
+            animation="slide"
+            autoPlay={true}
+            interval={11000}
+            navButtonsAlwaysInvisible={true}
+            style={
+              Object {
+                "minHeight": "600px",
+              }
+            }
+            timeout={
+              Object {
+                "appear": 300,
+                "enter": 300,
+                "exit": 200,
+              }
+            }
+          >
+            <img
+              alt="Demo Grubby comic in carousel"
+              className="makeStyles-colorImg-5"
+              key="0"
+              src="https://grubbythegrape.sfo2.cdn.digitaloceanspaces.com/960/Grubby_71.jpg"
+            />
+            <img
+              alt="Demo Grubby comic in carousel"
+              className="makeStyles-colorImg-5"
+              key="1"
+              src="https://grubbythegrape.sfo2.cdn.digitaloceanspaces.com/960/Grubby_177.jpg"
+            />
+            <img
+              alt="Demo Grubby comic in carousel"
+              className="makeStyles-colorImg-5"
+              key="2"
+              src="https://grubbythegrape.sfo2.cdn.digitaloceanspaces.com/960/Grubby_146.jpg"
+            />
+          </WithStyles(Carousel)>
+        </WithStyles(ForwardRef(Grid))>
+      </WithStyles(ForwardRef(Grid))>
+    </div>
+  </div>
+  <div
+    className="makeStyles-section1-2"
+    name="section1"
+  >
+    <WithStyles(ForwardRef(Grid))
+      alignItems="center"
+      container={true}
+      direction="column"
+      justify="space-evenly"
+    >
+      <WithStyles(ForwardRef(Typography))
+        className="makeStyles-comicfont-12"
+        variant="h1"
+      >
+        LATEST GRUBBY
+      </WithStyles(ForwardRef(Typography))>
+      <span>
+        <DisplayComic />
+      </span>
+      <div
+        name="latest_comic"
+      />
+    </WithStyles(ForwardRef(Grid))>
+  </div>
+  <ScrollArrow />
+  <WithStyles(ForwardRef(Snackbar))
+    autoHideDuration={3000}
+    onClose={[Function]}
+    open={false}
+  >
+    <Alert
+      onClose={[Function]}
+      severity="error"
+    >
+      Uh oh, something went wrong. Try again?
+      <span
+        aria-label="Smiling Face with sweat"
+        role="img"
+      >
+        😅
+      </span>
+    </Alert>
+  </WithStyles(ForwardRef(Snackbar))>
+</Fragment>
+`;

@@ -1,5 +1,4 @@
-import { HelpOutline } from "@material-ui/icons";
-import React, { useState, useEffect, useContext } from "react";
+import React from "react";
 
 const Favorites = () => {
     return (

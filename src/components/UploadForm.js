@@ -18,7 +18,7 @@ import TransitionsModal from "../components/Modal";
 import "react-circular-progressbar/dist/styles.css";
 
 const BASE_URL = process.env.REACT_APP_SERVER_URL || "http://localhost:5000";
-// const WS_URL = process.env.REACT_APP_WS || "ws://localhost";
+const WS = process.env.REACT_APP_WS || "ws://localhost";
 // const WS_PORT = process.env.REACT_APP_WS_PORT || 80;
 
 const useStyles = makeStyles((theme) => ({
@@ -170,7 +170,7 @@ const UploadForm = ({ comic = INITIAL_VALUES }) => {
                 formData.append("file", values.file);
                 formData.append("data", JSON.stringify(data));
 
-                const ws = new WebSocket(`ws://api.grubbythegrape.com/comic/upload`);
+                const ws = new WebSocket(WS);
 
                 ws.onmessage = async function (evt) {
                     let info = await JSON.parse(evt.data);

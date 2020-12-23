@@ -170,7 +170,7 @@ const UploadForm = ({ comic = INITIAL_VALUES }) => {
                 formData.append("file", values.file);
                 formData.append("data", JSON.stringify(data));
 
-                const ws = new WebSocket(`ws://localhost:80`);
+                const ws = new WebSocket(`ws://api.grubbythegrape.com/comic/upload`);
 
                 ws.onmessage = async function (evt) {
                     let info = await JSON.parse(evt.data);

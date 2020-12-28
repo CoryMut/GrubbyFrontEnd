@@ -18,7 +18,7 @@ import TransitionsModal from "../components/Modal";
 import "react-circular-progressbar/dist/styles.css";
 
 const BASE_URL = process.env.REACT_APP_SERVER_URL || "http://localhost:5000";
-const WS = process.env.REACT_APP_WS || "ws://localhost";
+const WS = process.env.REACT_APP_WS || "ws://localhost:443/comic/upload";
 // const WS_PORT = process.env.REACT_APP_WS_PORT || 80;
 
 const useStyles = makeStyles((theme) => ({
@@ -149,6 +149,7 @@ const UploadForm = ({ comic = INITIAL_VALUES }) => {
         validate,
         enableReinitialize: true,
         onSubmit: async (values) => {
+            const ws = new WebSocket(WS);
             try {
                 let serverProgress = 0;
                 let serverMessage = "";
@@ -170,7 +171,7 @@ const UploadForm = ({ comic = INITIAL_VALUES }) => {
                 formData.append("file", values.file);
                 formData.append("data", JSON.stringify(data));
 
-                const ws = new WebSocket(WS);
+                // const ws = new WebSocket(WS);
 
                 ws.onmessage = async function (evt) {
                     let info = await JSON.parse(evt.data);
@@ -185,6 +186,13 @@ const UploadForm = ({ comic = INITIAL_VALUES }) => {
                         setIsUploading(false);
                         setError("");
                         setAlert("Woohoo! The upload was successful! Click the button to return home.");
+                        ws.close();
+                    }
+                    if (serverProgress === 99) {
+                        setProgress(serverProgress);
+                        setAlert(serverMessage);
+                        setAlertType(serverAlertType);
+                        setError("");
                         ws.close();
                     }
                 };

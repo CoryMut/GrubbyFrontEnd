@@ -32,6 +32,12 @@ const useStyles = makeStyles((theme) => ({
         justifyContent: "center",
         margin: "1vh",
     },
+    link: {
+        textDecoration: "none",
+        "&:hover, &:focus": {
+            textDecoration: "none",
+        },
+    },
 }));
 
 const TransitionsModal = ({ progress, handleClose, alert, isUploading, alertType }) => {
@@ -71,7 +77,7 @@ const TransitionsModal = ({ progress, handleClose, alert, isUploading, alertType
                         </div>
                         <div className={classes.flex}>
                             {!isUploading && (
-                                <Link to="/">
+                                <Link to="/" className={classes.link}>
                                     <Button>Return Home</Button>
                                 </Link>
                             )}

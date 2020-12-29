@@ -193,7 +193,7 @@ const AllComics = () => {
     }, [page, query]);
 
     return (
-        <>
+        <div>
             <div className={classes.root}>
                 <Container maxWidth="lg">
                     <Search
@@ -238,7 +238,7 @@ const AllComics = () => {
                     onChange={handleChange}
                 />
             </div>
-        </>
+        </div>
     );
 };
 

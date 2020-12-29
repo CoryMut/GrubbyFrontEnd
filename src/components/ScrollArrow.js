@@ -26,10 +26,6 @@ const ScrollArrow = () => {
         };
     }, [checkScrollTop]);
 
-    // const scrollTop = () => {
-    //     window.scrollTo({ top: 0, behavior: "smooth" });
-    // };
-
     return (
         <div style={{ display: "flex", justifyContent: "center" }}>
             <div className="scrollTop">
@@ -41,14 +37,6 @@ const ScrollArrow = () => {
                     />
                 </Link>
             </div>
-            {/* <div className="scrollTop">
-                <FontAwesomeIcon
-                    icon={faArrowCircleUp}
-                    onClick={scrollTop}
-                    size="2x"
-                    style={{ display: showScroll ? "flex" : "none", textAlign: "center" }}
-                />
-            </div> */}
         </div>
     );
 };

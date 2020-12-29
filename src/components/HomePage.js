@@ -133,7 +133,6 @@ const useStyles = makeStyles((theme) => ({
     },
     speechIcon: {
         position: "absolute",
-        // top: "150%",
         top: "46.5%",
         left: "49.5%",
         cursor: "pointer",
@@ -172,15 +171,12 @@ const HomePage = () => {
 
     const classes = useStyles();
     const [dadJoke, setDadJoke] = useState("");
-    // const [open, setOpen] = useState(false);
     const [error, setError] = useState(false);
 
     const handleClose = (event, reason) => {
         if (reason === "clickaway") {
             return;
         }
-
-        // setOpen(false);
         setError(false);
     };
 
@@ -199,7 +195,7 @@ const HomePage = () => {
     }, []);
 
     return (
-        <>
+        <div>
             <div style={{ padding: "4px" }} name="top">
                 <div style={{ border: "6px solid black", borderRadius: "6px" }}>
                     <Grid
@@ -298,7 +294,7 @@ const HomePage = () => {
                     </span>
                 </Alert>
             </Snackbar>
-        </>
+        </div>
     );
 };
 

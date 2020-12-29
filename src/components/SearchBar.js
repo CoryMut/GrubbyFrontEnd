@@ -24,8 +24,6 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-// { handleChange, handleSubmit, searchTerm, submitStatus, handleClear, disabled }
-
 const SearchBar = ({ handleChange, handleClear, handleSubmit, submitStatus, searchTerm, query }) => {
     const classes = useStyles();
 
@@ -46,7 +44,6 @@ const SearchBar = ({ handleChange, handleClear, handleSubmit, submitStatus, sear
                     }}
                     endAdornment={
                         <InputAdornment position="start">
-                            {/* <IconButton onClick={submitStatus ? handleClear : handleSubmit}> */}
                             <IconButton onClick={query ? handleClear : handleSubmit}>
                                 {query ? (
                                     <CloseIcon className={classes.searchIcon} />

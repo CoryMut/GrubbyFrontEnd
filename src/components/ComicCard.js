@@ -13,7 +13,6 @@ const useStyles = makeStyles({
         height: "100%",
     },
     image: {
-        // maxHeight: "384px",
         width: "100%",
     },
 });

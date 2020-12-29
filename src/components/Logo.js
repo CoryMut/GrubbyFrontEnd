@@ -24,15 +24,13 @@ const Logo = () => {
     };
 
     return (
-        <>
-            <Link to="/" onClick={handleClick}>
-                <img
-                    className={classes.logo}
-                    src="https://grubbythegrape.sfo2.cdn.digitaloceanspaces.com/assets/assets/logo/logo%28325x55%29.png"
-                    alt="Grubby the Grape logo"
-                ></img>
-            </Link>
-        </>
+        <Link to="/" onClick={handleClick}>
+            <img
+                className={classes.logo}
+                src="https://grubbythegrape.sfo2.cdn.digitaloceanspaces.com/assets/assets/logo/logo%28325x55%29.png"
+                alt="Grubby the Grape logo"
+            ></img>
+        </Link>
     );
 };
 

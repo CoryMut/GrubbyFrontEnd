@@ -54,17 +54,15 @@ const DisplayComic = () => {
     }, []);
 
     return (
-        <>
-            <Comic
-                src={src}
-                srcSet={srcSet}
-                handlePreviousComic={handlePreviousComic}
-                handleNextComic={handleNextComic}
-                id={comicID}
-                chipData={chipData}
-                setChipData={setChipData}
-            ></Comic>
-        </>
+        <Comic
+            src={src}
+            srcSet={srcSet}
+            handlePreviousComic={handlePreviousComic}
+            handleNextComic={handleNextComic}
+            id={comicID}
+            chipData={chipData}
+            setChipData={setChipData}
+        ></Comic>
     );
 };
 

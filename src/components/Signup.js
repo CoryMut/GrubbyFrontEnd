@@ -77,8 +77,6 @@ const Signup = () => {
         validationSchema: SignupSchema,
         onSubmit: async (values) => {
             try {
-                // await registerUser(values);
-
                 let { token, user } = await registerUser(values);
                 console.log(token, user);
                 authContext.login(token);
@@ -86,7 +84,6 @@ const Signup = () => {
 
                 history.push("/");
             } catch (error) {
-                // setError("Invalid Credentials");
                 setError(error);
             }
         },

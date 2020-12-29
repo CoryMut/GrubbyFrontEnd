@@ -100,8 +100,7 @@ const NavBar = () => {
     };
 
     return (
-        // <div className={classes.root}>
-        <>
+        <div>
             <AppBar position="sticky" className={classes.appBar} color="inherit">
                 <Toolbar>
                     <IconButton edge="start" className={classes.menuButton} aria-label="menu" onClick={openMenu}>
@@ -196,8 +195,7 @@ const NavBar = () => {
                     </List>
                 </div>
             </Drawer>
-            {/* </div> */}
-        </>
+        </div>
     );
 };
 

@@ -15,13 +15,9 @@ const useStyles = makeStyles(() => ({
     },
 }));
 
-const CharacterCard = ({ name, handleCharacter, characters }) => {
+const CharacterCard = ({ name, handleCharacter }) => {
     const classes = useStyles();
     let className = classes.lightCard;
-
-    // if (characters.includes(name)) {
-    //     className = classes.darkCard;
-    // }
 
     return (
         <Button className={className} onClick={() => handleCharacter(name)}>

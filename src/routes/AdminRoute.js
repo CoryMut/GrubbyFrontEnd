@@ -1,17 +1,8 @@
 import React, { useContext } from "react";
 import { Route, Redirect } from "react-router-dom";
 import { UserContext } from "../components/UserContext";
-import Lottie from "react-lottie";
+import Lottie from "lottie-react";
 import purplePlaneData from "../lotties/purple-plane.json";
-
-const defaultOptions = {
-    loop: true,
-    autoplay: true,
-    animationData: purplePlaneData,
-    rendererSettings: {
-        preserveAspectRatio: "xMidYMid slice",
-    },
-};
 
 function AdminRoute({ exact, path, children }) {
     const { isAdmin, isLoading, isLoggedIn } = useContext(UserContext);
@@ -26,7 +17,7 @@ function AdminRoute({ exact, path, children }) {
         <>
             {isLoading && (
                 <div>
-                    <Lottie options={defaultOptions} height={400} width={400} />
+                    <Lottie animationData={purplePlaneData} height={400} width={400} />
                 </div>
             )}
             {!isLoading && isAdmin && (

@@ -1,31 +1,7 @@
-// import React from "react";
-// import { makeStyles } from "@material-ui/core/styles";
-
-// const useStyles = makeStyles((theme) => ({
-//     emoji: {
-//         display: "flex",
-//         justifyContent: "center",
-//     },
-// }));
-
-// const EmojiBar = () => {
-//     const classes = useStyles();
-//     return (
-//         <div className={classes.emoji}>
-//             <span role="img" aria-label="face with tears of joy">
-//                 😂
-//             </span>
-//         </div>
-//     );
-// };
-
-// export default EmojiBar;
-
 import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import Chip from "@material-ui/core/Chip";
 import Paper from "@material-ui/core/Paper";
-import TagFacesIcon from "@material-ui/icons/TagFaces";
 
 const useStyles = makeStyles((theme) => ({
     root: {

@@ -4,20 +4,30 @@ import Card from "@material-ui/core/Card";
 import CardActionArea from "@material-ui/core/CardActionArea";
 import CardContent from "@material-ui/core/CardContent";
 import Typography from "@material-ui/core/Typography";
+import FavoriteButton from "../components/FavoriteButton";
 
 const CDN = process.env.REACT_APP_CDN;
 
 const useStyles = makeStyles({
     root: {
         marginTop: "4vh",
-        height: "100%",
+        // height: "100%",
+        minHeight: "370px",
+        // minHeight: "480px",
     },
     image: {
         width: "100%",
     },
+    name: {
+        textAlign: "center",
+        maxHeight: "129px",
+    },
+    area: {
+        minHeight: "290px",
+    },
 });
 
-const ComicCard = ({ description, name, comicID, image }) => {
+const ComicCard = ({ description, name, comicID, isFavorite }) => {
     const classes = useStyles();
     const sizes = ["320", "384", "512", "683", "800", "960"];
     const srcSet = [];
@@ -25,16 +35,17 @@ const ComicCard = ({ description, name, comicID, image }) => {
 
     return (
         <Card className={classes.root}>
-            <CardActionArea>
+            <CardActionArea className={classes.area}>
                 <img className={classes.image} srcSet={srcSet} alt={description}></img>
             </CardActionArea>
-            <CardContent>
+            <CardContent className={classes.name}>
                 <Typography gutterBottom variant="h5" component="h2">
                     Grubby #{comicID}
                 </Typography>
-                <Typography variant="body2" color="textSecondary" component="p">
+                <FavoriteButton comicID={comicID} favorite={isFavorite} name={name} />
+                {/* <Typography variant="body2" color="textSecondary" component="p">
                     {description}
-                </Typography>
+                </Typography> */}
             </CardContent>
         </Card>
     );

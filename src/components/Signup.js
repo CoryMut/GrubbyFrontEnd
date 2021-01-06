@@ -1,6 +1,6 @@
 import React, { useState, useContext } from "react";
 import { UserContext } from "./UserContext";
-import { useHistory } from "react-router-dom";
+import { useHistory, Redirect } from "react-router-dom";
 
 import { useFormik } from "formik";
 import * as Yup from "yup";
@@ -16,6 +16,9 @@ import Table from "@material-ui/core/Table";
 import TableBody from "@material-ui/core/TableBody";
 import TableCell from "@material-ui/core/TableCell";
 import TableRow from "@material-ui/core/TableRow";
+
+import VisibilityIcon from "@material-ui/icons/Visibility";
+import VisibilityOffIcon from "@material-ui/icons/VisibilityOff";
 
 import "./Login.css";
 
@@ -37,28 +40,30 @@ const useStyles = makeStyles((theme) => ({
         padding: 0,
         textAlign: "right",
     },
+    passWrapper: {
+        position: "relative",
+        display: "flex",
+        // alignItems: "center",
+    },
+    passIcon: {
+        marginLeft: "30%",
+        cursor: "pointer",
+    },
+    passText: {
+        position: "absolute",
+        top: "100%",
+        width: "100%",
+    },
+    iconWrapper: {
+        display: "flex",
+        alignItems: "center",
+    },
 }));
-
-// const validate = (values) => {
-//     const errors = {};
-//     if (!values.username) {
-//         errors.username = "Required";
-//     }
-
-//     if (!values.password) {
-//         errors.password = "Required";
-//     }
-
-//     if (!values.email) {
-//         errors.email = "Required";
-//     }
-
-//     return errors;
-// };
 
 const SignupSchema = Yup.object().shape({
     username: Yup.string().min(2, "Too Short!").max(30, "Too Long!").required("Required"),
     password: Yup.string().min(7, "Too Short!").max(50, "Too Long!").required("Required"),
+    passwordCheck: Yup.string().oneOf([Yup.ref("password"), null], "Passwords must match"),
     email: Yup.string().email("Invalid email").required("Required"),
 });
 
@@ -67,20 +72,27 @@ const Signup = () => {
     const classes = useStyles();
     const authContext = useContext(UserContext);
     const [error, setError] = useState("");
+    const [visible, setVisible] = useState(false);
+
+    const toggleVisible = () => {
+        setVisible(visible ? false : true);
+    };
 
     const formik = useFormik({
         initialValues: {
             username: "",
             password: "",
+            passwordCheck: "",
             email: "",
         },
         validationSchema: SignupSchema,
         onSubmit: async (values) => {
             try {
-                let { token, user } = await registerUser(values);
-                console.log(token, user);
+                let data = { username: values.username, password: values.password, email: values.email };
+                let { token, user } = await registerUser(data);
                 authContext.login(token);
                 authContext.handleAdmin(user.is_admin);
+                authContext.handleUser(user.username);
 
                 history.push("/");
             } catch (error) {
@@ -88,6 +100,10 @@ const Signup = () => {
             }
         },
     });
+
+    if (authContext.user) {
+        return <Redirect to="/"></Redirect>;
+    }
 
     return (
         <div className="Login">
@@ -143,17 +159,57 @@ const Signup = () => {
                                     Password
                                 </Label>
                                 <Col sm={12}>
+                                    <div className={classes.passWrapper}>
+                                        <Input
+                                            type={visible ? "text" : "password"}
+                                            name="password"
+                                            id="password"
+                                            onChange={formik.handleChange}
+                                            value={formik.values.password}
+                                            onBlur={formik.handleBlur}
+                                            placeholder="password"
+                                        />
+                                        <div className={classes.passText}>
+                                            {formik.touched.password && formik.errors.password ? (
+                                                <div className="error">{formik.errors.password}</div>
+                                            ) : null}
+                                        </div>
+                                        <div className={classes.iconWrapper}>
+                                            {visible ? (
+                                                <VisibilityIcon
+                                                    className={classes.passIcon}
+                                                    onClick={toggleVisible}
+                                                    title="Hide Password"
+                                                ></VisibilityIcon>
+                                            ) : (
+                                                <VisibilityOffIcon
+                                                    className={classes.passIcon}
+                                                    onClick={toggleVisible}
+                                                    title="Show Password"
+                                                ></VisibilityOffIcon>
+                                            )}
+                                        </div>
+                                    </div>
+                                </Col>
+                            </FormGroup>
+
+                            <FormGroup row>
+                                <Label for="passwordCheck" sm="auto">
+                                    Confirm Password
+                                </Label>
+                                <Col sm={12}>
                                     <Input
-                                        type="password"
-                                        name="password"
-                                        id="password"
+                                        type={visible ? "text" : "password"}
+                                        name="passwordCheck"
+                                        id="passwordCheck"
                                         onChange={formik.handleChange}
-                                        value={formik.values.password}
+                                        value={formik.values.passwordCheck}
                                         onBlur={formik.handleBlur}
-                                        placeholder="password"
+                                        placeholder="confirm password"
+                                        style={{ width: "92.9%" }}
                                     />
-                                    {formik.touched.password && formik.errors.password ? (
-                                        <div className="error">{formik.errors.password}</div>
+                                    {formik.touched.passwordCheck && formik.errors.passwordCheck ? (
+                                        <div className="error">{formik.errors.passwordCheck}</div>
                                     ) : null}
                                 </Col>
                             </FormGroup>

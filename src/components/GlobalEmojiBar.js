@@ -8,7 +8,7 @@ import Paper from "@material-ui/core/Paper";
 import Snackbar from "@material-ui/core/Snackbar";
 import MuiAlert from "@material-ui/lab/Alert";
 
-import { sendUserEmoteData, updateUserEmoteData } from "../helpers/GrubbyAPI";
+import { sendUserEmoteData, updateUserEmoteData, deleteReaction } from "../helpers/GrubbyAPI";
 
 function Alert(props) {
     return <MuiAlert elevation={6} variant="filled" {...props} />;
@@ -36,6 +36,7 @@ const useStyles = makeStyles((theme) => ({
         backgroundColor: "transparent",
         boxShadow: "none",
         marginBottom: "1vh",
+        width: "100%",
     },
     chip: {
         margin: theme.spacing(0.5),
@@ -52,12 +53,25 @@ function GlobalEmojiBar({ id, chipData, setChipData }) {
         if (!user) {
             setError(true);
             return;
+        }
+
+        if (reaction !== "" && reaction === newReaction) {
+            await deleteReaction({ user, id });
+            let newChipData = chipData.map((data) => {
+                if (data.label === reaction) {
+                    return { ...data, count: data.count - 1 };
+                } else {
+                    return data;
+                }
+            });
+            setChipData(() => [...newChipData]);
+            setReaction(() => "");
         } else if (user && reaction) {
-            let previousReaction = reaction;
+            let oldReaction = reaction;
             setReaction(() => newReaction);
             await updateUserEmoteData({ user, id, reaction: newReaction });
             let newChipData = chipData.map((data) => {
-                if (data.label === previousReaction) {
+                if (data.label === oldReaction) {
                     return { ...data, count: data.count - 1 };
                 } else if (data.label === newReaction) {
                     return { ...data, count: data.count + 1 };
@@ -97,7 +111,8 @@ function GlobalEmojiBar({ id, chipData, setChipData }) {
                     let result = await getUserEmoteData(id, user);
                     setReaction(() => result);
                 } else {
-                    setReaction(() => null);
+                    // setReaction(() => "");
+                    return;
                 }
             } catch (error) {
                 return;
@@ -137,7 +152,7 @@ function GlobalEmojiBar({ id, chipData, setChipData }) {
                     <Snackbar open={error} autoHideDuration={6000} onClose={handleClose}>
                         <Alert onClose={handleClose} severity="info">
                             You must be logged in to submit a reaction!
-                            <span role="img" aria-label="Winking Face">
+                            <span role="img" aria-label="Winking Face" style={{ marginLeft: "5px" }}>
                                 😉
                             </span>
                         </Alert>

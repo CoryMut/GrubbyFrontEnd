@@ -81,7 +81,7 @@ const ComicForm = ({ name, description, id, setComics, comics }) => {
     };
 
     const handleDelete = async () => {
-        let result = await deleteAll(id);
+        await deleteAll(id);
         return;
     };
 
@@ -97,7 +97,7 @@ const ComicForm = ({ name, description, id, setComics, comics }) => {
                 if (description === values.description) {
                     return;
                 }
-                let result = await updateComic(id, values);
+                await updateComic(id, values);
                 const copy = [...comics];
                 copy[id - 1] = { comic_id: id, name: values.name, description: values.description };
                 setComics([...copy]);

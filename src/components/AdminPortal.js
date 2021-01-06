@@ -5,7 +5,7 @@ import ComicForm from "../components/ComicForm";
 
 import { getAllAdminComics } from "../helpers/GrubbyAPI";
 
-import Lottie from "react-lottie";
+import Lottie from "lottie-react";
 import craneMachineData from "../lotties/crane-machine.json";
 
 import { makeStyles } from "@material-ui/core/styles";
@@ -18,15 +18,6 @@ import LabelIcon from "@material-ui/icons/Label";
 import Typography from "@material-ui/core/Typography";
 
 const CDN = process.env.REACT_APP_CDN;
-
-const defaultOptions = {
-    loop: true,
-    autoplay: true,
-    animationData: craneMachineData,
-    rendererSettings: {
-        preserveAspectRatio: "xMidYMid slice",
-    },
-};
 
 const useStyles = makeStyles((theme) => ({
     lottie: {
@@ -124,7 +115,7 @@ const AdminPortal = () => {
                     }}
                 >
                     <div className={classes.lottie}>
-                        <Lottie options={defaultOptions} />
+                        <Lottie animationData={craneMachineData} />
                     </div>
                 </div>
             )}

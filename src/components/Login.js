@@ -1,5 +1,5 @@
 import React, { useState, useContext } from "react";
-import { useHistory, useLocation } from "react-router-dom";
+import { useHistory, useLocation, Redirect } from "react-router-dom";
 import { useFormik } from "formik";
 import { UserContext } from "./UserContext";
 
@@ -77,6 +77,7 @@ const Login = () => {
                 authContext.login(token);
                 authContext.handleAdmin(user.is_admin);
                 authContext.handleUser(user.username);
+                authContext.setRecentLogin(true);
 
                 if (destination) {
                     history.push(`/${destination}`);
@@ -84,10 +85,15 @@ const Login = () => {
                     history.push("/");
                 }
             } catch (error) {
+                console.log(error);
                 setError("Invalid Credentials");
             }
         },
     });
+
+    if (authContext.user) {
+        return <Redirect to="/"></Redirect>;
+    }
 
     return (
         <div className="Login">

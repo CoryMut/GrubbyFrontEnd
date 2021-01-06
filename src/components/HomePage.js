@@ -1,6 +1,6 @@
 // This is the landing page for the app.
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { getDadJoke } from "../helpers/DadJokeAPI";
 
 import { Link } from "react-scroll";
@@ -16,6 +16,8 @@ import CachedIcon from "@material-ui/icons/Cached";
 import Snackbar from "@material-ui/core/Snackbar";
 import MuiAlert from "@material-ui/lab/Alert";
 import useMediaQuery from "@material-ui/core/useMediaQuery";
+
+import { UserContext } from "../components/UserContext";
 
 function Alert(props) {
     return <MuiAlert elevation={6} variant="filled" {...props} />;
@@ -41,6 +43,7 @@ const useStyles = makeStyles((theme) => ({
         backgroundPosition: "center",
         minHeight: "calc(99vh - 64px)",
         height: "120%",
+        // padding: "1.5vh",
     },
 
     scrollTop: {
@@ -164,6 +167,10 @@ const useStyles = makeStyles((theme) => ({
             height: "30%",
         },
     },
+    border: {
+        border: "6px solid black",
+        borderRadius: "6px",
+    },
 }));
 
 const HomePage = () => {
@@ -172,12 +179,15 @@ const HomePage = () => {
     const classes = useStyles();
     const [dadJoke, setDadJoke] = useState("");
     const [error, setError] = useState(false);
+    const { recentLogin, user, setRecentLogin, recentLogout, setRecentLogout } = useContext(UserContext);
 
     const handleClose = (event, reason) => {
         if (reason === "clickaway") {
             return;
         }
         setError(false);
+        setRecentLogin(false);
+        setRecentLogout(false);
     };
 
     const handleJoke = async () => {
@@ -196,8 +206,31 @@ const HomePage = () => {
 
     return (
         <div>
+            <Snackbar
+                open={recentLogin}
+                autoHideDuration={5000}
+                onClose={handleClose}
+                anchorOrigin={{ vertical: "top", horizontal: "center" }}
+                style={{ marginTop: "5%" }}
+            >
+                <Alert onClose={handleClose} severity="success">
+                    Welcome Back, {user}!
+                </Alert>
+            </Snackbar>
+            <Snackbar
+                open={recentLogout}
+                autoHideDuration={5000}
+                onClose={handleClose}
+                anchorOrigin={{ vertical: "top", horizontal: "center" }}
+                style={{ marginTop: "5%" }}
+            >
+                <Alert onClose={handleClose} severity="success">
+                    Log out successful. Have a good day!
+                </Alert>
+            </Snackbar>
             <div style={{ padding: "4px" }} name="top">
-                <div style={{ border: "6px solid black", borderRadius: "6px" }}>
+                {/* <div className={classes.border}> */}
+                <div>
                     <Grid
                         className={classes.jumbotron}
                         container

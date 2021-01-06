@@ -4,6 +4,7 @@ import { logoutUser } from "../helpers/GrubbyAPI";
 import { Link } from "react-router-dom";
 
 import useMediaQuery from "@material-ui/core/useMediaQuery";
+
 import { makeStyles } from "@material-ui/core/styles";
 import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
@@ -11,6 +12,7 @@ import Typography from "@material-ui/core/Typography";
 import IconButton from "@material-ui/core/IconButton";
 import MenuIcon from "@material-ui/icons/Menu";
 import Drawer from "@material-ui/core/Drawer";
+import Button from "@material-ui/core/Button";
 
 import List from "@material-ui/core/List";
 import ListItemIcon from "@material-ui/core/ListItemIcon";
@@ -80,6 +82,7 @@ const useStyles = makeStyles((theme) => ({
 
 const NavBar = () => {
     const matches = useMediaQuery("(max-width:320px)");
+    const hideButton = useMediaQuery("(max-width:700px)");
 
     const classes = useStyles();
     const { isLoggedIn, logout, isAdmin } = useContext(UserContext);
@@ -109,6 +112,12 @@ const NavBar = () => {
                     <Typography variant="h6" className={matches ? classes.centerTitle : classes.title}>
                         <Logo></Logo>
                     </Typography>
+                    {!isLoggedIn && !hideButton && (
+                        <Button component={Link} to="/login">
+                            Login
+                        </Button>
+                    )}
+                    {isLoggedIn && !hideButton && <Button onClick={handleLogout}>Logout</Button>}
                 </Toolbar>
             </AppBar>
             <Drawer

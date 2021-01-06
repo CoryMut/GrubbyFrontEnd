@@ -177,10 +177,61 @@ export async function updateUserEmoteData(data) {
     }
 }
 
+export async function deleteReaction(data) {
+    try {
+        let { id, user } = data;
+        await axios.delete(`${BASE_URL}/comic/${id}/${user}`, { data });
+        return;
+    } catch (error) {
+        console.error("API Error:", error.response);
+        return;
+    }
+}
+
 export async function deleteAll(comic_id) {
     try {
         let result = await axios.delete(`${BASE_URL}/comic/${comic_id}`);
         return result.message;
+    } catch (error) {
+        console.error("API Error:", error.response);
+        return;
+    }
+}
+
+export async function createFavorite(comic_id, username) {
+    try {
+        let result = await axios.post(`${BASE_URL}/comic/${comic_id}/favorite/${username}`);
+        return result.message;
+    } catch (error) {
+        console.error("API Error:", error.response);
+        return;
+    }
+}
+
+export async function getFavoriteStatus(comic_id, username) {
+    try {
+        let result = await axios.get(`${BASE_URL}/comic/${comic_id}/favorite/${username}`);
+        return result.data;
+    } catch (error) {
+        console.error("API Error:", error.response);
+        return;
+    }
+}
+
+export async function deleteFavorite(comic_id, username) {
+    try {
+        let result = await axios.delete(`${BASE_URL}/comic/${comic_id}/favorite/${username}`);
+        return result.message;
+    } catch (error) {
+        console.error("API Error:", error.response);
+        return;
+    }
+}
+
+export async function getFavorites(username) {
+    try {
+        let result = await axios.get(`${BASE_URL}/user/favorites/${username}`);
+        return result.data.favorites;
     } catch (error) {
         console.error("API Error:", error.response);
         return;

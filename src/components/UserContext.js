@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback } from "react";
-import { checkTokenStatus } from "../helpers/GrubbyAPI";
+import { checkTokenStatus, getFavorites } from "../helpers/GrubbyAPI";
 import { useHistory } from "react-router-dom";
 
 const UserContext = React.createContext({
@@ -10,6 +10,13 @@ const UserContext = React.createContext({
     login: () => {},
     logout: () => {},
     isLoading: true,
+    favorites: [],
+    setFavorites: () => {},
+    favLoading: true,
+    recentLogin: false,
+    setRecentLogin: () => {},
+    recentLogout: false,
+    setRecentLogout: () => {},
 });
 
 function UserProvider(props) {
@@ -18,9 +25,14 @@ function UserProvider(props) {
     const [admin, setAdmin] = useState(false);
     const [user, setUser] = useState(null);
     const [isLoading, setIsLoading] = useState(true);
+    const [favorites, setFavorites] = useState([]);
+    const [favLoading, setFavLoading] = useState(true);
+    const [recentLogin, setRecentLogin] = useState(false);
+    const [recentLogout, setRecentLogout] = useState(false);
 
     const login = useCallback((token) => {
         setToken(token);
+        setRecentLogout(false);
     }, []);
 
     const logout = useCallback(() => {
@@ -28,6 +40,8 @@ function UserProvider(props) {
         setAdmin(false);
         setIsLoading(true);
         setUser(null);
+        setFavorites([]);
+        setRecentLogout(true);
         localStorage.removeItem("_token");
         history.push("/");
     }, [history]);
@@ -74,6 +88,25 @@ function UserProvider(props) {
         statusCheck();
     }, [login, logout]);
 
+    useEffect(() => {
+        async function checkFavorites() {
+            if (!user) {
+                return;
+            } else if (user) {
+                try {
+                    let userFavorites = await getFavorites(user);
+                    setFavorites(() => userFavorites);
+                    setFavLoading(() => false);
+                } catch (error) {
+                    console.log(error);
+                    return;
+                }
+            }
+        }
+
+        checkFavorites();
+    }, [user]);
+
     return (
         <UserContext.Provider
             value={{
@@ -85,6 +118,13 @@ function UserProvider(props) {
                 isLoading: isLoading,
                 user: user,
                 handleUser: handleUser,
+                favorites: favorites,
+                setFavorites: setFavorites,
+                favLoading: favLoading,
+                recentLogin: recentLogin,
+                setRecentLogin: setRecentLogin,
+                recentLogout: recentLogout,
+                setRecentLogout: setRecentLogout,
             }}
         >
             {props.children}

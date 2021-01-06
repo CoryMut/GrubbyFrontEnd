@@ -19,7 +19,6 @@ import "react-circular-progressbar/dist/styles.css";
 
 const BASE_URL = process.env.REACT_APP_SERVER_URL || "http://localhost:5000";
 const WS = process.env.REACT_APP_WS || "ws://localhost:5000/comic/upload";
-// const WS_PORT = process.env.REACT_APP_WS_PORT || 80;
 
 const useStyles = makeStyles((theme) => ({
     "@global": {
@@ -118,7 +117,11 @@ const UploadForm = ({ comic = INITIAL_VALUES }) => {
     const [alertType, setAlertType] = useState("success");
 
     const handleClose = () => {
+        console.log("handle close");
         setProgress(0);
+        setAlert("");
+        setIsUploading(false);
+        setError("");
     };
 
     const handleCharacter = (name) => {
@@ -200,8 +203,8 @@ const UploadForm = ({ comic = INITIAL_VALUES }) => {
                 await axios.post(`${BASE_URL}/comic/upload`, formData, { withCredentials: true });
                 return;
             } catch (error) {
-                console.error(error);
-                setAlert("Something went wrong. Please try again.");
+                console.error("UPLOAD ERROR: ", error);
+                // setAlert("Something went wrong. Please try again.");
                 return;
             }
         },

@@ -10,6 +10,7 @@ const DisplayComic = () => {
     const [src, setSrc] = useState("https://grubbythegrape.sfo2.cdn.digitaloceanspaces.com/960/blur.jpg");
     const [allImages, setAllImages] = useState([]);
     const [comicID, setComicID] = useState(null);
+    const [name, setName] = useState(null);
     const [chipData, setChipData] = useState([
         { key: 0, label: "Laughing", icon: "😂", count: 0 },
         { key: 1, label: "Clapping", icon: "👏", count: 0 },
@@ -35,6 +36,7 @@ const DisplayComic = () => {
                 let result = await axios.get(`${BASE_URL}/comic/latest`);
                 setSrc(`${CDN}/960/${result.data.comic.name}`);
                 setComicID(result.data.comic.comic_id);
+                setName(result.data.comic.name);
                 let urls = [];
                 sizes.forEach((size) => urls.push(`${CDN}/${size}/${result.data.comic.name} ${size}w`));
                 setAllImages(urls);
@@ -62,6 +64,7 @@ const DisplayComic = () => {
             id={comicID}
             chipData={chipData}
             setChipData={setChipData}
+            name={name}
         ></Comic>
     );
 };

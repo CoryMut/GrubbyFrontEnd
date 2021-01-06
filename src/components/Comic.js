@@ -6,6 +6,7 @@ import GlobalEmojiBar from "../components/GlobalEmojiBar";
 // import SkipNextIcon from "@material-ui/icons/SkipNext";
 // import SkipPreviousIcon from "@material-ui/icons/SkipPrevious";
 // import Button from "@material-ui/core/Button";
+import FavoriteButton from "../components/FavoriteButton";
 
 const useStyles = makeStyles((theme) => ({
     comic: {
@@ -25,21 +26,38 @@ const useStyles = makeStyles((theme) => ({
         margin: "0 2vw",
         flexDirection: "column",
         [theme.breakpoints.up("sm")]: {
-            minHeight: "885px",
+            // minHeight: "885px",
+            minHeight: "935px",
         },
         [theme.breakpoints.down("md")]: {
             height: "80vh",
         },
         [theme.breakpoints.up("lg")]: {
-            height: "90vh",
+            height: "100vh",
+        },
+    },
+    emojibar: {
+        display: "flex",
+        flexDirection: "row",
+        justifyContent: "center",
+        [theme.breakpoints.up("sm")]: {
+            width: "100%",
+            flexDirection: "column",
+        },
+        [theme.breakpoints.down("md")]: {
+            width: "100%",
+            flexDirection: "column",
+        },
+        [theme.breakpoints.up("lg")]: {
+            width: "90%",
+            flexDirection: "row",
         },
     },
 }));
 
-const Comic = ({ src, srcSet, handlePreviousComic, handleNextComic, id, chipData, setChipData }) => {
+const Comic = ({ src, srcSet, handlePreviousComic, handleNextComic, id, chipData, setChipData, name }) => {
     const classes = useStyles();
 
-    // return <img className={classes.comic} src={src}></img>;
     return (
         <div className={classes.flex}>
             {/* <SkipPreviousIcon></SkipPreviousIcon>
@@ -51,8 +69,11 @@ const Comic = ({ src, srcSet, handlePreviousComic, handleNextComic, id, chipData
                 <ArrowForwardIosIcon></ArrowForwardIosIcon>
             </Button>
             <SkipNextIcon></SkipNextIcon> */}
-            <GlobalEmojiBar id={id} chipData={chipData} setChipData={setChipData}></GlobalEmojiBar>
-            {/* <EmojiBar></EmojiBar> */}
+            <div className={classes.emojibar}>
+                <FavoriteButton orientation="left"></FavoriteButton>
+                <GlobalEmojiBar id={id} chipData={chipData} setChipData={setChipData}></GlobalEmojiBar>
+                <FavoriteButton orientation="right" comicID={id} name={name}></FavoriteButton>
+            </div>
         </div>
     );
 };

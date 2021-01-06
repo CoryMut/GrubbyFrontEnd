@@ -12,61 +12,11 @@ import ComicCard from "../components/ComicCard";
 import Search from "../components/Search";
 
 import { SRLWrapper } from "simple-react-lightbox";
+import options from "../helpers/SRLWrapperOptions";
 
 import "./AllComics.css";
 
 const CDN = process.env.REACT_APP_CDN;
-
-const options = {
-    settings: {
-        autoplaySpeed: 3000,
-        disableKeyboardControls: false,
-        disablePanzoom: true,
-        disableWheelControls: true,
-        hideControlsAfter: 3000,
-        lightboxTransitionSpeed: 0.05,
-        lightboxTransitionTimingFunction: "anticipate",
-        overlayColor: "rgba(0, 0, 0, 0.9)",
-        slideAnimationType: "slide",
-        slideSpringValues: [2000, 200],
-        slideTransitionSpeed: 0.3,
-        slideTransitionTimingFunction: "easeIn",
-    },
-    buttons: {
-        backgroundColor: "rgba(30,30,36,0.8)",
-        iconColor: "rgba(255, 255, 255, 0.8)",
-        iconPadding: "5px",
-        showAutoplayButton: false,
-        showCloseButton: true,
-        showDownloadButton: false,
-        showFullscreenButton: false,
-        showNextButton: true,
-        showPrevButton: true,
-        showThumbnailsButton: false,
-        size: "40px",
-    },
-    thumbnails: {
-        showThumbnails: false,
-        thumbnailsAlignment: "center",
-        thumbnailsContainerBackgroundColor: "transparent",
-        thumbnailsContainerPadding: "0",
-        thumbnailsGap: "1px",
-        thumbnailsOpacity: 0.4,
-        thumbnailsPosition: "left",
-        thumbnailsSize: ["100px", "80px"],
-    },
-    caption: {
-        captionAlignment: "start",
-        captionColor: "#FFFFFF",
-        captionContainerPadding: "0",
-        captionFontFamily: "inherit",
-        captionFontSize: "inherit",
-        captionFontStyle: "inherit",
-        captionFontWeight: "inherit",
-        captionTextTransform: "inherit",
-        showCaption: true,
-    },
-};
 
 const useStyles = makeStyles((theme) => ({
     "@global": {
@@ -221,6 +171,8 @@ const AllComics = () => {
                                         name={comic.name}
                                         comicID={comic.comic_id}
                                         image={`${CDN}/384/${comic.name}`}
+                                        canFavorite={true}
+                                        favorite={false}
                                     ></ComicCard>
                                 </Grid>
                             ))}

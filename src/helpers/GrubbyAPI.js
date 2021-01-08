@@ -188,7 +188,7 @@ export async function deleteReaction(data) {
     }
 }
 
-export async function deleteAll(comic_id) {
+export async function deleteComic(comic_id) {
     try {
         let result = await axios.delete(`${BASE_URL}/comic/${comic_id}`);
         return result.message;

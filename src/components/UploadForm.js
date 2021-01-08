@@ -117,7 +117,6 @@ const UploadForm = ({ comic = INITIAL_VALUES }) => {
     const [alertType, setAlertType] = useState("success");
 
     const handleClose = () => {
-        console.log("handle close");
         setProgress(0);
         setAlert("");
         setIsUploading(false);
@@ -203,7 +202,6 @@ const UploadForm = ({ comic = INITIAL_VALUES }) => {
                 await axios.post(`${BASE_URL}/comic/upload`, formData, { withCredentials: true });
                 return;
             } catch (error) {
-                console.error("UPLOAD ERROR: ", error);
                 // setAlert("Something went wrong. Please try again.");
                 return;
             }

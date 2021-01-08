@@ -16,7 +16,7 @@ function AdminRoute({ exact, path, children }) {
     return (
         <>
             {isLoading && (
-                <div>
+                <div style={{ display: "flex", justifyContent: "center", height: "100vh", alignItems: "center" }}>
                     <Lottie animationData={purplePlaneData} height={400} width={400} />
                 </div>
             )}

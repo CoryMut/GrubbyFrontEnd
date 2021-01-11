@@ -6,15 +6,26 @@ function Alert(props) {
     return <MuiAlert elevation={6} variant="filled" {...props} />;
 }
 
-const CustomSnackBar = ({ open, onClose, severity, autoHideDuration, emoji, emojiLabel, message }) => {
+const CustomSnackBar = ({
+    open,
+    onClose,
+    severity,
+    autoHideDuration,
+    emoji,
+    emojiLabel,
+    message,
+    encloseMessage = false,
+}) => {
     return (
         <Snackbar open={open} autoHideDuration={autoHideDuration} onClose={onClose}>
             <Alert onClose={onClose} severity={severity}>
-                <span role="img" aria-label={emojiLabel}>
-                    {emoji}
-                </span>
+                {encloseMessage && (
+                    <span role="img" aria-label={emojiLabel}>
+                        {emoji}
+                    </span>
+                )}
                 {message}
-                <span role="img" aria-label={emojiLabel}>
+                <span role="img" aria-label={emojiLabel} style={{ marginLeft: "5px" }}>
                     {emoji}
                 </span>
             </Alert>

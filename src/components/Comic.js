@@ -1,11 +1,6 @@
 import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import GlobalEmojiBar from "../components/GlobalEmojiBar";
-// import ArrowForwardIosIcon from "@material-ui/icons/ArrowForwardIos";
-// import ArrowBackIosIcon from "@material-ui/icons/ArrowBackIos";
-// import SkipNextIcon from "@material-ui/icons/SkipNext";
-// import SkipPreviousIcon from "@material-ui/icons/SkipPrevious";
-// import Button from "@material-ui/core/Button";
 import FavoriteButton from "../components/FavoriteButton";
 
 const useStyles = makeStyles((theme) => ({
@@ -22,24 +17,24 @@ const useStyles = makeStyles((theme) => ({
         display: "flex",
         alignItems: "center",
         justifyContent: "center",
-        height: "90vh",
-        margin: "0 2vw",
+        // height: "100vh", //90
+        margin: "0 1vw",
         flexDirection: "column",
-        [theme.breakpoints.up("sm")]: {
-            // minHeight: "885px",
-            minHeight: "935px",
-        },
-        [theme.breakpoints.down("md")]: {
-            height: "80vh",
-        },
-        [theme.breakpoints.up("lg")]: {
-            height: "100vh",
-        },
+        // [theme.breakpoints.up("sm")]: {
+        //     minHeight: "935px",
+        // },
+        // [theme.breakpoints.down("md")]: {
+        //     height: "80vh",
+        // },
+        // [theme.breakpoints.up("lg")]: {
+        //     height: "100vh",
+        // },
     },
     emojibar: {
         display: "flex",
         flexDirection: "row",
         justifyContent: "center",
+        // margin: "0.5vh 0 0.5vh 0",
         [theme.breakpoints.up("sm")]: {
             width: "100%",
             flexDirection: "column",
@@ -55,23 +50,23 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-const Comic = ({ src, srcSet, handlePreviousComic, handleNextComic, id, chipData, setChipData, name }) => {
+const Comic = ({ src, srcSet, id, chipData, setChipData, name, handleNextComic, handlePreviousComic, count }) => {
     const classes = useStyles();
 
     return (
         <div className={classes.flex}>
-            {/* <SkipPreviousIcon></SkipPreviousIcon>
-            <Button onClick={handlePreviousComic}>
-                <ArrowBackIosIcon></ArrowBackIosIcon>
-            </Button> */}
             <img className={classes.comic} srcSet={srcSet} src={src} alt="Grubby Comic" />
-            {/* <Button onClick={handleNextComic}>
-                <ArrowForwardIosIcon></ArrowForwardIosIcon>
-            </Button>
-            <SkipNextIcon></SkipNextIcon> */}
+
             <div className={classes.emojibar}>
                 <FavoriteButton orientation="left"></FavoriteButton>
-                <GlobalEmojiBar id={id} chipData={chipData} setChipData={setChipData}></GlobalEmojiBar>
+                <GlobalEmojiBar
+                    id={id}
+                    chipData={chipData}
+                    setChipData={setChipData}
+                    handleNextComic={handleNextComic}
+                    handlePreviousComic={handlePreviousComic}
+                    count={count}
+                ></GlobalEmojiBar>
                 <FavoriteButton orientation="right" comicID={id} name={name}></FavoriteButton>
             </div>
         </div>

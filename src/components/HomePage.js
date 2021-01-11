@@ -24,9 +24,9 @@ function Alert(props) {
 }
 
 const images = [
-    "https://grubbythegrape.sfo2.cdn.digitaloceanspaces.com/960/Grubby_71.jpg",
-    "https://grubbythegrape.sfo2.cdn.digitaloceanspaces.com/960/Grubby_177.jpg",
-    "https://grubbythegrape.sfo2.cdn.digitaloceanspaces.com/960/Grubby_146.jpg",
+    "https://grubbythegrape.sfo2.cdn.digitaloceanspaces.com/800/Grubby_71.jpg",
+    "https://grubbythegrape.sfo2.cdn.digitaloceanspaces.com/800/Grubby_177.jpg",
+    "https://grubbythegrape.sfo2.cdn.digitaloceanspaces.com/800/Grubby_146.jpg",
 ];
 
 const useStyles = makeStyles((theme) => ({
@@ -42,7 +42,8 @@ const useStyles = makeStyles((theme) => ({
         backgroundAttachment: "fixed",
         backgroundPosition: "center",
         minHeight: "calc(99vh - 64px)",
-        height: "120%",
+        padding: "4vh 0 8vh 0",
+        // height: "120%",
         // padding: "1.5vh",
     },
 
@@ -123,7 +124,8 @@ const useStyles = makeStyles((theme) => ({
     comicfont: {
         fontFamily: "comicfont",
         color: "black",
-        marginTop: "1vh",
+        // marginTop: "1vh",
+        margin: "2vh 0 5vh 0",
         [theme.breakpoints.down("sm")]: {
             fontSize: "50px",
         },
@@ -131,7 +133,8 @@ const useStyles = makeStyles((theme) => ({
     comicFontSmall: {
         fontFamily: "comicfont",
         color: "black",
-        marginTop: "1vh",
+        // marginTop: "1vh",
+        margin: "2vh 0 5vh 0",
         fontSize: "40px",
     },
     speechIcon: {

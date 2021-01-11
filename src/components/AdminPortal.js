@@ -13,9 +13,6 @@ import Typography from "@material-ui/core/Typography";
 import NativeSelect from "@material-ui/core/NativeSelect";
 import FormControl from "@material-ui/core/FormControl";
 
-import Snackbar from "@material-ui/core/Snackbar";
-import MuiAlert from "@material-ui/lab/Alert";
-
 import CustomSnackBar from "../components/CustomSnackBar";
 
 const CDN = process.env.REACT_APP_CDN;
@@ -61,10 +58,6 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-function Alert(props) {
-    return <MuiAlert elevation={6} variant="filled" {...props} />;
-}
-
 const AdminPortal = () => {
     const classes = useStyles();
     const [isLoading, setIsLoading] = useState(true);
@@ -90,19 +83,14 @@ const AdminPortal = () => {
     };
 
     const handleDelete = async (id) => {
-        console.log(`deleting comic with id: ${id}`);
         try {
             await deleteComic(id);
             if (id === 0) {
-                console.log("removing first comic");
                 comics.shift();
             } else if (id === comics.length) {
-                console.log("id is length");
                 comics.pop();
-                console.log(comics);
             } else {
-                let removed = comics.splice(id - 1, 1);
-                console.log(removed);
+                comics.splice(id - 1, 1);
             }
             setComics(() => [...comics]);
             setComicInfo((comicInfo) => ({
@@ -214,7 +202,7 @@ const AdminPortal = () => {
                     </div>
                 </div>
             )}
-            <Snackbar open={success} autoHideDuration={6000} onClose={handleClose}>
+            {/* <Snackbar open={success} autoHideDuration={6000} onClose={handleClose}>
                 <Alert onClose={handleClose} severity="success">
                     <span role="img" aria-label="Popping confetti">
                         🎉
@@ -224,15 +212,35 @@ const AdminPortal = () => {
                         🎉
                     </span>
                 </Alert>
-            </Snackbar>
-            <Snackbar open={error} autoHideDuration={6000} onClose={handleClose}>
+            </Snackbar> */}
+            {/* <Snackbar open={error} autoHideDuration={6000} onClose={handleClose}>
                 <Alert onClose={handleClose} severity="error">
                     Uh oh, something went wrong. Try again?
                     <span role="img" aria-label="Smiling Face with sweat">
                         😅
                     </span>
                 </Alert>
-            </Snackbar>
+            </Snackbar> */}
+            <CustomSnackBar
+                open={success}
+                autoHideDuration={6000}
+                onClose={handleClose}
+                severity="success"
+                emoji="🎉"
+                emojiLabel="Popping confetti"
+                message="Comic updated successfully!"
+                encloseMessage={true}
+            ></CustomSnackBar>
+            <CustomSnackBar
+                open={error}
+                autoHideDuration={6000}
+                onClose={handleClose}
+                severity="error"
+                emoji="😅"
+                emojiLabel="Smiling Face with sweat"
+                message="Uh oh, something went wrong. Try again?"
+                encloseMessage={false}
+            ></CustomSnackBar>
             <CustomSnackBar
                 open={deletedComic}
                 autoHideDuration={6000}
@@ -241,6 +249,7 @@ const AdminPortal = () => {
                 emoji="🎉"
                 emojiLabel="Popping confetti"
                 message="Deleted comic successfully"
+                encloseMessage={true}
             ></CustomSnackBar>
         </div>
     );

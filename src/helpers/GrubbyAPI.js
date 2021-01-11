@@ -68,6 +68,15 @@ export async function checkTokenStatus(token) {
     }
 }
 
+export async function getLatestComic() {
+    try {
+        let result = await axios.get(`${BASE_URL}/comic/latest`);
+        return result.data.comic;
+    } catch (error) {
+        console.error("API Error:", error.response);
+    }
+}
+
 export async function getAllComics(page) {
     try {
         let result = await axios.get(`${BASE_URL}/comic/all?page=${page}`, { withCredentials: true });
@@ -81,6 +90,15 @@ export async function getAllAdminComics() {
     try {
         let result = await axios.get(`${BASE_URL}/admin/comics`, { withCredentials: true });
         return result.data;
+    } catch (error) {
+        console.error("API Error:", error.response);
+    }
+}
+
+export async function getPreviousComic(id) {
+    try {
+        let result = await axios.get(`${BASE_URL}/comic/${id}`);
+        return result.data.comic;
     } catch (error) {
         console.error("API Error:", error.response);
     }

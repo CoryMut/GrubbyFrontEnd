@@ -5,14 +5,14 @@ import { getUserEmoteData } from "../helpers/GrubbyAPI";
 import { makeStyles, createMuiTheme, ThemeProvider } from "@material-ui/core/styles";
 import Chip from "@material-ui/core/Chip";
 import Paper from "@material-ui/core/Paper";
-import Snackbar from "@material-ui/core/Snackbar";
-import MuiAlert from "@material-ui/lab/Alert";
+import ArrowBackIcon from "@material-ui/icons/ArrowBack";
+import ArrowForwardIcon from "@material-ui/icons/ArrowForward";
+
+import useMediaQuery from "@material-ui/core/useMediaQuery";
 
 import { sendUserEmoteData, updateUserEmoteData, deleteReaction } from "../helpers/GrubbyAPI";
 
-function Alert(props) {
-    return <MuiAlert elevation={6} variant="filled" {...props} />;
-}
+import CustomSnackBar from "../components/CustomSnackBar";
 
 const theme = createMuiTheme({
     palette: {
@@ -41,13 +41,39 @@ const useStyles = makeStyles((theme) => ({
     chip: {
         margin: theme.spacing(0.5),
     },
+    leftArrow: {
+        cursor: "pointer",
+        float: "left",
+        fontSize: "2.5em",
+    },
+    rightArrow: {
+        cursor: "pointer",
+        float: "right",
+        fontSize: "2.5em",
+    },
+    invisible: {
+        visibility: "hidden",
+    },
+    hide: {
+        display: "none",
+    },
+    arrowWrapper: {
+        width: "100%",
+        // margin: "2vh 0",
+        margin: "0.5vh 0",
+        padding: theme.spacing(0.5),
+    },
 }));
 
-function GlobalEmojiBar({ id, chipData, setChipData }) {
+function GlobalEmojiBar({ id, chipData, setChipData, count, handleNextComic, handlePreviousComic }) {
     const classes = useStyles();
+    const matches = useMediaQuery("(max-width:900px)");
+
     const { user } = useContext(UserContext);
     const [reaction, setReaction] = useState("");
     const [error, setError] = useState(false);
+
+    const rightArrow = id === count ? classes.invisible : classes.rightArrow;
 
     const handleClick = async (newReaction) => {
         if (!user) {
@@ -123,6 +149,16 @@ function GlobalEmojiBar({ id, chipData, setChipData }) {
 
     return (
         <ThemeProvider theme={theme}>
+            <div className={matches ? classes.arrowWrapper : classes.hide}>
+                <ArrowBackIcon
+                    className={matches ? classes.leftArrow : classes.hide}
+                    onClick={() => handlePreviousComic(id - 1)}
+                />
+                <ArrowForwardIcon
+                    className={matches ? rightArrow : classes.hide}
+                    onClick={() => handleNextComic(id + 1)}
+                />
+            </div>
             {chipData && (
                 <div>
                     <Paper component="ul" className={classes.root}>
@@ -149,14 +185,17 @@ function GlobalEmojiBar({ id, chipData, setChipData }) {
                             );
                         })}
                     </Paper>
-                    <Snackbar open={error} autoHideDuration={6000} onClose={handleClose}>
-                        <Alert onClose={handleClose} severity="info">
-                            You must be logged in to submit a reaction!
-                            <span role="img" aria-label="Winking Face" style={{ marginLeft: "5px" }}>
-                                😉
-                            </span>
-                        </Alert>
-                    </Snackbar>
+
+                    <CustomSnackBar
+                        open={error}
+                        autoHideDuration={6000}
+                        onClose={handleClose}
+                        severity="info"
+                        emoji="😉"
+                        emojiLabel="Winking Face"
+                        message={"You must be logged in to submit a reaction!"}
+                        encloseMessage={false}
+                    />
                 </div>
             )}
             {!chipData && null}

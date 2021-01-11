@@ -68,7 +68,7 @@ const useStyles = makeStyles((theme) => ({
         },
         [theme.breakpoints.down("md")]: {
             // marginLeft: 0,
-            margin: "8px auto 8px auto",
+            margin: "8px auto 10px auto",
             // width: "20%",
             maxWidth: "72px",
         },
@@ -127,6 +127,8 @@ const FavoriteButton = ({ orientation, comicID, favorite = false, name }) => {
                     if (favorites[i].comic_id === comicID) {
                         setIsFavorite(() => true);
                         break;
+                    } else {
+                        setIsFavorite(() => false);
                     }
                 }
             } else {

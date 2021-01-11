@@ -10,7 +10,7 @@ const ScrollArrow = () => {
     const [showScroll, setShowScroll] = useState(null);
     // Check the scroll state, re-memoize when scroll state changes.
     const checkScrollTop = useCallback(() => {
-        const headerHeight = 400;
+        const headerHeight = 700;
 
         if (!showScroll && window.pageYOffset > headerHeight) {
             setShowScroll(true);

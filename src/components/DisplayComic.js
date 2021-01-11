@@ -1,16 +1,42 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import Comic from "./Comic";
-import axios from "axios";
-// import { getGlobalEmote } from "../helpers/GrubbyAPI";
+import { getLatestComic, getPreviousComic } from "../helpers/GrubbyAPI";
 
-const BASE_URL = process.env.REACT_APP_SERVER_URL || "http://localhost:5000";
+import { makeStyles } from "@material-ui/core/styles";
+import useMediaQuery from "@material-ui/core/useMediaQuery";
+
+import ArrowBackIcon from "@material-ui/icons/ArrowBack";
+import ArrowForwardIcon from "@material-ui/icons/ArrowForward";
+
 const CDN = process.env.REACT_APP_CDN;
 
+const useStyles = makeStyles((theme) => ({
+    comicWrapper: {
+        display: "flex",
+        flexDirection: "row",
+        justifyContent: "center",
+        alignItems: "center",
+    },
+    arrow: {
+        cursor: "pointer",
+    },
+    invisible: {
+        visibility: "hidden",
+    },
+    hide: {
+        display: "none",
+    },
+}));
+
 const DisplayComic = () => {
-    const [src, setSrc] = useState("https://grubbythegrape.sfo2.cdn.digitaloceanspaces.com/960/blur.jpg");
-    const [allImages, setAllImages] = useState([]);
-    const [comicID, setComicID] = useState(null);
-    const [name, setName] = useState(null);
+    const classes = useStyles();
+    const matches = useMediaQuery("(max-width:900px)");
+
+    const [src, setSrc] = useState(`${CDN}/800/blur.jpg`);
+    const [srcSet, setSrcSet] = useState("");
+    const [comicID, setComicID] = useState(0);
+    const [name, setName] = useState("");
+    const [count, setCount] = useState(null);
     const [chipData, setChipData] = useState([
         { key: 0, label: "Laughing", icon: "😂", count: 0 },
         { key: 1, label: "Clapping", icon: "👏", count: 0 },
@@ -19,33 +45,70 @@ const DisplayComic = () => {
         { key: 4, label: "Clown", icon: "🤡", count: 0 },
     ]);
 
-    let srcSet = allImages.join();
+    const [prevComic, setPrevComic] = useState({});
+    const [emoteData, setEmoteData] = useState({});
+    const [visitedComics, setVisitedComics] = useState({});
 
-    const handlePreviousComic = () => {
-        console.log("loading previous comic");
+    const rightArrow = comicID === count ? classes.invisible : classes.arrow;
+
+    const makeSrcSet = (name) => {
+        const sizes = ["320", "384", "512", "683", "800"];
+        let urls = [];
+        sizes.forEach((size) => urls.push(`${CDN}/${size}/${name} ${size}w`));
+        let srcSet = urls.join();
+        return srcSet;
     };
 
-    const handleNextComic = () => {
-        console.log("loading next comic");
+    const handlePreviousComic = async (id) => {
+        try {
+            if (id === 0) {
+                return;
+            }
+            visitedComics[comicID] = { comic_id: comicID, name: name, emotes: { ...emoteData } };
+            setVisitedComics(() => ({
+                ...visitedComics,
+            }));
+            comicSwitch(prevComic);
+        } catch (error) {
+            return;
+        }
     };
+
+    const handleNextComic = async (id) => {
+        try {
+            if (id > count) {
+                return;
+            }
+
+            comicSwitch(visitedComics[id]);
+        } catch (error) {
+            return;
+        }
+    };
+
+    const comicSwitch = useCallback((data) => {
+        let { name, comic_id, emotes } = data;
+        setComicID(comic_id);
+        setName(name);
+        let srcSet = makeSrcSet(name);
+        setSrcSet(() => srcSet);
+        setEmoteData(() => ({ ...emotes }));
+        setChipData((chipData) =>
+            chipData.map((data) => ({
+                ...data,
+                count: +emotes[data.label],
+            }))
+        );
+    }, []);
 
     useEffect(() => {
         async function getComic() {
             try {
-                const sizes = ["320", "384", "512", "683", "800", "960"];
-                let result = await axios.get(`${BASE_URL}/comic/latest`);
-                setSrc(`${CDN}/960/${result.data.comic.name}`);
-                setComicID(result.data.comic.comic_id);
-                setName(result.data.comic.name);
-                let urls = [];
-                sizes.forEach((size) => urls.push(`${CDN}/${size}/${result.data.comic.name} ${size}w`));
-                setAllImages(urls);
-                setChipData((chipData) =>
-                    chipData.map((data) => ({
-                        ...data,
-                        count: +result.data.comic.emotes[data.label],
-                    }))
-                );
+                let result = await getLatestComic();
+                comicSwitch(result);
+                let { comic_id, emotes } = result;
+                setCount(() => comic_id);
+                setEmoteData(() => ({ ...emotes }));
             } catch (error) {
                 setSrc(`${CDN}/960/Grubby_1.jpg`);
                 return;
@@ -53,19 +116,50 @@ const DisplayComic = () => {
         }
 
         getComic();
-    }, []);
+    }, [comicSwitch]);
+
+    useEffect(() => {
+        async function preload(id) {
+            try {
+                if (id === 0) {
+                    return;
+                }
+                let prevID = id - 1;
+                let preloadComic = await getPreviousComic(prevID);
+                let { name } = preloadComic;
+                let srcSet = makeSrcSet(name);
+                new Image().setAttribute("srcset", srcSet);
+                setPrevComic(() => ({ ...preloadComic }));
+            } catch (error) {
+                return;
+            }
+        }
+
+        preload(comicID);
+    }, [comicID]);
 
     return (
-        <Comic
-            src={src}
-            srcSet={srcSet}
-            handlePreviousComic={handlePreviousComic}
-            handleNextComic={handleNextComic}
-            id={comicID}
-            chipData={chipData}
-            setChipData={setChipData}
-            name={name}
-        ></Comic>
+        <div className={classes.comicWrapper}>
+            <ArrowBackIcon
+                className={matches ? classes.hide : classes.arrow}
+                onClick={() => handlePreviousComic(comicID - 1)}
+            />
+            <Comic
+                src={src}
+                srcSet={srcSet}
+                id={comicID}
+                chipData={chipData}
+                setChipData={setChipData}
+                name={name}
+                handleNextComic={handleNextComic}
+                handlePreviousComic={handlePreviousComic}
+                count={count}
+            ></Comic>
+            <ArrowForwardIcon
+                className={matches ? classes.hide : rightArrow}
+                onClick={() => handleNextComic(comicID + 1)}
+            />
+        </div>
     );
 };
 

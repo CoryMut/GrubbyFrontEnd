@@ -148,7 +148,7 @@ function GlobalEmojiBar({ id, chipData, setChipData, count, handleNextComic, han
     }, [user, id]);
 
     return (
-        <ThemeProvider theme={theme}>
+        <div>
             <div className={matches ? classes.arrowWrapper : classes.hide}>
                 <ArrowBackIcon
                     className={matches ? classes.leftArrow : classes.hide}
@@ -159,47 +159,49 @@ function GlobalEmojiBar({ id, chipData, setChipData, count, handleNextComic, han
                     onClick={() => handleNextComic(id + 1)}
                 />
             </div>
-            {chipData && (
-                <div>
-                    <Paper component="ul" className={classes.root}>
-                        {chipData.map((data) => {
-                            return (
-                                <li key={data.key}>
-                                    <Chip
-                                        avatar={
-                                            <span
-                                                role="img"
-                                                style={{ fontSize: "1rem", backgroundColor: "transparent" }}
-                                                aria-labelledby={data.label}
-                                            >
-                                                {data.icon}
-                                            </span>
-                                        }
-                                        label={data.count}
-                                        className={classes.chip}
-                                        clickable={true}
-                                        color={reaction === data.label ? "primary" : "secondary"}
-                                        onClick={() => handleClick(data.label)}
-                                    />
-                                </li>
-                            );
-                        })}
-                    </Paper>
+            <ThemeProvider theme={theme}>
+                {chipData && (
+                    <div>
+                        <Paper component="ul" className={classes.root}>
+                            {chipData.map((data) => {
+                                return (
+                                    <li key={data.key}>
+                                        <Chip
+                                            avatar={
+                                                <span
+                                                    role="img"
+                                                    style={{ fontSize: "1rem", backgroundColor: "transparent" }}
+                                                    aria-labelledby={data.label}
+                                                >
+                                                    {data.icon}
+                                                </span>
+                                            }
+                                            label={data.count}
+                                            className={classes.chip}
+                                            clickable={true}
+                                            color={reaction === data.label ? "primary" : "secondary"}
+                                            onClick={() => handleClick(data.label)}
+                                        />
+                                    </li>
+                                );
+                            })}
+                        </Paper>
 
-                    <CustomSnackBar
-                        open={error}
-                        autoHideDuration={6000}
-                        onClose={handleClose}
-                        severity="info"
-                        emoji="😉"
-                        emojiLabel="Winking Face"
-                        message={"You must be logged in to submit a reaction!"}
-                        encloseMessage={false}
-                    />
-                </div>
-            )}
-            {!chipData && null}
-        </ThemeProvider>
+                        <CustomSnackBar
+                            open={error}
+                            autoHideDuration={6000}
+                            onClose={handleClose}
+                            severity="info"
+                            emoji="😉"
+                            emojiLabel="Winking Face"
+                            message={"You must be logged in to submit a reaction!"}
+                            encloseMessage={false}
+                        />
+                    </div>
+                )}
+                {!chipData && null}
+            </ThemeProvider>
+        </div>
     );
 }
 

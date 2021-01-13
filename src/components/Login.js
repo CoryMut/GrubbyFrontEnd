@@ -1,5 +1,5 @@
 import React, { useState, useContext } from "react";
-import { useHistory, useLocation, Redirect } from "react-router-dom";
+import { useHistory, useLocation, Redirect, Link } from "react-router-dom";
 import { useFormik } from "formik";
 import { UserContext } from "./UserContext";
 
@@ -18,6 +18,7 @@ import TableRow from "@material-ui/core/TableRow";
 import LoginGoogle from "../components/LoginGoogle";
 
 import "./Login.css";
+import { Typography } from "@material-ui/core";
 
 const useStyles = makeStyles((theme) => ({
     "@global": {
@@ -36,6 +37,13 @@ const useStyles = makeStyles((theme) => ({
         margin: 0,
         padding: 0,
         textAlign: "right",
+    },
+    tableCell: {
+        border: "none",
+        margin: "auto",
+        padding: 0,
+        textAlign: "center",
+        width: "100%",
     },
     title: {
         textAlign: "center",
@@ -148,6 +156,13 @@ const Login = () => {
                                     ) : null}
                                 </Col>
                             </FormGroup>
+
+                            <FormGroup row>
+                                <Col style={{ fontSize: "12px", textAlign: "center" }}>
+                                    By logging in, you agree to our <Link to="/privacy">Privacy Policy</Link>
+                                </Col>
+                            </FormGroup>
+
                             <FormGroup row>
                                 <Col>
                                     <Button

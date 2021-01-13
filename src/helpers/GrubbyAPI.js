@@ -30,8 +30,12 @@ export async function loginUser(data) {
         return result.data;
     } catch (error) {
         console.error("API Error:", error.response);
-        let message = error.response.data.message;
-        throw Array.isArray(message) ? message : [message];
+        console.log(error.response.data.error.message);
+        // let message = error.response.data.message;
+        let message = error.response.data.error.message;
+        console.log(message);
+        throw message;
+        // throw Array.isArray(message) ? message : [message];
     }
 }
 
@@ -253,6 +257,20 @@ export async function getFavorites(username) {
     } catch (error) {
         console.error("API Error:", error.response);
         return;
+    }
+}
+
+export async function googleLogin(idToken) {
+    try {
+        let result = await axios.post(`${BASE_URL}/auth/google`, { token: idToken });
+        let { token } = result.data;
+        saveToLocalStorage("_token", token);
+
+        return result.data;
+    } catch (error) {
+        console.error("API Error:", error.response);
+        let message = error.response.data.message;
+        throw Array.isArray(message) ? message : [message];
     }
 }
 

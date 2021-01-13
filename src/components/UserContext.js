@@ -17,6 +17,8 @@ const UserContext = React.createContext({
     setRecentLogin: () => {},
     recentLogout: false,
     setRecentLogout: () => {},
+    displayName: null,
+    setDisplayName: () => {},
 });
 
 function UserProvider(props) {
@@ -29,6 +31,7 @@ function UserProvider(props) {
     const [favLoading, setFavLoading] = useState(true);
     const [recentLogin, setRecentLogin] = useState(false);
     const [recentLogout, setRecentLogout] = useState(false);
+    const [displayName, setDisplayName] = useState(null);
 
     const login = useCallback((token) => {
         setToken(token);
@@ -50,8 +53,9 @@ function UserProvider(props) {
         setAdmin(status);
     };
 
-    const handleUser = (username) => {
-        setUser(username);
+    const handleUser = (username, name) => {
+        setUser(() => username);
+        setDisplayName(() => name);
     };
 
     const handleLoading = (status) => {
@@ -73,7 +77,7 @@ function UserProvider(props) {
                     throw Error("No token");
                 }
                 let result = await checkTokenStatus(storedData);
-                handleUser(result.user);
+                handleUser(result.user, result.name);
                 handleAdmin(result.isAdmin);
                 handleLoading(false);
                 return;
@@ -125,6 +129,8 @@ function UserProvider(props) {
                 setRecentLogin: setRecentLogin,
                 recentLogout: recentLogout,
                 setRecentLogout: setRecentLogout,
+                displayName: displayName,
+                setDisplayName: setDisplayName,
             }}
         >
             {props.children}

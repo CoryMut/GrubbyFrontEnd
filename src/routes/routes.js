@@ -10,6 +10,7 @@ import AllComics from "../components/AllComics";
 import HomePage from "../components/HomePage";
 import AdminPortal from "../components/AdminPortal";
 import Favorites from "../components/Favorites";
+import PrivacyPolicy from "../components/PrivacyPolicy";
 
 const Routes = () => {
     return (
@@ -22,6 +23,9 @@ const Routes = () => {
             </Route>
             <Route exact path="/signup">
                 <Signup></Signup>
+            </Route>
+            <Route exact path="/privacy">
+                <PrivacyPolicy />
             </Route>
             <Route exact path="/all">
                 <AllComics></AllComics>

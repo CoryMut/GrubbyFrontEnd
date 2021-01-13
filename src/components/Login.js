@@ -15,6 +15,8 @@ import TableBody from "@material-ui/core/TableBody";
 import TableCell from "@material-ui/core/TableCell";
 import TableRow from "@material-ui/core/TableRow";
 
+import LoginGoogle from "../components/LoginGoogle";
+
 import "./Login.css";
 
 const useStyles = makeStyles((theme) => ({
@@ -77,6 +79,7 @@ const Login = () => {
                 authContext.login(token);
                 authContext.handleAdmin(user.is_admin);
                 authContext.handleUser(user.username);
+                authContext.setDisplayName(user.displayName);
                 authContext.setRecentLogin(true);
 
                 if (destination) {
@@ -86,7 +89,9 @@ const Login = () => {
                 }
             } catch (error) {
                 console.log(error);
-                setError("Invalid Credentials");
+                // let { message } = error;
+                // setError("Invalid Credentials");
+                setError(error);
             }
         },
     });
@@ -145,9 +150,19 @@ const Login = () => {
                             </FormGroup>
                             <FormGroup row>
                                 <Col>
-                                    <Button type="submit" variant="contained" onClick={formik.handleSubmit}>
+                                    <Button
+                                        type="submit"
+                                        variant="contained"
+                                        onClick={formik.handleSubmit}
+                                        className="login-button"
+                                    >
                                         Login
                                     </Button>
+                                </Col>
+                            </FormGroup>
+                            <FormGroup row>
+                                <Col>
+                                    <LoginGoogle />
                                 </Col>
                             </FormGroup>
 

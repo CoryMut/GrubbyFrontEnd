@@ -182,7 +182,7 @@ const HomePage = () => {
     const classes = useStyles();
     const [dadJoke, setDadJoke] = useState("");
     const [error, setError] = useState(false);
-    const { recentLogin, user, setRecentLogin, recentLogout, setRecentLogout } = useContext(UserContext);
+    const { recentLogin, user, setRecentLogin, recentLogout, setRecentLogout, displayName } = useContext(UserContext);
 
     const handleClose = (event, reason) => {
         if (reason === "clickaway") {
@@ -217,7 +217,7 @@ const HomePage = () => {
                 style={{ marginTop: "5%" }}
             >
                 <Alert onClose={handleClose} severity="success">
-                    Welcome Back, {user}!
+                    Welcome Back, {displayName}!
                 </Alert>
             </Snackbar>
             <Snackbar

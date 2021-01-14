@@ -262,7 +262,7 @@ export async function getFavorites(username) {
 
 export async function googleLogin(idToken) {
     try {
-        let result = await axios.post(`${BASE_URL}/auth/google`, { token: idToken });
+        let result = await axios.post(`${BASE_URL}/auth/google`, { token: idToken }, { withCredentials: true });
         let { token } = result.data;
         saveToLocalStorage("_token", token);
 

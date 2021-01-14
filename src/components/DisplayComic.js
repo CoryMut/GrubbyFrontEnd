@@ -7,6 +7,7 @@ import useMediaQuery from "@material-ui/core/useMediaQuery";
 
 import ArrowBackIcon from "@material-ui/icons/ArrowBack";
 import ArrowForwardIcon from "@material-ui/icons/ArrowForward";
+import IconButton from "@material-ui/core/IconButton";
 
 const CDN = process.env.REACT_APP_CDN;
 
@@ -50,6 +51,7 @@ const DisplayComic = () => {
     const [visitedComics, setVisitedComics] = useState({});
 
     const rightArrow = comicID === count ? classes.invisible : classes.arrow;
+    const leftArrow = comicID === 1 ? classes.invisible : classes.arrow;
 
     const makeSrcSet = (name) => {
         const sizes = ["320", "384", "512", "683", "800"];
@@ -125,6 +127,9 @@ const DisplayComic = () => {
                     return;
                 }
                 let prevID = id - 1;
+                if (prevID < 1) {
+                    return;
+                }
                 let preloadComic = await getPreviousComic(prevID);
                 let { name } = preloadComic;
                 let srcSet = makeSrcSet(name);
@@ -140,10 +145,9 @@ const DisplayComic = () => {
 
     return (
         <div className={classes.comicWrapper}>
-            <ArrowBackIcon
-                className={matches ? classes.hide : classes.arrow}
-                onClick={() => handlePreviousComic(comicID - 1)}
-            />
+            <IconButton onClick={() => handlePreviousComic(comicID - 1)} className={matches ? classes.hide : leftArrow}>
+                <ArrowBackIcon />
+            </IconButton>
             <Comic
                 src={src}
                 srcSet={srcSet}
@@ -155,10 +159,9 @@ const DisplayComic = () => {
                 handlePreviousComic={handlePreviousComic}
                 count={count}
             ></Comic>
-            <ArrowForwardIcon
-                className={matches ? classes.hide : rightArrow}
-                onClick={() => handleNextComic(comicID + 1)}
-            />
+            <IconButton onClick={() => handleNextComic(comicID + 1)} className={matches ? classes.hide : rightArrow}>
+                <ArrowForwardIcon />
+            </IconButton>
         </div>
     );
 };

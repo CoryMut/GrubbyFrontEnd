@@ -11,6 +11,7 @@ import HomePage from "../components/HomePage";
 import AdminPortal from "../components/AdminPortal";
 import Favorites from "../components/Favorites";
 import PrivacyPolicy from "../components/PrivacyPolicy";
+import Secret from "../components/Secret";
 
 const Routes = () => {
     return (
@@ -26,6 +27,9 @@ const Routes = () => {
             </Route>
             <Route exact path="/privacy">
                 <PrivacyPolicy />
+            </Route>
+            <Route exact path="/secret">
+                <Secret />
             </Route>
             <Route exact path="/all">
                 <AllComics></AllComics>

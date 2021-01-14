@@ -29,7 +29,7 @@ const ScrollArrow = () => {
     return (
         <div style={{ display: "flex", justifyContent: "center" }}>
             <div className="scrollTop">
-                <Link activeClass="active" to="top" spy={true} smooth={true} offset={-70} duration={500}>
+                <Link activeClass="active" to="section1" spy={true} smooth={true} offset={-70} duration={500}>
                     <FontAwesomeIcon
                         icon={faArrowCircleUp}
                         size="2x"

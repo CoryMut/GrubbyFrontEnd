@@ -32,6 +32,7 @@ const useStyles = makeStyles((theme) => ({
     noFavs: {
         fontFamily: "comicfont",
         textAlign: "center",
+        marginTop: "2vh",
     },
     card: {
         position: "relative",

@@ -5,8 +5,9 @@ import { Link, useLocation } from "react-router-dom";
 const useStyles = makeStyles((theme) => ({
     logo: {
         cursor: "pointer",
-        maxWidth: "325px",
+        maxWidth: "230px",
         width: "100%",
+        userSelect: "none",
         [theme.breakpoints.down("md")]: {
             width: "90%",
         },
@@ -27,7 +28,7 @@ const Logo = () => {
         <Link to="/" onClick={handleClick}>
             <img
                 className={classes.logo}
-                src="https://grubbythegrape.sfo2.cdn.digitaloceanspaces.com/assets/assets/logo/logo%28325x55%29.png"
+                src="https://grubbythegrape.sfo2.cdn.digitaloceanspaces.com/assets/assets/logo/white_logo_crop.png"
                 alt="Grubby the Grape logo"
             ></img>
         </Link>

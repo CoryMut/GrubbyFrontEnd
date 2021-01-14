@@ -37,24 +37,35 @@ const useStyles = makeStyles((theme) => ({
     },
     menuButton: {
         marginRight: theme.spacing(2),
+        color: "white",
     },
     title: {
         flexGrow: 1,
         textAlign: "center",
+        // [theme.breakpoints.down("xs")]: {
+        //     textAlign: "inherit",
+        // },
         [theme.breakpoints.down("xs")]: {
-            textAlign: "inherit",
+            marginRight: "20px",
         },
     },
     centerTitle: {
         textAlign: "none",
     },
     appBar: {
-        color: "white",
+        // color: "white",
+        // backgroundColor: "#816687",
+        backgroundColor: "#645579",
         zIndex: theme.zIndex.drawer + 1,
         justifyContent: "center",
         position: "sticky",
         top: "0px",
         left: "0px",
+        height: "70px",
+        [theme.breakpoints.down("md")]: {
+            height: "64px",
+        },
+        borderBottom: "1px solid black",
     },
     drawer: {
         width: drawerWidth,
@@ -77,6 +88,13 @@ const useStyles = makeStyles((theme) => ({
         position: "fixed",
         bottom: 0,
         width: drawerWidth,
+    },
+    button: {
+        color: "white",
+        textDecoration: "none",
+        "&:hover": {
+            color: "white",
+        },
     },
 }));
 
@@ -104,7 +122,7 @@ const NavBar = () => {
 
     return (
         <div>
-            <AppBar position="sticky" className={classes.appBar} color="inherit">
+            <AppBar position="sticky" className={classes.appBar} color="inherit" elevation={1}>
                 <Toolbar>
                     <IconButton edge="start" className={classes.menuButton} aria-label="menu" onClick={openMenu}>
                         <MenuIcon />
@@ -113,11 +131,15 @@ const NavBar = () => {
                         <Logo></Logo>
                     </Typography>
                     {!isLoggedIn && !hideButton && (
-                        <Button component={Link} to="/login">
+                        <Button component={Link} to="/login" className={classes.button}>
                             Login
                         </Button>
                     )}
-                    {isLoggedIn && !hideButton && <Button onClick={handleLogout}>Logout</Button>}
+                    {isLoggedIn && !hideButton && (
+                        <Button onClick={handleLogout} className={classes.button}>
+                            Logout
+                        </Button>
+                    )}
                 </Toolbar>
             </AppBar>
             <Drawer

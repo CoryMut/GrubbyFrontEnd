@@ -12,29 +12,19 @@ const useStyles = makeStyles((theme) => ({
         },
         maxWidth: "760px",
         margin: "0vh 1vw",
+        userSelect: "none",
     },
     flex: {
         display: "flex",
         alignItems: "center",
         justifyContent: "center",
-        // height: "100vh", //90
         margin: "0 1vw",
         flexDirection: "column",
-        // [theme.breakpoints.up("sm")]: {
-        //     minHeight: "935px",
-        // },
-        // [theme.breakpoints.down("md")]: {
-        //     height: "80vh",
-        // },
-        // [theme.breakpoints.up("lg")]: {
-        //     height: "100vh",
-        // },
     },
     emojibar: {
         display: "flex",
         flexDirection: "row",
         justifyContent: "center",
-        // margin: "0.5vh 0 0.5vh 0",
         [theme.breakpoints.up("sm")]: {
             width: "100%",
             flexDirection: "column",

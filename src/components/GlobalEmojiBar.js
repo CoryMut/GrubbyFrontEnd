@@ -7,6 +7,7 @@ import Chip from "@material-ui/core/Chip";
 import Paper from "@material-ui/core/Paper";
 import ArrowBackIcon from "@material-ui/icons/ArrowBack";
 import ArrowForwardIcon from "@material-ui/icons/ArrowForward";
+import IconButton from "@material-ui/core/IconButton";
 
 import useMediaQuery from "@material-ui/core/useMediaQuery";
 
@@ -42,26 +43,30 @@ const useStyles = makeStyles((theme) => ({
         margin: theme.spacing(0.5),
     },
     leftArrow: {
-        cursor: "pointer",
         float: "left",
-        fontSize: "2.5em",
+        margin: 0,
     },
     rightArrow: {
-        cursor: "pointer",
         float: "right",
-        fontSize: "2.5em",
     },
-    invisible: {
+    invisibleRight: {
         visibility: "hidden",
+        float: "right",
+    },
+    invisibleLeft: {
+        visibility: "hidden",
+        float: "left",
     },
     hide: {
         display: "none",
     },
     arrowWrapper: {
         width: "100%",
-        // margin: "2vh 0",
         margin: "0.5vh 0",
         padding: theme.spacing(0.5),
+    },
+    arrow: {
+        fontSize: "2.5em",
     },
 }));
 
@@ -73,7 +78,8 @@ function GlobalEmojiBar({ id, chipData, setChipData, count, handleNextComic, han
     const [reaction, setReaction] = useState("");
     const [error, setError] = useState(false);
 
-    const rightArrow = id === count ? classes.invisible : classes.rightArrow;
+    const rightArrow = id === count ? classes.invisibleRight : classes.rightArrow;
+    const leftArrow = id === 1 ? classes.invisibleLeft : classes.leftArrow;
 
     const handleClick = async (newReaction) => {
         if (!user) {
@@ -150,14 +156,12 @@ function GlobalEmojiBar({ id, chipData, setChipData, count, handleNextComic, han
     return (
         <div>
             <div className={matches ? classes.arrowWrapper : classes.hide}>
-                <ArrowBackIcon
-                    className={matches ? classes.leftArrow : classes.hide}
-                    onClick={() => handlePreviousComic(id - 1)}
-                />
-                <ArrowForwardIcon
-                    className={matches ? rightArrow : classes.hide}
-                    onClick={() => handleNextComic(id + 1)}
-                />
+                <IconButton onClick={() => handlePreviousComic(id - 1)} className={matches ? leftArrow : classes.hide}>
+                    <ArrowBackIcon className={classes.arrow} />
+                </IconButton>
+                <IconButton className={matches ? rightArrow : classes.hide} onClick={() => handleNextComic(id + 1)}>
+                    <ArrowForwardIcon className={classes.arrow} />
+                </IconButton>
             </div>
             <ThemeProvider theme={theme}>
                 {chipData && (

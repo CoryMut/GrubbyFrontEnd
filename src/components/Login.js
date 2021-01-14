@@ -18,7 +18,6 @@ import TableRow from "@material-ui/core/TableRow";
 import LoginGoogle from "../components/LoginGoogle";
 
 import "./Login.css";
-import { Typography } from "@material-ui/core";
 
 const useStyles = makeStyles((theme) => ({
     "@global": {

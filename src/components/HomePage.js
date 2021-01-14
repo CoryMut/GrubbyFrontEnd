@@ -1,10 +1,6 @@
 // This is the landing page for the app.
 
-import React, { useState, useEffect, useContext } from "react";
-import { getDadJoke } from "../helpers/DadJokeAPI";
-
-import { Link } from "react-scroll";
-import Carousel from "react-material-ui-carousel";
+import React, { useEffect, useContext } from "react";
 
 import ScrollArrow from "./ScrollArrow";
 import DisplayComic from "./DisplayComic";
@@ -12,60 +8,40 @@ import DisplayComic from "./DisplayComic";
 import { makeStyles } from "@material-ui/core/styles";
 import Grid from "@material-ui/core/Grid";
 import Typography from "@material-ui/core/Typography";
-import CachedIcon from "@material-ui/icons/Cached";
 import Snackbar from "@material-ui/core/Snackbar";
 import MuiAlert from "@material-ui/lab/Alert";
-import useMediaQuery from "@material-ui/core/useMediaQuery";
 
 import { UserContext } from "../components/UserContext";
+
+import TwitterIcon from "@material-ui/icons/Twitter";
+import InstagramIcon from "@material-ui/icons/Instagram";
+import Link from "@material-ui/core/Link";
 
 function Alert(props) {
     return <MuiAlert elevation={6} variant="filled" {...props} />;
 }
 
-const images = [
-    "https://grubbythegrape.sfo2.cdn.digitaloceanspaces.com/800/Grubby_71.jpg",
-    "https://grubbythegrape.sfo2.cdn.digitaloceanspaces.com/800/Grubby_177.jpg",
-    "https://grubbythegrape.sfo2.cdn.digitaloceanspaces.com/800/Grubby_146.jpg",
-];
-
 const useStyles = makeStyles((theme) => ({
     jumbotron: {
-        minHeight: "calc(99vh - 64px)",
-        height: "100%",
-        backgroundColor: "#f7d2fe",
+        minHeight: "100vh",
+        backgroundColor: "white",
         backgroundSize: "cover",
+        padding: "10vh 0px",
     },
     section1: {
-        backgroundImage: "url(https://grubbythegrape.sfo2.cdn.digitaloceanspaces.com/assets/assets/red.png)",
         backgroundRepeat: "repeat",
-        backgroundAttachment: "fixed",
-        backgroundPosition: "center",
-        minHeight: "calc(99vh - 64px)",
-        padding: "4vh 0 8vh 0",
-        // height: "120%",
-        // padding: "1.5vh",
-    },
-
-    scrollTop: {
-        fontSize: "20px",
+        backgroundColor: "#645579",
+        minHeight: "calc(99vh - 70px)",
+        [theme.breakpoints.down("md")]: {
+            minHeight: "calc(99vh - 64px)",
+        },
+        padding: "4vh 0 4vh 0",
+        display: "flex",
+        alignItems: "center",
     },
     h1: {
         fontSize: "32px",
         color: "black",
-    },
-    colorImg: {
-        width: "600px",
-        borderRadius: "10px",
-        boxShadow: " rgba(50, 50, 93, 0.25) 0px 13px 27px -5px, rgba(0, 0, 0, 0.3) 0px 8px 16px -8px",
-        maxWidth: "100vw",
-        [theme.breakpoints.down("md")]: {
-            margin: "3rem 0",
-        },
-        [theme.breakpoints.down("sm")]: {
-            maxWidth: "80vw",
-            margin: "3rem 0",
-        },
     },
     main: {
         height: "25vh",
@@ -73,15 +49,6 @@ const useStyles = makeStyles((theme) => ({
         borderRadius: "10px",
         padding: "2vw",
         maxWidth: "100vw",
-    },
-    speechBubbleImg: {
-        maxWidth: "100vw",
-        [theme.breakpoints.down("md")]: {
-            margin: "3vh 0",
-        },
-        [theme.breakpoints.down("sm")]: {
-            maxWidth: "95vw",
-        },
     },
     text: {
         maxWidth: "300px",
@@ -111,20 +78,9 @@ const useStyles = makeStyles((theme) => ({
         fontFamily: "comicfont",
         fontSize: "7px",
     },
-    starburst: {
-        maxWidth: "200px",
-        position: "absolute",
-        top: "70%",
-        left: "50%",
-        cursor: "pointer",
-        [theme.breakpoints.down("sm")]: {
-            width: "140px",
-        },
-    },
     comicfont: {
         fontFamily: "comicfont",
         color: "black",
-        // marginTop: "1vh",
         margin: "2vh 0 5vh 0",
         [theme.breakpoints.down("sm")]: {
             fontSize: "50px",
@@ -133,77 +89,72 @@ const useStyles = makeStyles((theme) => ({
     comicFontSmall: {
         fontFamily: "comicfont",
         color: "black",
-        // marginTop: "1vh",
         margin: "2vh 0 5vh 0",
         fontSize: "40px",
     },
-    speechIcon: {
-        position: "absolute",
-        top: "46.5%",
-        left: "49.5%",
-        cursor: "pointer",
-        [theme.breakpoints.down("sm")]: {
-            fontSize: "18px",
-        },
+    friends: {
+        maxWidth: "100vw",
+        userSelect: "none",
     },
-    speechBubbleContainer: {
-        position: "absolute",
-        top: "4%",
-        left: "31%",
-        height: "230px",
-        width: "390px",
-        display: "flex",
-        justifyContent: "center",
-        alignItems: "center",
-        textAlign: "center",
-        color: "black",
+    about: {
+        width: "600px",
+        fontFamily: "comicfont",
+        padding: "4vh",
+        maxWidth: "100vw",
         [theme.breakpoints.down("md")]: {
-            top: "8%",
-            color: "black",
-            maxWidth: "70vw",
+            margin: "3rem 0",
         },
         [theme.breakpoints.down("sm")]: {
-            top: "14%",
-            left: "34%",
-            color: "black",
-            width: "60%",
-            height: "30%",
+            maxWidth: "80vw",
+            margin: "3rem 0",
         },
     },
-    border: {
-        border: "6px solid black",
-        borderRadius: "6px",
+    authorImg: {
+        width: "4rem",
+        maxWidth: "100vw",
+        border: "1px solid black",
+        borderRadius: "50%",
+        float: "right",
+        margin: "auto",
+        userSelect: "none",
+    },
+    socialIcons: {
+        fontSize: "4rem",
+        margin: "auto",
+    },
+    twitterlink: {
+        textDecoration: "none",
+        margin: "auto",
+        "&:hover": {
+            color: "#08a0e9",
+        },
+    },
+    instagramlink: {
+        textDecoration: "none",
+        margin: "auto",
+        "&:hover": {
+            color: "#DD2A7B",
+        },
+    },
+    tumblrlink: {
+        textDecoration: "none",
+        margin: "auto",
     },
 }));
 
 const HomePage = () => {
-    const matches = useMediaQuery("(max-width:320px)");
-
     const classes = useStyles();
-    const [dadJoke, setDadJoke] = useState("");
-    const [error, setError] = useState(false);
-    const { recentLogin, user, setRecentLogin, recentLogout, setRecentLogout, displayName } = useContext(UserContext);
+    const { recentLogin, setRecentLogin, recentLogout, setRecentLogout, displayName } = useContext(UserContext);
 
     const handleClose = (event, reason) => {
         if (reason === "clickaway") {
             return;
         }
-        setError(false);
         setRecentLogin(false);
         setRecentLogout(false);
     };
 
-    const handleJoke = async () => {
-        try {
-            let joke = await getDadJoke();
-            setDadJoke(joke);
-        } catch (error) {
-            setError(true);
-        }
-    };
-
     useEffect(() => {
-        images.forEach((image) => (new Image().src = image));
         window.scrollTo(0, 0);
     }, []);
 
@@ -231,8 +182,16 @@ const HomePage = () => {
                     Log out successful. Have a good day!
                 </Alert>
             </Snackbar>
+            <div className={classes.section1} name="section1">
+                <Grid container direction="column" justify="space-evenly" alignItems="center">
+                    <div style={{ height: "100%", display: "flex", alignItems: "center" }}>
+                        <DisplayComic></DisplayComic>
+                    </div>
+
+                    <div name="latest_comic"></div>
+                </Grid>
+            </div>
             <div style={{ padding: "4px" }} name="top">
-                {/* <div className={classes.border}> */}
                 <div>
                     <Grid
                         className={classes.jumbotron}
@@ -242,94 +201,61 @@ const HomePage = () => {
                         alignItems="center"
                     >
                         <Grid item>
-                            <div style={{ position: "relative" }}>
-                                <div className={classes.speechBubbleContainer}>
-                                    <Typography
-                                        className={matches ? classes.verySmallScreens : classes.textTwo}
-                                        variant="caption"
-                                    >
-                                        {dadJoke ? (
-                                            dadJoke
-                                        ) : (
-                                            <>
-                                                Hi! I'm Grubby and this is my website, thanks for checking it out! You
-                                                can find my newest adventure every Monday and Wednesday, except during
-                                                2020. <br />
-                                                <br />
-                                                2020 can go to hell.{" "}
-                                                <span style={{ marginLeft: "9px" }}>Wear a mask.</span>
-                                            </>
-                                        )}
-                                    </Typography>
-                                </div>
-
-                                <div>
-                                    <CachedIcon className={classes.speechIcon} onClick={handleJoke}></CachedIcon>
-                                </div>
-                                <img
-                                    className={classes.speechBubbleImg}
-                                    src="https://grubbythegrape.sfo2.cdn.digitaloceanspaces.com/assets/assets/grubby_crop.png"
-                                    alt="Grubby with a speech bubble"
-                                ></img>
+                            <img
+                                src="https://grubbythegrape.sfo2.cdn.digitaloceanspaces.com/assets/assets/promo.jpg"
+                                alt="Grubby with his friends Richard and Dennis"
+                                className={classes.friends}
+                            />
+                        </Grid>
+                        <Grid item>
+                            <Typography variant="body1" component="div" className={classes.about} align="justify">
+                                Hi it’s me, the author, Ian. Some context, Grubby the Grape lives with his roommate
+                                Dennis and his best friend Richard who doesn’t live with them but does sleep in the
+                                guest bedroom. Grubby’s wacky Richard’s street smart and Dennis has a child. I update
+                                Grubby every Monday and Wednesday so stop on by and feel free to make an account where
+                                you can react using emojis or favorite comics to save em for later. BYE!
+                            </Typography>
+                            <Grid container direction="row" alignItems="center">
                                 <Link
-                                    activeClass="active"
-                                    to="latest_comic"
-                                    spy={true}
-                                    smooth={true}
-                                    offset={-70}
-                                    duration={500}
+                                    target="_blank"
+                                    href="https://twitter.com/TheFantasticIan"
+                                    rel="noreferrer"
+                                    color="inherit"
+                                    className={classes.twitterlink}
+                                >
+                                    <TwitterIcon className={classes.socialIcons}></TwitterIcon>
+                                </Link>
+                                <Link
+                                    target="_blank"
+                                    href="https://www.instagram.com/thefantastician/"
+                                    rel="noreferrer"
+                                    underline="none"
+                                    color="inherit"
+                                    className={classes.instagramlink}
+                                >
+                                    <InstagramIcon className={classes.socialIcons}></InstagramIcon>
+                                </Link>
+                                <Link
+                                    target="_blank"
+                                    href="https://ianportfoliolite.tumblr.com/"
+                                    rel="noreferrer"
+                                    underline="none"
+                                    color="inherit"
+                                    className={classes.tumblrlink}
                                 >
                                     <img
-                                        className={classes.starburst}
-                                        src="https://grubbythegrape.sfo2.cdn.digitaloceanspaces.com/assets/assets/starburst_caption_smaller.png"
-                                        alt="Comic Starburst"
-                                    ></img>
+                                        className={classes.authorImg}
+                                        src="https://grubbythegrape.sfo2.cdn.digitaloceanspaces.com/assets/assets/author.jpg"
+                                        alt="A cartoon of the author, Ian Mutchler"
+                                    />{" "}
                                 </Link>
-                            </div>
-                        </Grid>
-                        <Grid item className={classes.grid}>
-                            <Carousel
-                                autoPlay={true}
-                                interval={11000}
-                                animation="slide"
-                                // timeout={1000}
-                                timeout={{ appear: 300, enter: 300, exit: 0 }}
-                                navButtonsAlwaysInvisible={true}
-                                style={{ minHeight: "600px" }}
-                            >
-                                {images.map((image, i) => (
-                                    <img
-                                        key={i}
-                                        className={classes.colorImg}
-                                        src={image}
-                                        alt="Demo Grubby comic in carousel"
-                                    ></img>
-                                ))}
-                            </Carousel>
+                            </Grid>
                         </Grid>
                     </Grid>
                 </div>
             </div>
-            <div className={classes.section1} name="section1">
-                <Grid container direction="column" justify="space-evenly" alignItems="center">
-                    <Typography variant="h1" className={matches ? classes.comicFontSmall : classes.comicfont}>
-                        LATEST GRUBBY
-                    </Typography>
-                    <span>
-                        <DisplayComic></DisplayComic>
-                    </span>
-                    <div name="latest_comic"></div>
-                </Grid>
-            </div>
+
             <ScrollArrow></ScrollArrow>
-            <Snackbar open={error} autoHideDuration={3000} onClose={handleClose}>
-                <Alert onClose={handleClose} severity="error">
-                    Uh oh, something went wrong. Try again?
-                    <span role="img" aria-label="Smiling Face with sweat">
-                        😅
-                    </span>
-                </Alert>
-            </Snackbar>
         </div>
     );
 };

@@ -35,6 +35,7 @@ function UserProvider(props) {
 
     const login = useCallback((token) => {
         setToken(token);
+        handleLoading(false);
         setRecentLogout(false);
     }, []);
 
@@ -45,6 +46,16 @@ function UserProvider(props) {
         setUser(null);
         setFavorites([]);
         setRecentLogout(true);
+        localStorage.removeItem("_token");
+        history.push("/");
+    }, [history]);
+
+    const silentLogout = useCallback(() => {
+        setToken(null);
+        setAdmin(false);
+        setIsLoading(true);
+        setUser(null);
+        setFavorites([]);
         localStorage.removeItem("_token");
         history.push("/");
     }, [history]);
@@ -83,14 +94,14 @@ function UserProvider(props) {
                 return;
             } catch (error) {
                 if (error.status === 401) {
-                    logout();
+                    silentLogout();
                 }
                 handleLoading(false);
                 return;
             }
         }
         statusCheck();
-    }, [login, logout]);
+    }, [login, logout, silentLogout]);
 
     useEffect(() => {
         async function checkFavorites() {

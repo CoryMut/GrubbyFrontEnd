@@ -2,7 +2,6 @@
 
 import React, { useEffect, useContext } from "react";
 
-import ScrollArrow from "./ScrollArrow";
 import DisplayComic from "./DisplayComic";
 
 import { makeStyles } from "@material-ui/core/styles";
@@ -27,6 +26,7 @@ const useStyles = makeStyles((theme) => ({
         backgroundColor: "white",
         backgroundSize: "cover",
         padding: "10vh 0px",
+        borderTop: "1px solid black",
     },
     section1: {
         backgroundRepeat: "repeat",
@@ -93,7 +93,7 @@ const useStyles = makeStyles((theme) => ({
         fontSize: "40px",
     },
     friends: {
-        maxWidth: "100vw",
+        maxWidth: "80vw",
         userSelect: "none",
     },
     about: {
@@ -101,11 +101,12 @@ const useStyles = makeStyles((theme) => ({
         fontFamily: "comicfont",
         padding: "4vh",
         maxWidth: "100vw",
+        lineHeight: 1.7,
         [theme.breakpoints.down("md")]: {
             margin: "3rem 0",
         },
         [theme.breakpoints.down("sm")]: {
-            maxWidth: "80vw",
+            // maxWidth: "80vw",
             margin: "3rem 0",
         },
     },
@@ -191,7 +192,7 @@ const HomePage = () => {
                     <div name="latest_comic"></div>
                 </Grid>
             </div>
-            <div style={{ padding: "4px" }} name="top">
+            <div name="top">
                 <div>
                     <Grid
                         className={classes.jumbotron}
@@ -254,8 +255,6 @@ const HomePage = () => {
                     </Grid>
                 </div>
             </div>
-
-            <ScrollArrow></ScrollArrow>
         </div>
     );
 };

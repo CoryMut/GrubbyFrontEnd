@@ -38,14 +38,42 @@ const useStyles = makeStyles((theme) => ({
             flexDirection: "row",
         },
     },
+    transparent: {
+        opacity: 0,
+        border: "2px solid black",
+        width: "100%",
+        [theme.breakpoints.up("sm")]: {
+            maxWidth: "760px",
+        },
+        maxWidth: "760px",
+        margin: "0vh 1vw",
+        userSelect: "none",
+    },
 }));
 
-const Comic = ({ src, srcSet, id, chipData, setChipData, name, handleNextComic, handlePreviousComic, count }) => {
+const Comic = ({
+    src,
+    srcSet,
+    id,
+    chipData,
+    setChipData,
+    name,
+    handleNextComic,
+    handlePreviousComic,
+    count,
+    visible,
+    isLoading,
+}) => {
     const classes = useStyles();
 
     return (
         <div className={classes.flex}>
-            <img className={classes.comic} srcSet={srcSet} src={src} alt="Grubby Comic" />
+            <img
+                className={visible ? classes.comic : classes.transparent}
+                srcSet={srcSet}
+                src={src}
+                alt="Grubby Comic"
+            />
 
             <div className={classes.emojibar}>
                 <FavoriteButton orientation="left"></FavoriteButton>
@@ -56,6 +84,7 @@ const Comic = ({ src, srcSet, id, chipData, setChipData, name, handleNextComic, 
                     handleNextComic={handleNextComic}
                     handlePreviousComic={handlePreviousComic}
                     count={count}
+                    isLoading={isLoading}
                 ></GlobalEmojiBar>
                 <FavoriteButton orientation="right" comicID={id} name={name}></FavoriteButton>
             </div>

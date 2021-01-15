@@ -70,7 +70,7 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-function GlobalEmojiBar({ id, chipData, setChipData, count, handleNextComic, handlePreviousComic }) {
+function GlobalEmojiBar({ id, chipData, setChipData, count, handleNextComic, handlePreviousComic, isLoading }) {
     const classes = useStyles();
     const matches = useMediaQuery("(max-width:900px)");
 
@@ -78,7 +78,7 @@ function GlobalEmojiBar({ id, chipData, setChipData, count, handleNextComic, han
     const [reaction, setReaction] = useState("");
     const [error, setError] = useState(false);
 
-    const rightArrow = id === count ? classes.invisibleRight : classes.rightArrow;
+    const rightArrow = isLoading || id === count ? classes.invisibleRight : classes.rightArrow;
     const leftArrow = id === 1 ? classes.invisibleLeft : classes.leftArrow;
 
     const handleClick = async (newReaction) => {

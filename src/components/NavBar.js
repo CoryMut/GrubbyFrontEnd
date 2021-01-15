@@ -42,9 +42,6 @@ const useStyles = makeStyles((theme) => ({
     title: {
         flexGrow: 1,
         textAlign: "center",
-        // [theme.breakpoints.down("xs")]: {
-        //     textAlign: "inherit",
-        // },
         [theme.breakpoints.down("xs")]: {
             marginRight: "20px",
         },
@@ -53,8 +50,6 @@ const useStyles = makeStyles((theme) => ({
         textAlign: "none",
     },
     appBar: {
-        // color: "white",
-        // backgroundColor: "#816687",
         backgroundColor: "#645579",
         zIndex: theme.zIndex.drawer + 1,
         justifyContent: "center",

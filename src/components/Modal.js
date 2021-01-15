@@ -62,11 +62,7 @@ const TransitionsModal = ({ progress, handleClose, alert, isUploading, alertType
                 <Fade in={timeToOpen}>
                     <div className={classes.paper}>
                         {alert && <Alert severity={`${alertType}`}>{alert}</Alert>}
-                        {!alert && (
-                            <>
-                                <h2 id="transition-modal-title">Uploading Comic...</h2>
-                            </>
-                        )}
+                        {!alert && <h2 id="transition-modal-title">Uploading Comic...</h2>}
                         <div className={classes.flex}>
                             <div className={classes.progress}>
                                 <VisibilitySensor>

@@ -202,25 +202,6 @@ const AdminPortal = () => {
                     </div>
                 </div>
             )}
-            {/* <Snackbar open={success} autoHideDuration={6000} onClose={handleClose}>
-                <Alert onClose={handleClose} severity="success">
-                    <span role="img" aria-label="Popping confetti">
-                        🎉
-                    </span>
-                    Comic updated successfully!
-                    <span role="img" aria-label="Popping confetti">
-                        🎉
-                    </span>
-                </Alert>
-            </Snackbar> */}
-            {/* <Snackbar open={error} autoHideDuration={6000} onClose={handleClose}>
-                <Alert onClose={handleClose} severity="error">
-                    Uh oh, something went wrong. Try again?
-                    <span role="img" aria-label="Smiling Face with sweat">
-                        😅
-                    </span>
-                </Alert>
-            </Snackbar> */}
             <CustomSnackBar
                 open={success}
                 autoHideDuration={6000}

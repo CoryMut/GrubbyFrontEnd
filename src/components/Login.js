@@ -95,7 +95,7 @@ const Login = () => {
                     history.push("/");
                 }
             } catch (error) {
-                console.log(error);
+                console.error(error);
                 // let { message } = error;
                 // setError("Invalid Credentials");
                 setError(error);

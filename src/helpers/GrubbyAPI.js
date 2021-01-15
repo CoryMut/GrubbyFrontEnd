@@ -30,10 +30,8 @@ export async function loginUser(data) {
         return result.data;
     } catch (error) {
         console.error("API Error:", error.response);
-        console.log(error.response.data.error.message);
         // let message = error.response.data.message;
         let message = error.response.data.error.message;
-        console.log(message);
         throw message;
         // throw Array.isArray(message) ? message : [message];
     }
@@ -44,7 +42,6 @@ export async function logoutUser() {
         await axios.get(`${BASE_URL}/logout`, { withCredentials: true });
         return;
     } catch (error) {
-        console.error(error);
         return;
     }
 }
@@ -159,7 +156,6 @@ export async function getGlobalEmote(emotes, id) {
                 labels,
             },
         });
-        console.log(result);
         return result.data.emotes;
     } catch (error) {
         console.error("API Error:", error.response);
@@ -279,7 +275,7 @@ const saveToLocalStorage = (name, data) => {
         window.localStorage.setItem(name, data);
         return;
     } catch (error) {
-        console.log("error saving to local storage");
+        console.error("error saving to local storage");
         return;
     }
 };

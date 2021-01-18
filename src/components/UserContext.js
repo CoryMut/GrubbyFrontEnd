@@ -93,9 +93,9 @@ function UserProvider(props) {
                 handleLoading(false);
                 return;
             } catch (error) {
-                if (error.status === 401) {
-                    silentLogout();
-                }
+                // if (error.status === 401) {
+                silentLogout();
+                // }
                 handleLoading(false);
                 return;
             }

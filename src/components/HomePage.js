@@ -141,6 +141,9 @@ const useStyles = makeStyles((theme) => ({
         textDecoration: "none",
         margin: "auto",
     },
+    policy: {
+        cursor: "pointer",
+    },
 }));
 
 const HomePage = () => {
@@ -248,11 +251,16 @@ const HomePage = () => {
                                         className={classes.authorImg}
                                         src="https://grubbythegrape.sfo2.cdn.digitaloceanspaces.com/assets/assets/author.jpg"
                                         alt="A cartoon of the author, Ian Mutchler"
-                                    />{" "}
+                                    />
                                 </Link>
                             </Grid>
                         </Grid>
                     </Grid>
+                    <Link href="/privacy">
+                        <Typography variant="caption" component="div" className={classes.policy} align="center">
+                            Privacy Policy
+                        </Typography>
+                    </Link>
                 </div>
             </div>
         </div>

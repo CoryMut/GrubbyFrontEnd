@@ -2,7 +2,7 @@ import axios from "axios";
 
 const BASE_URL = process.env.REACT_APP_SERVER_URL || "http://localhost:5000";
 const CLIENT_ID = process.env.REACT_APP_CLIENT_ID || "something_secret_and_secure_for_clients";
-console.log(CLIENT_ID);
+
 axios.defaults.headers.common["Authorization"] = CLIENT_ID;
 
 export async function registerUser(data) {

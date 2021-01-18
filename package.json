@@ -33,7 +33,7 @@
         "yup": "^0.29.3"
     },
     "scripts": {
-        "start": "node server.js",
+        "start": "react-scripts start",
         "build": "react-scripts build",
         "test": "react-scripts test --coverage --watchAll",
         "eject": "react-scripts eject"

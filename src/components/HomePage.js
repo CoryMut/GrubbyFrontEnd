@@ -15,6 +15,7 @@ import { UserContext } from "../components/UserContext";
 import TwitterIcon from "@material-ui/icons/Twitter";
 import InstagramIcon from "@material-ui/icons/Instagram";
 import Link from "@material-ui/core/Link";
+import { Link as RRLink } from "react-router-dom";
 
 function Alert(props) {
     return <MuiAlert elevation={6} variant="filled" {...props} />;
@@ -98,7 +99,7 @@ const useStyles = makeStyles((theme) => ({
     },
     about: {
         width: "600px",
-        fontFamily: "comicfont",
+        fontFamily: "Helvetica",
         padding: "4vh",
         maxWidth: "100vw",
         lineHeight: 1.7,
@@ -212,12 +213,12 @@ const HomePage = () => {
                             />
                         </Grid>
                         <Grid item>
-                            <Typography variant="body1" component="div" className={classes.about} align="justify">
-                                Hi it’s me, the author, Ian. Some context, Grubby the Grape lives with his roommate
-                                Dennis and his best friend Richard who doesn’t live with them but does sleep in the
-                                guest bedroom. Grubby’s wacky Richard’s street smart and Dennis has a child. I update
-                                Grubby every Monday and Wednesday so stop on by and feel free to make an account where
-                                you can react using emojis or favorite comics to save em for later. BYE!
+                            <Typography variant="body1" component="div" className={classes.about} align="center">
+                                Hi it’s me, the author, Ian. <br /> Some context, Grubby the Grape lives with his
+                                roommate Dennis and his best friend Richard who doesn’t live with them but does sleep in
+                                the guest bedroom. Grubby’s wacky Richard’s street smart and Dennis has a child. I
+                                update Grubby every Monday and Wednesday so stop on by and feel free to make an account
+                                where you can react using emojis or favorite comics to save em for later. BYE!
                             </Typography>
                             <Grid container direction="row" alignItems="center">
                                 <Link
@@ -256,11 +257,11 @@ const HomePage = () => {
                             </Grid>
                         </Grid>
                     </Grid>
-                    <Link href="/privacy">
+                    <RRLink to="/privacy">
                         <Typography variant="caption" component="div" className={classes.policy} align="center">
                             Privacy Policy
                         </Typography>
-                    </Link>
+                    </RRLink>
                 </div>
             </div>
         </div>

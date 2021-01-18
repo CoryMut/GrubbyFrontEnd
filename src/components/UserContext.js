@@ -84,8 +84,11 @@ function UserProvider(props) {
                 const storedData = localStorage.getItem("_token");
 
                 login(storedData);
+                // if (!storedData) {
+                //     throw Error("No token");
+                // }
                 if (!storedData) {
-                    throw Error("No token");
+                    return;
                 }
                 let result = await checkTokenStatus(storedData);
                 handleUser(result.user, result.name);

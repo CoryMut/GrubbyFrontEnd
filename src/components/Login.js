@@ -185,7 +185,7 @@ const Login = () => {
                                     <TableRow>
                                         <TableCell className={classes.tableCellLeft}>Don't have an account?</TableCell>
                                         <TableCell className={classes.tableCellRight}>
-                                            <Button href="/signup" color="primary">
+                                            <Button component={Link} to="/signup" color="primary">
                                                 Signup
                                             </Button>
                                         </TableCell>

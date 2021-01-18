@@ -1,6 +1,6 @@
 import React, { useState, useContext } from "react";
 import { UserContext } from "./UserContext";
-import { useHistory, Redirect } from "react-router-dom";
+import { useHistory, Redirect, Link } from "react-router-dom";
 
 import { useFormik } from "formik";
 import * as Yup from "yup";
@@ -235,7 +235,7 @@ const Signup = () => {
                                     <TableRow>
                                         <TableCell className={classes.tableCellLeft}>Have an account?</TableCell>
                                         <TableCell className={classes.tableCellRight}>
-                                            <Button href="/login" color="primary">
+                                            <Button component={Link} to="/login" color="primary">
                                                 Login
                                             </Button>
                                         </TableCell>

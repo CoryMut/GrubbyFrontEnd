@@ -7,6 +7,8 @@ import Paper from "@material-ui/core/Paper";
 import ArrowBackIcon from "@material-ui/icons/ArrowBack";
 import ArrowForwardIcon from "@material-ui/icons/ArrowForward";
 import IconButton from "@material-ui/core/IconButton";
+import SkipNextIcon from "@material-ui/icons/SkipNext";
+import SkipPreviousIcon from "@material-ui/icons/SkipPrevious";
 
 import useMediaQuery from "@material-ui/core/useMediaQuery";
 
@@ -69,11 +71,14 @@ const useStyles = makeStyles((theme) => ({
         display: "flex",
     },
     arrow: {
-        fontSize: "2.5em",
+        fontSize: "1.5em",
     },
     random: {
         // flexGrow: 1,
         margin: "auto",
+    },
+    skipArrows: {
+        maxWidth: "60px",
     },
 }));
 
@@ -85,6 +90,8 @@ function GlobalEmojiBar({
     handleNextComic,
     handlePreviousComic,
     handleRandomComic,
+    handleFirstComic,
+    handleLastComic,
     isLoading,
     reaction,
     setReaction,
@@ -153,14 +160,20 @@ function GlobalEmojiBar({
     return (
         <div>
             <div className={matches ? classes.arrowWrapper : classes.hide}>
+                <IconButton onClick={handleFirstComic} className={matches ? leftArrow : classes.hide}>
+                    <SkipPreviousIcon className={classes.skipArrows} />
+                </IconButton>
                 <IconButton onClick={() => handlePreviousComic(id - 1)} className={matches ? leftArrow : classes.hide}>
                     <ArrowBackIcon className={classes.arrow} />
                 </IconButton>
                 <IconButton onClick={handleRandomComic} className={classes.random}>
                     <MobileRandomComicButton visible={matches ? true : false} />
                 </IconButton>
-                <IconButton className={matches ? rightArrow : classes.hide} onClick={() => handleNextComic(id + 1)}>
+                <IconButton onClick={() => handleNextComic(id + 1)} className={matches ? rightArrow : classes.hide}>
                     <ArrowForwardIcon className={classes.arrow} />
+                </IconButton>
+                <IconButton onClick={handleLastComic} className={matches ? rightArrow : classes.hide}>
+                    <SkipNextIcon />
                 </IconButton>
             </div>
             <ThemeProvider theme={theme}>

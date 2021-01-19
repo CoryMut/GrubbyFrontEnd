@@ -396,6 +396,8 @@ const DisplayComic = () => {
                         handleNextComic={handleNextComic}
                         handlePreviousComic={handlePreviousComic}
                         handleRandomComic={handleRandomComic}
+                        handleFirstComic={handleFirstComic}
+                        handleLastComic={handleLastComic}
                         count={count}
                         visible={false}
                         isLoading={isLoading}
@@ -414,6 +416,8 @@ const DisplayComic = () => {
                         handleNextComic={handleNextComic}
                         handlePreviousComic={handlePreviousComic}
                         handleRandomComic={handleRandomComic}
+                        handleFirstComic={handleFirstComic}
+                        handleLastComic={handleLastComic}
                         count={count}
                         visible={true}
                         reaction={reaction}

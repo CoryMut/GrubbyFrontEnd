@@ -84,6 +84,8 @@ const Comic = ({
     handleNextComic,
     handlePreviousComic,
     handleRandomComic,
+    handleFirstComic,
+    handleLastComic,
     count,
     visible,
     isLoading,
@@ -112,6 +114,8 @@ const Comic = ({
                     handleNextComic={handleNextComic}
                     handlePreviousComic={handlePreviousComic}
                     handleRandomComic={handleRandomComic}
+                    handleFirstComic={handleFirstComic}
+                    handleLastComic={handleLastComic}
                     count={count}
                     isLoading={isLoading}
                     reaction={reaction}

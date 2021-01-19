@@ -2,6 +2,7 @@ import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import GlobalEmojiBar from "../components/GlobalEmojiBar";
 import FavoriteButton from "../components/FavoriteButton";
+import RandomComicButton from "../components/RandomComicButton";
 
 const useStyles = makeStyles((theme) => ({
     comic: {
@@ -33,7 +34,7 @@ const useStyles = makeStyles((theme) => ({
             width: "100%",
             flexDirection: "column",
         },
-        [theme.breakpoints.up("lg")]: {
+        [theme.breakpoints.up("md")]: {
             width: "90%",
             flexDirection: "row",
         },
@@ -49,6 +50,28 @@ const useStyles = makeStyles((theme) => ({
         margin: "0vh 1vw",
         userSelect: "none",
     },
+    right: {
+        margin: "8px",
+        backgroundColor: "#FFFFFF",
+        width: "58px",
+
+        [theme.breakpoints.up("sm")]: {
+            marginRight: 0,
+        },
+        [theme.breakpoints.up("md")]: {
+            marginRight: 0,
+        },
+        [theme.breakpoints.down("md")]: {
+            margin: "8px auto 10px auto",
+            maxWidth: "72px",
+        },
+        [theme.breakpoints.up("lg")]: {
+            marginRight: "auto",
+        },
+        "&:hover": {
+            background: "rgb(234, 234, 234)",
+        },
+    },
 }));
 
 const Comic = ({
@@ -60,9 +83,13 @@ const Comic = ({
     name,
     handleNextComic,
     handlePreviousComic,
+    handleRandomComic,
     count,
     visible,
     isLoading,
+    reaction,
+    setReaction,
+    hideRandom,
 }) => {
     const classes = useStyles();
 
@@ -76,15 +103,19 @@ const Comic = ({
             />
 
             <div className={classes.emojibar}>
-                <FavoriteButton orientation="left"></FavoriteButton>
+                <RandomComicButton visible={hideRandom} handleRandomComic={handleRandomComic} />
+                {/* <FavoriteButton orientation="left"></FavoriteButton> */}
                 <GlobalEmojiBar
                     id={id}
                     chipData={chipData}
                     setChipData={setChipData}
                     handleNextComic={handleNextComic}
                     handlePreviousComic={handlePreviousComic}
+                    handleRandomComic={handleRandomComic}
                     count={count}
                     isLoading={isLoading}
+                    reaction={reaction}
+                    setReaction={setReaction}
                 ></GlobalEmojiBar>
                 <FavoriteButton orientation="right" comicID={id} name={name}></FavoriteButton>
             </div>

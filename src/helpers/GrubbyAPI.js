@@ -99,7 +99,7 @@ export async function getAllAdminComics() {
     }
 }
 
-export async function getPreviousComic(id) {
+export async function getComic(id) {
     try {
         let result = await axios.get(`${BASE_URL}/comic/${id}`);
         return result.data.comic;
@@ -270,6 +270,16 @@ export async function googleLogin(idToken) {
         console.error("API Error:", error.response);
         let message = error.response.data.message;
         throw Array.isArray(message) ? message : [message];
+    }
+}
+
+export async function getComicInfo(id) {
+    try {
+        let result = await axios.get(`${BASE_URL}/comic/${id}`);
+        return result.data.comic;
+    } catch (error) {
+        console.error("API Error:", error.response);
+        return;
     }
 }
 

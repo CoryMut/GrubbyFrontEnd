@@ -1,6 +1,5 @@
-import React, { useEffect, useState, useContext } from "react";
+import React, { useState, useContext } from "react";
 import { UserContext } from "./UserContext";
-import { getUserEmoteData } from "../helpers/GrubbyAPI";
 
 import { makeStyles, createMuiTheme, ThemeProvider } from "@material-ui/core/styles";
 import Chip from "@material-ui/core/Chip";
@@ -14,6 +13,8 @@ import useMediaQuery from "@material-ui/core/useMediaQuery";
 import { sendUserEmoteData, updateUserEmoteData, deleteReaction } from "../helpers/GrubbyAPI";
 
 import CustomSnackBar from "../components/CustomSnackBar";
+
+import MobileRandomComicButton from "../components/MobileRandomComicButton";
 
 const theme = createMuiTheme({
     palette: {
@@ -41,6 +42,7 @@ const useStyles = makeStyles((theme) => ({
     },
     chip: {
         margin: theme.spacing(0.5),
+        width: "60px",
     },
     leftArrow: {
         float: "left",
@@ -64,18 +66,33 @@ const useStyles = makeStyles((theme) => ({
         width: "100%",
         margin: "0.5vh 0",
         padding: theme.spacing(0.5),
+        display: "flex",
     },
     arrow: {
         fontSize: "2.5em",
     },
+    random: {
+        // flexGrow: 1,
+        margin: "auto",
+    },
 }));
 
-function GlobalEmojiBar({ id, chipData, setChipData, count, handleNextComic, handlePreviousComic, isLoading }) {
+function GlobalEmojiBar({
+    id,
+    chipData,
+    setChipData,
+    count,
+    handleNextComic,
+    handlePreviousComic,
+    handleRandomComic,
+    isLoading,
+    reaction,
+    setReaction,
+}) {
     const classes = useStyles();
     const matches = useMediaQuery("(max-width:900px)");
 
     const { user } = useContext(UserContext);
-    const [reaction, setReaction] = useState("");
     const [error, setError] = useState(false);
 
     const rightArrow = isLoading || id === count ? classes.invisibleRight : classes.rightArrow;
@@ -133,31 +150,14 @@ function GlobalEmojiBar({ id, chipData, setChipData, count, handleNextComic, han
         setError(false);
     };
 
-    useEffect(() => {
-        async function getEmoteData() {
-            try {
-                if (user) {
-                    if (id === null) {
-                        return;
-                    }
-                    let result = await getUserEmoteData(id, user);
-                    setReaction(() => result);
-                } else {
-                    // setReaction(() => "");
-                    return;
-                }
-            } catch (error) {
-                return;
-            }
-        }
-        getEmoteData();
-    }, [user, id]);
-
     return (
         <div>
             <div className={matches ? classes.arrowWrapper : classes.hide}>
                 <IconButton onClick={() => handlePreviousComic(id - 1)} className={matches ? leftArrow : classes.hide}>
                     <ArrowBackIcon className={classes.arrow} />
+                </IconButton>
+                <IconButton onClick={handleRandomComic} className={classes.random}>
+                    <MobileRandomComicButton visible={matches ? true : false} />
                 </IconButton>
                 <IconButton className={matches ? rightArrow : classes.hide} onClick={() => handleNextComic(id + 1)}>
                     <ArrowForwardIcon className={classes.arrow} />
@@ -174,10 +174,19 @@ function GlobalEmojiBar({ id, chipData, setChipData, count, handleNextComic, han
                                             avatar={
                                                 <span
                                                     role="img"
-                                                    style={{ fontSize: "1rem", backgroundColor: "transparent" }}
+                                                    style={{
+                                                        fontSize: "1rem",
+                                                        backgroundColor: "transparent",
+                                                        marginRight: "0 !important",
+                                                        marginBottom: "5px",
+                                                    }}
                                                     aria-labelledby={data.label}
                                                 >
-                                                    {data.icon}
+                                                    <img
+                                                        src={data.icon}
+                                                        style={{ width: "24px", height: "24px" }}
+                                                        alt={data.label}
+                                                    />
                                                 </span>
                                             }
                                             label={data.count}

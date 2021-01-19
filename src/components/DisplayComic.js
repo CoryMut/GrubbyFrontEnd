@@ -91,31 +91,36 @@ const DisplayComic = () => {
         {
             key: 0,
             label: "Laughing",
-            icon: "https://grubbythegrape.sfo2.cdn.digitaloceanspaces.com/assets/assets/Emoji1_24x24.png",
+            icon:
+                "https://grubbythegrape.sfo2.cdn.digitaloceanspaces.com/assets/assets/Emoji1_24x24.png 1x, https://grubbythegrape.sfo2.cdn.digitaloceanspaces.com/assets/assets/Emoji1_48x48.png 2x",
             count: 0,
         },
         {
             key: 1,
             label: "Clapping",
-            icon: "https://grubbythegrape.sfo2.cdn.digitaloceanspaces.com/assets/assets/Emoji2_24x24.png",
+            icon:
+                "https://grubbythegrape.sfo2.cdn.digitaloceanspaces.com/assets/assets/Emoji2_24x24.png 1x, https://grubbythegrape.sfo2.cdn.digitaloceanspaces.com/assets/assets/Emoji2_48x48.png 2x",
             count: 0,
         },
         {
             key: 2,
             label: "ROFL",
-            icon: "https://grubbythegrape.sfo2.cdn.digitaloceanspaces.com/assets/assets/Emoji3_24x24.png",
+            icon:
+                "https://grubbythegrape.sfo2.cdn.digitaloceanspaces.com/assets/assets/Emoji3_24x24.png 1x, https://grubbythegrape.sfo2.cdn.digitaloceanspaces.com/assets/assets/Emoji3_48x48.png 2x",
             count: 0,
         },
         {
             key: 3,
             label: "Grinning",
-            icon: "https://grubbythegrape.sfo2.cdn.digitaloceanspaces.com/assets/assets/Emoji4_24x24.png",
+            icon:
+                "https://grubbythegrape.sfo2.cdn.digitaloceanspaces.com/assets/assets/Emoji4_24x24.png 1x, https://grubbythegrape.sfo2.cdn.digitaloceanspaces.com/assets/assets/Emoji4_48x48.png 2x",
             count: 0,
         },
         {
             key: 4,
             label: "Clown",
-            icon: "https://grubbythegrape.sfo2.cdn.digitaloceanspaces.com/assets/assets/Emoji5_24x24.png",
+            icon:
+                "https://grubbythegrape.sfo2.cdn.digitaloceanspaces.com/assets/assets/Emoji5_24x24.png 1x, https://grubbythegrape.sfo2.cdn.digitaloceanspaces.com/assets/assets/Emoji5_48x48.png 2x",
             count: 0,
         },
     ]);
@@ -270,11 +275,15 @@ const DisplayComic = () => {
 
     useEffect(() => {
         async function getFirstComic(id) {
-            let firstComicInfo = await getComic(id);
-            let { name } = firstComicInfo;
-            let srcSet = makeSrcSet(name);
-            new Image().setAttribute("srcset", srcSet);
-            setFirstComic(() => ({ ...firstComicInfo }));
+            try {
+                let firstComicInfo = await getComic(id);
+                let { name } = firstComicInfo;
+                let srcSet = makeSrcSet(name);
+                new Image().setAttribute("srcset", srcSet);
+                setFirstComic(() => ({ ...firstComicInfo }));
+            } catch (error) {
+                return;
+            }
         }
 
         getFirstComic(1);
@@ -302,15 +311,19 @@ const DisplayComic = () => {
 
     useEffect(() => {
         async function preloadNextComic(id) {
-            let preloadNextComic = await getComic(id);
-            let { name } = preloadNextComic;
-            let srcSet = makeSrcSet(name);
-            new Image().setAttribute("srcset", srcSet);
-            visitedComics[id] = { ...preloadNextComic };
-            setVisitedComics(() => ({
-                ...visitedComics,
-            }));
-            setNextComic(() => ({ ...preloadNextComic }));
+            try {
+                let preloadNextComic = await getComic(id);
+                let { name } = preloadNextComic;
+                let srcSet = makeSrcSet(name);
+                new Image().setAttribute("srcset", srcSet);
+                visitedComics[id] = { ...preloadNextComic };
+                setVisitedComics(() => ({
+                    ...visitedComics,
+                }));
+                setNextComic(() => ({ ...preloadNextComic }));
+            } catch (error) {
+                return;
+            }
         }
         if (!visitedComics[comicID + 1] && count !== null && comicID !== count) {
             preloadNextComic(comicID + 1);
@@ -319,25 +332,29 @@ const DisplayComic = () => {
 
     useEffect(() => {
         async function preloadRandomComic(id) {
-            let preloadComic = await getComic(id);
-            let { name } = preloadComic;
-            let srcSet = makeSrcSet(name);
-            new Image().setAttribute("srcset", srcSet);
-            visitedComics[id] = { ...preloadComic };
-            setVisitedComics(() => ({
-                ...visitedComics,
-            }));
-            setUsedRandom(() => false);
-            setRandomComic(() => ({ ...preloadComic }));
+            try {
+                let preloadComic = await getComic(id);
+                let { name } = preloadComic;
+                let srcSet = makeSrcSet(name);
+                new Image().setAttribute("srcset", srcSet);
+                visitedComics[id] = { ...preloadComic };
+                setVisitedComics(() => ({
+                    ...visitedComics,
+                }));
+                setUsedRandom(() => false);
+                setRandomComic(() => ({ ...preloadComic }));
+            } catch (error) {
+                return;
+            }
         }
         let randomNumber;
         if (count !== 0 && count !== null && count !== undefined && usedRandom === true) {
-            randomNumber = Math.floor(Math.random() * count);
+            randomNumber = Math.floor(Math.random() * count + 1);
             if (randomNumber !== comicID) {
                 preloadRandomComic(randomNumber);
             }
         }
-    }, [count, usedRandom]);
+    }, [count, usedRandom, visitedComics, comicID]);
 
     if (unavailable && !isLoading) {
         return (

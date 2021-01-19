@@ -183,7 +183,7 @@ function GlobalEmojiBar({
                                                     aria-labelledby={data.label}
                                                 >
                                                     <img
-                                                        src={data.icon}
+                                                        srcSet={data.icon}
                                                         style={{ width: "24px", height: "24px" }}
                                                         alt={data.label}
                                                     />

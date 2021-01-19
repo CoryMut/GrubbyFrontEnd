@@ -90,12 +90,14 @@ const useStyles = makeStyles((theme) => ({
         "&:hover": {
             color: "white",
         },
+        [theme.breakpoints.down("sm")]: {
+            display: "none",
+        },
     },
 }));
 
 const NavBar = () => {
     const matches = useMediaQuery("(max-width:320px)");
-    const hideButton = useMediaQuery("(max-width:700px)");
 
     const classes = useStyles();
     const { isLoggedIn, logout, isAdmin } = useContext(UserContext);
@@ -125,12 +127,12 @@ const NavBar = () => {
                     <Typography variant="h6" className={matches ? classes.centerTitle : classes.title}>
                         <Logo></Logo>
                     </Typography>
-                    {!isLoggedIn && !hideButton && (
+                    {!isLoggedIn && (
                         <Button component={Link} to="/login" className={classes.button}>
                             Login
                         </Button>
                     )}
-                    {isLoggedIn && !hideButton && (
+                    {isLoggedIn && (
                         <Button onClick={handleLogout} className={classes.button}>
                             Logout
                         </Button>

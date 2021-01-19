@@ -216,7 +216,7 @@ const HomePage = () => {
                             <Typography variant="body1" component="div" className={classes.about} align="center">
                                 Hi it’s me, the author, Ian. <br /> Some context, Grubby the Grape lives with his
                                 roommate Dennis and his best friend Richard who doesn’t live with them but does sleep in
-                                the guest bedroom. Grubby’s wacky Richard’s street smart and Dennis has a child. I
+                                the guest bedroom. Grubby’s wacky, Richard’s street smart, and Dennis has a child. I
                                 update Grubby every Monday and Wednesday so stop on by and feel free to make an account
                                 where you can react using emojis or favorite comics to save em for later. BYE!
                             </Typography>

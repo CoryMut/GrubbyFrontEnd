@@ -1,6 +1,8 @@
 import React, { useEffect, useState, useCallback, useContext } from "react";
-import Comic from "./Comic";
+import { useHistory, useLocation } from "react-router-dom";
 import { getLatestComic, getComic, getUserEmoteData, getGlobalEmote } from "../helpers/GrubbyAPI";
+
+import Comic from "./Comic";
 
 import { makeStyles, createMuiTheme, ThemeProvider } from "@material-ui/core/styles";
 import useMediaQuery from "@material-ui/core/useMediaQuery";
@@ -76,8 +78,15 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
+function useQuery() {
+    return new URLSearchParams(useLocation().search);
+}
+
 const DisplayComic = () => {
     const classes = useStyles();
+    const history = useHistory();
+    const query = useQuery();
+    const searchParam = query.get("c");
     const matches = useMediaQuery("(max-width:900px)"); //900
     const { user } = useContext(UserContext);
 
@@ -86,6 +95,7 @@ const DisplayComic = () => {
     const [comicID, setComicID] = useState(0);
     const [name, setName] = useState("");
     const [count, setCount] = useState(null);
+    const [requestedComic, setRequestedComic] = useState(searchParam);
 
     const [chipData, setChipData] = useState([
         {
@@ -139,6 +149,7 @@ const DisplayComic = () => {
 
     const [isLoading, setIsLoading] = useState(true);
     const [unavailable, setUnavailable] = useState(false);
+    const [getRandom, setGetRandom] = useState(false);
 
     const [firstComic, setFirstComic] = useState({});
     const [lastComic, setLastComic] = useState({});
@@ -160,7 +171,7 @@ const DisplayComic = () => {
             setVisitedComics(() => ({
                 ...visitedComics,
             }));
-            comicSwitch(prevComic);
+            comicSwitch(prevComic, count);
         } catch (error) {
             return;
         }
@@ -184,13 +195,13 @@ const DisplayComic = () => {
                 //         count: +result[data.label],
                 //     }))
                 // );
-                comicSwitch(visitedComics[id]);
+                comicSwitch(visitedComics[id], count);
             } else {
                 visitedComics[comicID] = { comic_id: comicID, name: name, emotes: { ...emoteData } };
                 setVisitedComics(() => ({
                     ...visitedComics,
                 }));
-                comicSwitch(nextComic);
+                comicSwitch(nextComic, count);
             }
 
             // comicSwitch(visitedComics[id], emoteData);
@@ -200,34 +211,41 @@ const DisplayComic = () => {
     };
 
     const handleFirstComic = () => {
-        comicSwitch(firstComic);
+        comicSwitch(firstComic, count);
     };
 
     const handleLastComic = () => {
-        comicSwitch(lastComic);
+        comicSwitch(lastComic, count);
     };
 
     const handleRandomComic = () => {
-        comicSwitch(randomComic);
+        comicSwitch(randomComic, count);
         setUsedRandom(() => true);
     };
 
-    const comicSwitch = useCallback((data) => {
-        let { name, comic_id, emotes } = data;
-        setComicID(comic_id);
-        setName(name);
-        setSrc(() => `${CDN}/800/${name}`);
-        let newSrcSet = makeSrcSet(name);
-        setSrcSet(() => newSrcSet);
-
-        setEmoteData(() => ({ ...emotes }));
-        setChipData((chipData) =>
-            chipData.map((data) => ({
-                ...data,
-                count: +emotes[data.label],
-            }))
-        );
-    }, []);
+    const comicSwitch = useCallback(
+        (data, unofficialCount = -1) => {
+            let { name, comic_id, emotes } = data;
+            setComicID(comic_id);
+            setName(name);
+            setSrc(() => `${CDN}/800/${name}`);
+            let newSrcSet = makeSrcSet(name);
+            setSrcSet(() => newSrcSet);
+            setEmoteData(() => ({ ...emotes }));
+            setChipData((chipData) =>
+                chipData.map((data) => ({
+                    ...data,
+                    count: +emotes[data.label],
+                }))
+            );
+            if (comic_id !== unofficialCount) {
+                history.replace(`?c=${comic_id}`);
+            } else {
+                history.replace("/");
+            }
+        },
+        [history]
+    );
 
     useEffect(() => {
         async function getComic() {
@@ -235,9 +253,9 @@ const DisplayComic = () => {
                 let result = await getLatestComic();
                 let { name } = result;
                 new Image().src = `${CDN}/800/${name}`;
-                comicSwitch(result);
                 let { comic_id } = result;
                 setCount(() => comic_id);
+                comicSwitch(result, comic_id);
                 setIsLoading(() => false);
                 setLastComic(() => ({ ...result }));
             } catch (error) {
@@ -246,8 +264,9 @@ const DisplayComic = () => {
                 return;
             }
         }
-
-        getComic();
+        if (!requestedComic) {
+            getComic();
+        }
     }, [comicSwitch]);
 
     useEffect(() => {
@@ -325,7 +344,7 @@ const DisplayComic = () => {
                 return;
             }
         }
-        if (!visitedComics[comicID + 1] && count !== null && comicID !== count) {
+        if (!visitedComics[comicID + 1] && count !== null && comicID !== count && !requestedComic) {
             preloadNextComic(comicID + 1);
         }
     }, [comicID, visitedComics, count]);
@@ -348,13 +367,42 @@ const DisplayComic = () => {
             }
         }
         let randomNumber;
-        if (count !== 0 && count !== null && count !== undefined && usedRandom === true) {
+        // count !== 0 && count !== null && count !== undefined && usedRandom === true && !requestedComic
+        // count, usedRandom, visitedComics, comicID, requestedComic
+        if (getRandom) {
             randomNumber = Math.floor(Math.random() * count + 1);
             if (randomNumber !== comicID) {
                 preloadRandomComic(randomNumber);
             }
         }
-    }, [count, usedRandom, visitedComics, comicID]);
+    }, [getRandom]);
+
+    useEffect(() => {
+        async function handleQuery() {
+            try {
+                let request = await getComic(requestedComic);
+                let { name } = request;
+                let srcSet = makeSrcSet(name);
+                new Image().setAttribute("srcset", srcSet);
+                comicSwitch(request, count);
+                setIsLoading(() => false);
+                setRequestedComic(() => false);
+                let result = await getLatestComic();
+                let lastComicName = result.name;
+                let srcSet2 = makeSrcSet(lastComicName);
+                new Image().setAttribute("srcset", srcSet2);
+                let { comic_id } = result;
+                setCount(() => comic_id);
+                setLastComic(() => ({ ...result }));
+                setGetRandom(() => true);
+            } catch (error) {
+                return;
+            }
+        }
+        if (requestedComic) {
+            handleQuery();
+        }
+    }, [requestedComic]);
 
     if (unavailable && !isLoading) {
         return (

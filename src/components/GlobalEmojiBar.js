@@ -92,9 +92,14 @@ function GlobalEmojiBar({
     handleRandomComic,
     handleFirstComic,
     handleLastComic,
+    handleError,
     isLoading,
     reaction,
     setReaction,
+    randomComic,
+    prevComic,
+    firstComic,
+    lastComic,
 }) {
     const classes = useStyles();
     const matches = useMediaQuery("(max-width:900px)");
@@ -160,19 +165,34 @@ function GlobalEmojiBar({
     return (
         <div>
             <div className={matches ? classes.arrowWrapper : classes.hide}>
-                <IconButton onClick={handleFirstComic} className={matches ? leftArrow : classes.hide}>
+                <IconButton
+                    onClick={() => (Object.keys(firstComic).length !== 0 ? handleFirstComic() : handleError())}
+                    className={matches ? leftArrow : classes.hide}
+                >
                     <SkipPreviousIcon className={classes.skipArrows} />
                 </IconButton>
-                <IconButton onClick={() => handlePreviousComic(id - 1)} className={matches ? leftArrow : classes.hide}>
+                <IconButton
+                    onClick={() => (Object.keys(prevComic).length !== 0 ? handlePreviousComic(id - 1) : handleError())}
+                    className={matches ? leftArrow : classes.hide}
+                >
                     <ArrowBackIcon className={classes.arrow} />
                 </IconButton>
-                <IconButton onClick={handleRandomComic} className={classes.random}>
+                <IconButton
+                    onClick={Object.keys(randomComic).length !== 0 ? handleRandomComic : handleError}
+                    className={classes.random}
+                >
                     <MobileRandomComicButton visible={matches ? true : false} />
                 </IconButton>
-                <IconButton onClick={() => handleNextComic(id + 1)} className={matches ? rightArrow : classes.hide}>
+                <IconButton
+                    onClick={() => (Object.keys(prevComic).length !== 0 ? handleNextComic(id + 1) : handleError())}
+                    className={matches ? rightArrow : classes.hide}
+                >
                     <ArrowForwardIcon className={classes.arrow} />
                 </IconButton>
-                <IconButton onClick={handleLastComic} className={matches ? rightArrow : classes.hide}>
+                <IconButton
+                    onClick={() => (Object.keys(firstComic).length !== 0 ? handleLastComic() : handleError())}
+                    className={matches ? rightArrow : classes.hide}
+                >
                     <SkipNextIcon />
                 </IconButton>
             </div>

@@ -19,6 +19,9 @@ import noAccessData from "../lotties/no-access.json";
 
 import { UserContext } from "./UserContext";
 
+import CustomSnackBar from "../components/CustomSnackBar";
+import Alert from "@material-ui/lab/Alert";
+
 const CDN = process.env.REACT_APP_CDN;
 
 const makeSrcSet = (name) => {
@@ -134,13 +137,6 @@ const DisplayComic = () => {
             count: 0,
         },
     ]);
-    // const [chipData, setChipData] = useState([
-    //     { key: 0, label: "Laughing", icon: "😂", count: 0 },
-    //     { key: 1, label: "Clapping", icon: "👏", count: 0 },
-    //     { key: 2, label: "ROFL", icon: "🤣", count: 0 },
-    //     { key: 3, label: "Grinning", icon: "😄", count: 0 },
-    //     { key: 4, label: "Clown", icon: "🤡", count: 0 },
-    // ]);
 
     const [prevComic, setPrevComic] = useState({});
     const [nextComic, setNextComic] = useState({});
@@ -155,11 +151,31 @@ const DisplayComic = () => {
     const [lastComic, setLastComic] = useState({});
     const [randomComic, setRandomComic] = useState({});
     const [usedRandom, setUsedRandom] = useState(true);
+    const [requestComplete, setRequestComplete] = useState(false);
 
     const [reaction, setReaction] = useState("");
+    const [error, setError] = useState(false);
+    const [emoteError, setEmoteError] = useState(false);
 
     const rightArrow = isLoading || comicID === count ? classes.invisible : classes.arrow;
     const leftArrow = comicID === 1 ? classes.invisible : classes.arrow;
+
+    const handleClose = (event, reason) => {
+        if (reason === "clickaway") {
+            return;
+        }
+
+        setError(false);
+        setEmoteError(() => false);
+    };
+
+    const handleError = () => {
+        setError(() => true);
+    };
+
+    const handleEmoteError = () => {
+        setEmoteError(() => true);
+    };
 
     const handlePreviousComic = async (id) => {
         try {
@@ -189,12 +205,7 @@ const DisplayComic = () => {
                     ...visitedComics,
                 }));
                 setEmoteData(() => ({ ...result }));
-                // setChipData((chipData) =>
-                //     chipData.map((data) => ({
-                //         ...data,
-                //         count: +result[data.label],
-                //     }))
-                // );
+
                 comicSwitch(visitedComics[id], count);
             } else {
                 visitedComics[comicID] = { comic_id: comicID, name: name, emotes: { ...emoteData } };
@@ -203,8 +214,6 @@ const DisplayComic = () => {
                 }));
                 comicSwitch(nextComic, count);
             }
-
-            // comicSwitch(visitedComics[id], emoteData);
         } catch (error) {
             return;
         }
@@ -258,6 +267,7 @@ const DisplayComic = () => {
                 comicSwitch(result, comic_id);
                 setIsLoading(() => false);
                 setLastComic(() => ({ ...result }));
+                setGetRandom(() => true);
             } catch (error) {
                 setUnavailable(() => true);
                 setIsLoading(() => false);
@@ -267,7 +277,7 @@ const DisplayComic = () => {
         if (!requestedComic) {
             getComic();
         }
-    }, [comicSwitch]);
+    }, [comicSwitch, requestedComic]);
 
     useEffect(() => {
         async function preload(id) {
@@ -315,13 +325,13 @@ const DisplayComic = () => {
                     if (id === null || id === undefined || id === 0) {
                         return;
                     }
-
                     let result = await getUserEmoteData(id, user);
                     setReaction(() => result);
                 } else {
                     return;
                 }
             } catch (error) {
+                handleEmoteError();
                 return;
             }
         }
@@ -344,14 +354,15 @@ const DisplayComic = () => {
                 return;
             }
         }
-        if (!visitedComics[comicID + 1] && count !== null && comicID !== count && !requestedComic) {
+        if (!visitedComics[comicID + 1] && count !== null && comicID !== count) {
             preloadNextComic(comicID + 1);
         }
-    }, [comicID, visitedComics, count]);
+    }, [comicID, visitedComics, count, requestedComic]);
 
     useEffect(() => {
         async function preloadRandomComic(id) {
             try {
+                setUsedRandom(() => false);
                 let preloadComic = await getComic(id);
                 let { name } = preloadComic;
                 let srcSet = makeSrcSet(name);
@@ -360,33 +371,32 @@ const DisplayComic = () => {
                 setVisitedComics(() => ({
                     ...visitedComics,
                 }));
-                setUsedRandom(() => false);
+
                 setRandomComic(() => ({ ...preloadComic }));
             } catch (error) {
                 return;
             }
         }
         let randomNumber;
-        // count !== 0 && count !== null && count !== undefined && usedRandom === true && !requestedComic
-        // count, usedRandom, visitedComics, comicID, requestedComic
-        if (getRandom) {
+
+        if (getRandom === true && usedRandom === true) {
             randomNumber = Math.floor(Math.random() * count + 1);
             if (randomNumber !== comicID) {
                 preloadRandomComic(randomNumber);
             }
         }
-    }, [getRandom]);
+    }, [getRandom, usedRandom, comicID, count, visitedComics]);
 
     useEffect(() => {
         async function handleQuery() {
             try {
                 let request = await getComic(requestedComic);
+                setRequestComplete(() => true);
                 let { name } = request;
                 let srcSet = makeSrcSet(name);
                 new Image().setAttribute("srcset", srcSet);
                 comicSwitch(request, count);
                 setIsLoading(() => false);
-                setRequestedComic(() => false);
                 let result = await getLatestComic();
                 let lastComicName = result.name;
                 let srcSet2 = makeSrcSet(lastComicName);
@@ -396,13 +406,17 @@ const DisplayComic = () => {
                 setLastComic(() => ({ ...result }));
                 setGetRandom(() => true);
             } catch (error) {
+                setRequestedComic(() => false);
                 return;
             }
         }
-        if (requestedComic) {
+
+        if (requestedComic === "undefined" || Number.isNaN(Number(requestedComic))) {
+            setRequestedComic(() => false);
+        } else if (requestedComic && requestComplete === false) {
             handleQuery();
         }
-    }, [requestedComic]);
+    }, [requestedComic, comicSwitch, count, requestComplete]);
 
     if (unavailable && !isLoading) {
         return (
@@ -421,69 +435,111 @@ const DisplayComic = () => {
 
     return (
         <ThemeProvider theme={theme}>
-            <div className={classes.comicWrapper}>
-                <div style={{ display: "flex", flexDirection: "column" }}>
-                    <IconButton
-                        onClick={() => handlePreviousComic(comicID - 1)}
-                        className={matches ? classes.hide : leftArrow}
+            <div style={{ display: "flex", flexDirection: "column" }}>
+                {emoteError && (
+                    <Alert
+                        onClose={() => handleClose()}
+                        style={{ maxWidth: "100vw", marginBottom: "10px" }}
+                        severity="error"
                     >
-                        <ArrowBackIcon color="primary" />
-                    </IconButton>
-                    <IconButton onClick={handleFirstComic} className={matches ? classes.hide : leftArrow}>
-                        <SkipPreviousIcon color="primary" />
-                    </IconButton>
-                </div>
-                {isLoading && !unavailable && (
-                    <Comic
-                        src={src}
-                        // srcSet={srcSet}
-                        id={comicID}
-                        chipData={chipData}
-                        setChipData={setChipData}
-                        name={name}
-                        handleNextComic={handleNextComic}
-                        handlePreviousComic={handlePreviousComic}
-                        handleRandomComic={handleRandomComic}
-                        handleFirstComic={handleFirstComic}
-                        handleLastComic={handleLastComic}
-                        count={count}
-                        visible={false}
-                        isLoading={isLoading}
-                        reaction={reaction}
-                        setReaction={setReaction}
-                    ></Comic>
+                        There was a problem getting your reaction info. Try refreshing?
+                    </Alert>
                 )}
-                {!isLoading && !unavailable && (
-                    <Comic
-                        src={src}
-                        srcSet={srcSet}
-                        id={comicID}
-                        chipData={chipData}
-                        setChipData={setChipData}
-                        name={name}
-                        handleNextComic={handleNextComic}
-                        handlePreviousComic={handlePreviousComic}
-                        handleRandomComic={handleRandomComic}
-                        handleFirstComic={handleFirstComic}
-                        handleLastComic={handleLastComic}
-                        count={count}
-                        visible={true}
-                        reaction={reaction}
-                        setReaction={setReaction}
-                        hideRandom={matches ? false : true}
-                    ></Comic>
-                )}
-                <div style={{ display: "flex", flexDirection: "column" }}>
-                    <IconButton
-                        onClick={() => handleNextComic(comicID + 1)}
-                        className={matches ? classes.hide : rightArrow}
-                    >
-                        <ArrowForwardIcon color="primary" />
-                    </IconButton>
-                    <IconButton onClick={handleLastComic} className={matches ? classes.hide : rightArrow}>
-                        <SkipNextIcon color="primary" />
-                    </IconButton>
+                <div className={classes.comicWrapper}>
+                    <div style={{ display: "flex", flexDirection: "column" }}>
+                        <IconButton
+                            onClick={() =>
+                                Object.keys(prevComic).length !== 0 ? handlePreviousComic(comicID - 1) : handleError()
+                            }
+                            className={matches ? classes.hide : leftArrow}
+                        >
+                            <ArrowBackIcon color="primary" />
+                        </IconButton>
+                        <IconButton
+                            onClick={() => (Object.keys(firstComic).length !== 0 ? handleFirstComic() : handleError())}
+                            className={matches ? classes.hide : leftArrow}
+                        >
+                            <SkipPreviousIcon color="primary" />
+                        </IconButton>
+                    </div>
+                    {isLoading && !unavailable && (
+                        <Comic
+                            src={src}
+                            // srcSet={srcSet}
+                            id={comicID}
+                            chipData={chipData}
+                            setChipData={setChipData}
+                            name={name}
+                            handleNextComic={handleNextComic}
+                            handlePreviousComic={handlePreviousComic}
+                            handleRandomComic={handleRandomComic}
+                            handleFirstComic={handleFirstComic}
+                            handleLastComic={handleLastComic}
+                            count={count}
+                            visible={false}
+                            isLoading={isLoading}
+                            reaction={reaction}
+                            setReaction={setReaction}
+                            randomComic={randomComic}
+                            prevComic={prevComic}
+                            nextComic={nextComic}
+                            firstComic={firstComic}
+                            lastComic={lastComic}
+                        ></Comic>
+                    )}
+                    {!isLoading && !unavailable && (
+                        <Comic
+                            src={src}
+                            srcSet={srcSet}
+                            id={comicID}
+                            chipData={chipData}
+                            setChipData={setChipData}
+                            name={name}
+                            handleNextComic={handleNextComic}
+                            handlePreviousComic={handlePreviousComic}
+                            handleRandomComic={handleRandomComic}
+                            handleFirstComic={handleFirstComic}
+                            handleLastComic={handleLastComic}
+                            handleError={handleError}
+                            count={count}
+                            visible={true}
+                            reaction={reaction}
+                            setReaction={setReaction}
+                            hideRandom={matches ? false : true}
+                            randomComic={randomComic}
+                            prevComic={prevComic}
+                            nextComic={nextComic}
+                            firstComic={firstComic}
+                            lastComic={lastComic}
+                        ></Comic>
+                    )}
+                    <div style={{ display: "flex", flexDirection: "column" }}>
+                        <IconButton
+                            onClick={() =>
+                                Object.keys(prevComic).length !== 0 ? handleNextComic(comicID + 1) : handleError()
+                            }
+                            className={matches ? classes.hide : rightArrow}
+                        >
+                            <ArrowForwardIcon color="primary" />
+                        </IconButton>
+                        <IconButton
+                            onClick={() => (Object.keys(firstComic).length !== 0 ? handleLastComic() : handleError())}
+                            className={matches ? classes.hide : rightArrow}
+                        >
+                            <SkipNextIcon color="primary" />
+                        </IconButton>
+                    </div>
                 </div>
+                <CustomSnackBar
+                    open={error}
+                    autoHideDuration={6000}
+                    onClose={handleClose}
+                    severity="error"
+                    emoji="😔"
+                    emojiLabel="Pensive Face"
+                    message="There was a problem getting comic info. Try refreshing?"
+                    encloseMessage={false}
+                ></CustomSnackBar>
             </div>
         </ThemeProvider>
     );

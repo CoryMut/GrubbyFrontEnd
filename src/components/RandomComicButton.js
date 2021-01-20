@@ -28,25 +28,11 @@ const useStyles = makeStyles((theme) => ({
     hidden: {
         display: "none",
     },
-    mobile: {
-        margin: "auto",
-        flexGrow: 1,
-        maxWidth: "58px",
-    },
 }));
 
-const RandomComicButton = ({ visible, mobile, handleRandomComic }) => {
+const RandomComicButton = ({ visible, handleRandomComic, randomComic, handleError }) => {
     const classes = useStyles();
-    let className;
-    if (visible === false) {
-        className = classes.hidden;
-    } else if (mobile) {
-        className = classes.mobile;
-    } else if (visible) {
-        className = classes.random;
-    } else {
-        className = classes.hidden;
-    }
+
     return (
         <Chip
             avatar={
@@ -70,11 +56,12 @@ const RandomComicButton = ({ visible, mobile, handleRandomComic }) => {
                     ></img>
                 </span>
             }
-            className={className}
+            className={visible ? classes.random : classes.hidden}
             color="primary"
             clickable={true}
             title="Random Comic"
-            onClick={handleRandomComic}
+            // onClick={handleRandomComic}
+            onClick={Object.keys(randomComic).length !== 0 ? handleRandomComic : handleError}
         />
     );
 };

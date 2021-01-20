@@ -86,12 +86,18 @@ const Comic = ({
     handleRandomComic,
     handleFirstComic,
     handleLastComic,
+    handleError,
     count,
     visible,
     isLoading,
     reaction,
     setReaction,
     hideRandom,
+    randomComic,
+    prevComic,
+    nextComic,
+    firstComic,
+    lastComic,
 }) => {
     const classes = useStyles();
 
@@ -105,7 +111,12 @@ const Comic = ({
             />
 
             <div className={classes.emojibar}>
-                <RandomComicButton visible={hideRandom} handleRandomComic={handleRandomComic} />
+                <RandomComicButton
+                    visible={hideRandom}
+                    handleRandomComic={handleRandomComic}
+                    randomComic={randomComic}
+                    handleError={handleError}
+                />
                 {/* <FavoriteButton orientation="left"></FavoriteButton> */}
                 <GlobalEmojiBar
                     id={id}
@@ -116,10 +127,16 @@ const Comic = ({
                     handleRandomComic={handleRandomComic}
                     handleFirstComic={handleFirstComic}
                     handleLastComic={handleLastComic}
+                    handleError={handleError}
                     count={count}
                     isLoading={isLoading}
                     reaction={reaction}
                     setReaction={setReaction}
+                    randomComic={randomComic}
+                    prevComic={prevComic}
+                    nextComic={nextComic}
+                    firstComic={firstComic}
+                    lastComic={lastComic}
                 ></GlobalEmojiBar>
                 <FavoriteButton orientation="right" comicID={id} name={name}></FavoriteButton>
             </div>

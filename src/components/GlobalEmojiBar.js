@@ -44,7 +44,8 @@ const useStyles = makeStyles((theme) => ({
     },
     chip: {
         margin: theme.spacing(0.5),
-        width: "60px",
+        // width: "60px",
+        width: "fit-content",
     },
     leftArrow: {
         float: "left",

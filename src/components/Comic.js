@@ -4,6 +4,8 @@ import GlobalEmojiBar from "../components/GlobalEmojiBar";
 import FavoriteButton from "../components/FavoriteButton";
 import RandomComicButton from "../components/RandomComicButton";
 
+import "./pseudo.css";
+
 const useStyles = makeStyles((theme) => ({
     comic: {
         border: "2px solid black",
@@ -12,7 +14,7 @@ const useStyles = makeStyles((theme) => ({
             maxWidth: "760px",
         },
         maxWidth: "760px",
-        margin: "0vh 1vw",
+        // margin: "0vh 1vw",
         userSelect: "none",
     },
     flex: {
@@ -21,6 +23,8 @@ const useStyles = makeStyles((theme) => ({
         justifyContent: "center",
         margin: "0 1vw",
         flexDirection: "column",
+        // width: "100%",
+        // height: "100%",
     },
     emojibar: {
         display: "flex",
@@ -43,6 +47,7 @@ const useStyles = makeStyles((theme) => ({
         opacity: 0,
         border: "2px solid black",
         width: "100%",
+        minHeight: "100%",
         [theme.breakpoints.up("sm")]: {
             maxWidth: "760px",
         },
@@ -71,6 +76,16 @@ const useStyles = makeStyles((theme) => ({
         "&:hover": {
             background: "rgb(234, 234, 234)",
         },
+    },
+    placeholder: {
+        backgroundColor: "white",
+        width: "98vw",
+        height: "98vw",
+        maxWidth: "760px",
+        maxHeight: "760px",
+        border: "2px solid black",
+        // margin: "0vh 1vw",
+        userSelect: "none",
     },
 }));
 
@@ -103,13 +118,15 @@ const Comic = ({
 
     return (
         <div className={classes.flex}>
-            <img
-                className={visible ? classes.comic : classes.transparent}
-                srcSet={srcSet}
-                src={src}
-                alt="Grubby Comic"
-            />
-
+            {!visible && <div className={classes.placeholder}></div>}
+            {visible && (
+                <img
+                    className={visible ? classes.comic : classes.transparent}
+                    srcSet={srcSet}
+                    src={src}
+                    alt="Grubby Comic"
+                />
+            )}
             <div className={classes.emojibar}>
                 <RandomComicButton
                     visible={hideRandom}

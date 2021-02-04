@@ -76,17 +76,12 @@ function UserProvider(props) {
     };
 
     useEffect(() => {
-        const storedData = localStorage.getItem("_token");
-
-        login(storedData);
         async function statusCheck() {
             try {
                 const storedData = localStorage.getItem("_token");
 
                 login(storedData);
-                // if (!storedData) {
-                //     throw Error("No token");
-                // }
+
                 if (!storedData) {
                     return;
                 }
@@ -96,9 +91,7 @@ function UserProvider(props) {
                 handleLoading(false);
                 return;
             } catch (error) {
-                // if (error.status === 401) {
                 silentLogout();
-                // }
                 handleLoading(false);
                 return;
             }

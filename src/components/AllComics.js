@@ -21,7 +21,6 @@ const CDN = process.env.REACT_APP_CDN;
 const useStyles = makeStyles((theme) => ({
     "@global": {
         body: {
-            // backgroundImage: "url(https://grubbythegrape.sfo2.cdn.digitaloceanspaces.com/assets/assets/purple.png)",
             backgroundColor: "#645579",
         },
     },

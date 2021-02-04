@@ -1,5 +1,4 @@
 body {
-    /* background-image: url("https://grubbythegrape.sfo2.cdn.digitaloceanspaces.com/assets/assets/purple.png"); */
     min-height: 100vh;
 }
 
@@ -8,11 +7,7 @@ button:focus {
     outline: none !important;
 }
 
-/* .App {
-    text-align: center;
-} */
-
 @font-face {
     font-family: "comicfont";
-    src: url("https://grubbythegrape.sfo2.cdn.digitaloceanspaces.com/assets/assets/ComicMarkerDeluxe-v4Z4.ttf");
+    src: local("comicfont"), url("./fonts/ComicMarkerDeluxe-v4Z4.ttf") format("truetype");
 }

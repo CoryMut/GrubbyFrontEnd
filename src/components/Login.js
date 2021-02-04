@@ -191,10 +191,18 @@ const Login = () => {
                                         </TableCell>
                                     </TableRow>
                                     <TableRow>
-                                        <TableCell className={classes.tableCellLeft}>Forgot Password?</TableCell>
+                                        <TableCell className={classes.tableCellLeft}>Forgot password?</TableCell>
                                         <TableCell className={classes.tableCellRight}>
                                             <Button href="/reset" color="primary">
                                                 Reset
+                                            </Button>
+                                        </TableCell>
+                                    </TableRow>
+                                    <TableRow>
+                                        <TableCell className={classes.tableCellLeft}>Unverified email?</TableCell>
+                                        <TableCell className={classes.tableCellRight}>
+                                            <Button href="/resend-email" color="primary">
+                                                Resend
                                             </Button>
                                         </TableCell>
                                     </TableRow>

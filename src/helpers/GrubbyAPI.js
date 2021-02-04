@@ -9,8 +9,8 @@ export async function registerUser(data) {
     try {
         let result = await axios.post(`${BASE_URL}/user/register`, data);
 
-        let { token } = result.data;
-        saveToLocalStorage("_token", token);
+        // let { token } = result.data;
+        // saveToLocalStorage("_token", token);
 
         return result.data;
     } catch (error) {
@@ -269,6 +269,44 @@ export async function googleLogin(idToken) {
     } catch (error) {
         console.error("API Error:", error.response);
         let message = error.response.data.message;
+        throw Array.isArray(message) ? message : [message];
+    }
+}
+
+export async function resendEmail(email) {
+    try {
+        let result = await axios.get(`${BASE_URL}/resend-email`, { params: { email } }, { withCredentials: true });
+
+        return result.data;
+    } catch (error) {
+        console.error("API Error:", error.response);
+        let message = error.response.data.error.message;
+        throw Array.isArray(message) ? message : [message];
+    }
+}
+
+export async function resendPassword(email) {
+    try {
+        let result = await axios.get(
+            `${BASE_URL}/resend-email/password`,
+            { params: { email } },
+            { withCredentials: true }
+        );
+        return result.data;
+    } catch (error) {
+        console.error("API Error:", error.response);
+        let message = error.response.data.error.message;
+        throw Array.isArray(message) ? message : [message];
+    }
+}
+
+export async function resetPassword(id, token, password) {
+    try {
+        let result = await axios.post(`${BASE_URL}/reset-password`, { id, token, password }, { withCredentials: true });
+        return result.data;
+    } catch (error) {
+        console.error("API Error:", error.response);
+        let message = error.response.data.error.message;
         throw Array.isArray(message) ? message : [message];
     }
 }

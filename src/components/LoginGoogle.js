@@ -41,6 +41,7 @@ function LoginGoogle() {
             const id_token = res.getAuthResponse().id_token;
 
             let { token, user } = await googleLogin(id_token);
+            console.log(user);
             login(token);
             handleAdmin(user.is_admin);
             handleUser(user.username);

@@ -185,7 +185,9 @@ function GlobalEmojiBar({
                     <MobileRandomComicButton visible={matches ? true : false} />
                 </IconButton>
                 <IconButton
-                    onClick={() => (Object.keys(prevComic).length !== 0 ? handleNextComic(id + 1) : handleError())}
+                    onClick={() =>
+                        Object.keys(prevComic).length !== 0 || id === 1 ? handleNextComic(id + 1) : handleError()
+                    }
                     className={matches ? rightArrow : classes.hide}
                 >
                     <ArrowForwardIcon className={classes.arrow} />

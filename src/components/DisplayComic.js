@@ -90,7 +90,7 @@ const DisplayComic = () => {
     const history = useHistory();
     const query = useQuery();
     const searchParam = query.get("c");
-    const matches = useMediaQuery("(max-width:900px)"); //900
+    const matches = useMediaQuery("(max-width:900px)");
     const { user } = useContext(UserContext);
 
     const [src, setSrc] = useState(`${CDN}/800/blur.jpg`);
@@ -157,6 +157,8 @@ const DisplayComic = () => {
     const [error, setError] = useState(false);
     const [emoteError, setEmoteError] = useState(false);
 
+    const [preloadingNext, setPreloadingNext] = useState(false);
+
     const rightArrow = isLoading || comicID === count ? classes.invisible : classes.arrow;
     const leftArrow = comicID === 1 ? classes.invisible : classes.arrow;
 
@@ -207,6 +209,10 @@ const DisplayComic = () => {
                 setEmoteData(() => ({ ...result }));
 
                 comicSwitch(visitedComics[id], count);
+
+                if (id === count) {
+                    setLastComic(() => ({ ...lastComic, emotes: { ...result } }));
+                }
             } else {
                 visitedComics[comicID] = { comic_id: comicID, name: name, emotes: { ...emoteData } };
                 setVisitedComics(() => ({
@@ -233,13 +239,19 @@ const DisplayComic = () => {
     };
 
     const comicSwitch = useCallback(
-        (data, unofficialCount = -1) => {
+        (data, unofficialCount = -1, preSrcSet = null) => {
             let { name, comic_id, emotes } = data;
             setComicID(comic_id);
             setName(name);
             setSrc(() => `${CDN}/800/${name}`);
-            let newSrcSet = makeSrcSet(name);
-            setSrcSet(() => newSrcSet);
+
+            if (!preSrcSet) {
+                let newSrcSet = makeSrcSet(name);
+                setSrcSet(() => newSrcSet);
+            } else {
+                setSrcSet(() => preSrcSet);
+            }
+
             setEmoteData(() => ({ ...emotes }));
             setChipData((chipData) =>
                 chipData.map((data) => ({
@@ -261,11 +273,15 @@ const DisplayComic = () => {
             try {
                 let result = await getLatestComic();
                 let { name } = result;
-                new Image().src = `${CDN}/800/${name}`;
+                let img = new Image();
+                let srcSet = makeSrcSet(name);
+                img.srcset = srcSet;
+                img.onload = function () {
+                    setIsLoading(() => false);
+                };
                 let { comic_id } = result;
                 setCount(() => comic_id);
-                comicSwitch(result, comic_id);
-                setIsLoading(() => false);
+                comicSwitch(result, comic_id, srcSet);
                 setLastComic(() => ({ ...result }));
                 setGetRandom(() => true);
             } catch (error) {
@@ -290,6 +306,9 @@ const DisplayComic = () => {
                     return;
                 }
                 let preloadComic = await getComic(prevID);
+                if (preloadComic.comic_id === 1) {
+                    setFirstComic(() => ({ ...preloadComic }));
+                }
                 let { name } = preloadComic;
                 let srcSet = makeSrcSet(name);
                 new Image().setAttribute("srcset", srcSet);
@@ -314,9 +333,10 @@ const DisplayComic = () => {
                 return;
             }
         }
-
-        getFirstComic(1);
-    }, []);
+        if (Object.keys(firstComic).length === 0) {
+            getFirstComic(1);
+        }
+    }, [firstComic]);
 
     useEffect(() => {
         async function getEmoteData(id) {
@@ -341,6 +361,7 @@ const DisplayComic = () => {
     useEffect(() => {
         async function preloadNextComic(id) {
             try {
+                setPreloadingNext(true);
                 let preloadNextComic = await getComic(id);
                 let { name } = preloadNextComic;
                 let srcSet = makeSrcSet(name);
@@ -350,14 +371,17 @@ const DisplayComic = () => {
                     ...visitedComics,
                 }));
                 setNextComic(() => ({ ...preloadNextComic }));
+                setPreloadingNext(false);
             } catch (error) {
                 return;
             }
         }
-        if (!visitedComics[comicID + 1] && count !== null && comicID !== count) {
+        if (preloadingNext) {
+            return;
+        } else if (!visitedComics[comicID + 1] && count !== null && comicID !== count && comicID !== 0) {
             preloadNextComic(comicID + 1);
         }
-    }, [comicID, visitedComics, count, requestedComic]);
+    }, [comicID, visitedComics, count, requestedComic, preloadingNext]);
 
     useEffect(() => {
         async function preloadRandomComic(id) {
@@ -393,10 +417,14 @@ const DisplayComic = () => {
                 let request = await getComic(requestedComic);
                 setRequestComplete(() => true);
                 let { name } = request;
+                let img = new Image();
                 let srcSet = makeSrcSet(name);
-                new Image().setAttribute("srcset", srcSet);
-                comicSwitch(request, count);
-                setIsLoading(() => false);
+                img.srcset = srcSet;
+                img.onload = function () {
+                    comicSwitch(request, count, srcSet);
+                    setIsLoading(() => false);
+                };
+
                 let result = await getLatestComic();
                 let lastComicName = result.name;
                 let srcSet2 = makeSrcSet(lastComicName);
@@ -480,6 +508,7 @@ const DisplayComic = () => {
                             isLoading={isLoading}
                             reaction={reaction}
                             setReaction={setReaction}
+                            hideRandom={matches ? false : true}
                             randomComic={randomComic}
                             prevComic={prevComic}
                             nextComic={nextComic}
@@ -516,7 +545,9 @@ const DisplayComic = () => {
                     <div style={{ display: "flex", flexDirection: "column" }}>
                         <IconButton
                             onClick={() =>
-                                Object.keys(prevComic).length !== 0 ? handleNextComic(comicID + 1) : handleError()
+                                Object.keys(prevComic).length !== 0 || comicID === 1
+                                    ? handleNextComic(comicID + 1)
+                                    : handleError()
                             }
                             className={matches ? classes.hide : rightArrow}
                         >

@@ -167,13 +167,13 @@ const HomePage = () => {
         <div>
             <Snackbar
                 open={recentLogin}
-                autoHideDuration={5000}
+                autoHideDuration={3000}
                 onClose={handleClose}
                 anchorOrigin={{ vertical: "top", horizontal: "center" }}
                 style={{ marginTop: "5%" }}
             >
                 <Alert onClose={handleClose} severity="success">
-                    Welcome Back, {displayName}!
+                    Welcome, {displayName}!
                 </Alert>
             </Snackbar>
             <Snackbar

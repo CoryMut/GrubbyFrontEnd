@@ -1,11 +1,9 @@
-import React, { useState, useContext } from "react";
-import { UserContext } from "./UserContext";
-// import { useHistory, Redirect, Link } from "react-router-dom";
-import { Redirect, Link } from "react-router-dom";
+import React, { useState } from "react";
+import { useParams, Link } from "react-router-dom";
 
 import { useFormik } from "formik";
 import * as Yup from "yup";
-import { registerUser } from "../helpers/GrubbyAPI";
+import { resetPassword } from "../helpers/GrubbyAPI";
 
 import { Col, Form, FormGroup, Label, Input } from "reactstrap";
 import { Card, CardBody, CardTitle } from "reactstrap";
@@ -13,10 +11,6 @@ import { Card, CardBody, CardTitle } from "reactstrap";
 import { makeStyles } from "@material-ui/core/styles";
 import Alert from "@material-ui/lab/Alert";
 import Button from "@material-ui/core/Button";
-import Table from "@material-ui/core/Table";
-import TableBody from "@material-ui/core/TableBody";
-import TableCell from "@material-ui/core/TableCell";
-import TableRow from "@material-ui/core/TableRow";
 
 import VisibilityIcon from "@material-ui/icons/Visibility";
 import VisibilityOffIcon from "@material-ui/icons/VisibilityOff";
@@ -29,22 +23,9 @@ const useStyles = makeStyles((theme) => ({
             backgroundImage: "none",
         },
     },
-    tableCellLeft: {
-        border: "none",
-        margin: 0,
-        padding: 0,
-        textAlign: "left",
-    },
-    tableCellRight: {
-        border: "none",
-        margin: 0,
-        padding: 0,
-        textAlign: "right",
-    },
     passWrapper: {
         position: "relative",
         display: "flex",
-        // alignItems: "center",
     },
     passIcon: {
         marginLeft: "30%",
@@ -72,7 +53,6 @@ const useStyles = makeStyles((theme) => ({
     login: {
         color: "white",
         backgroundColor: "#645579",
-        // width: "50%",
         margin: "2vh auto 0 auto",
         "&:hover": {
             backgroundColor: "#645579",
@@ -81,28 +61,24 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-const SignupSchema = Yup.object().shape({
-    username: Yup.string().min(2, "Too Short!").max(30, "Too Long!").required("Required"),
-    password: Yup.string()
+const ResendEmailSchema = Yup.object().shape({
+    new_password: Yup.string()
         .min(7, "Too Short!")
         .max(50, "Too Long!")
         .required("Required")
         .matches(/^\S*$/, "Must not contain spaces."),
     passwordCheck: Yup.string()
-        .oneOf([Yup.ref("password"), null], "Passwords must match")
+        .oneOf([Yup.ref("new_password"), null], "Passwords must match")
         .required("Required"),
-    email: Yup.string().email("Invalid email").required("Required"),
 });
 
-const Signup = () => {
-    // const history = useHistory();
+const ResetPasswordForm = () => {
     const classes = useStyles();
-    const authContext = useContext(UserContext);
     const [error, setError] = useState("");
     const [visible, setVisible] = useState(false);
+    const [success, setSuccess] = useState(false);
 
-    const [email, setEmail] = useState("");
-    // const [verify, setVerify] = useState(false);
+    let { id, token } = useParams();
 
     const toggleVisible = () => {
         setVisible(visible ? false : true);
@@ -110,35 +86,28 @@ const Signup = () => {
 
     const formik = useFormik({
         initialValues: {
-            username: "",
-            password: "",
+            new_password: "",
             passwordCheck: "",
-            email: "",
         },
-        validationSchema: SignupSchema,
+        validationSchema: ResendEmailSchema,
         onSubmit: async (values) => {
             try {
-                let data = { username: values.username, password: values.password, email: values.email };
-                await registerUser(data);
-                setEmail(() => data.email);
+                await resetPassword(id, token, values.new_password);
+                setSuccess(() => true);
             } catch (error) {
-                setError(error.message);
+                setError(error);
             }
         },
     });
 
-    if (authContext.user) {
-        return <Redirect to="/"></Redirect>;
-    }
-
-    if (email) {
+    if (success) {
         return (
             <div className={classes.alertWrapper}>
                 <Alert severity="success" className={classes.alert}>
-                    A verification email was sent to {email}
+                    Password reset successful.
                 </Alert>
-                <Button className={classes.login} to="/" component={Link}>
-                    Return Home
+                <Button className={classes.login} to="/login" component={Link}>
+                    Login
                 </Button>
             </div>
         );
@@ -149,68 +118,28 @@ const Signup = () => {
             <div className="Login-Container">
                 <Card className="Login-Card">
                     <CardBody className="Login-Card-Body">
-                        <CardTitle className="Login-Card-Title">Signup</CardTitle>
+                        <CardTitle className="Login-Card-Title">Password Reset</CardTitle>
                         {error && <Alert severity="error">{error}</Alert>}
 
                         <Form className="LoginForm" onSubmit={formik.handleSubmit}>
                             <FormGroup row>
-                                <Label for="username" sm="auto">
-                                    Username
-                                </Label>
-                                <Col sm={12}>
-                                    <Input
-                                        type="text"
-                                        name="username"
-                                        id="username"
-                                        placeholder="username"
-                                        value={formik.values.username}
-                                        onChange={formik.handleChange}
-                                        onBlur={formik.handleBlur}
-                                    />
-                                    {formik.touched.username && formik.errors.username ? (
-                                        <div className="error">{formik.errors.username}</div>
-                                    ) : null}
-                                </Col>
-                            </FormGroup>
-
-                            <FormGroup row>
-                                <Label for="email" sm="auto">
-                                    Email
-                                </Label>
-                                <Col sm={12}>
-                                    <Input
-                                        type="email"
-                                        name="email"
-                                        id="email"
-                                        placeholder="email"
-                                        value={formik.values.email}
-                                        onChange={formik.handleChange}
-                                        onBlur={formik.handleBlur}
-                                    />
-                                    {formik.touched.email && formik.errors.email ? (
-                                        <div className="error">{formik.errors.email}</div>
-                                    ) : null}
-                                </Col>
-                            </FormGroup>
-
-                            <FormGroup row>
                                 <Label for="password" sm="auto">
-                                    Password
+                                    New Password
                                 </Label>
                                 <Col sm={12}>
                                     <div className={classes.passWrapper}>
                                         <Input
                                             type={visible ? "text" : "password"}
-                                            name="password"
-                                            id="password"
+                                            name="new_password"
+                                            id="new_password"
                                             onChange={formik.handleChange}
                                             value={formik.values.password}
                                             onBlur={formik.handleBlur}
-                                            placeholder="password"
+                                            placeholder="new password"
                                         />
                                         <div className={classes.passText}>
-                                            {formik.touched.password && formik.errors.password ? (
-                                                <div className="error">{formik.errors.password}</div>
+                                            {formik.touched.new_password && formik.errors.new_password ? (
+                                                <div className="error">{formik.errors.new_password}</div>
                                             ) : null}
                                         </div>
                                         <div className={classes.iconWrapper}>
@@ -234,7 +163,7 @@ const Signup = () => {
 
                             <FormGroup row>
                                 <Label for="passwordCheck" sm="auto">
-                                    Confirm Password
+                                    Confirm New Password
                                 </Label>
                                 <Col sm={12}>
                                     <Input
@@ -260,23 +189,23 @@ const Signup = () => {
                                         onClick={formik.handleSubmit}
                                         className="login-button"
                                     >
-                                        Signup
+                                        Change Password
                                     </Button>
                                 </Col>
                             </FormGroup>
 
-                            <Table>
-                                <TableBody>
-                                    <TableRow>
-                                        <TableCell className={classes.tableCellLeft}>Have an account?</TableCell>
-                                        <TableCell className={classes.tableCellRight}>
-                                            <Button component={Link} to="/login" color="primary">
-                                                Login
-                                            </Button>
-                                        </TableCell>
-                                    </TableRow>
-                                </TableBody>
-                            </Table>
+                            {/* <Table>
+                                    <TableBody>
+                                        <TableRow>
+                                            <TableCell className={classes.tableCellLeft}>Have an account?</TableCell>
+                                            <TableCell className={classes.tableCellRight}>
+                                                <Button component={Link} to="/login" color="primary">
+                                                    Login
+                                                </Button>
+                                            </TableCell>
+                                        </TableRow>
+                                    </TableBody>
+                                </Table> */}
                         </Form>
                     </CardBody>
                 </Card>
@@ -284,4 +213,5 @@ const Signup = () => {
         </div>
     );
 };
-export default Signup;
+
+export default ResetPasswordForm;

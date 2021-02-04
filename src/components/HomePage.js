@@ -173,7 +173,7 @@ const HomePage = () => {
                 style={{ marginTop: "5%" }}
             >
                 <Alert onClose={handleClose} severity="success">
-                    Welcome Back, {displayName}!
+                    Welcome, {displayName}!
                 </Alert>
             </Snackbar>
             <Snackbar

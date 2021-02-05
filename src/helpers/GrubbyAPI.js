@@ -1,6 +1,7 @@
 import axios from "axios";
 
-const BASE_URL = process.env.REACT_APP_SERVER_URL || "http://localhost:5000";
+// const BASE_URL = process.env.REACT_APP_SERVER_URL || "http://localhost:5000";
+const BASE_URL = process.env.REACT_APP_SERVER_URL;
 const CLIENT_ID = process.env.REACT_APP_CLIENT_ID || "something_secret_and_secure_for_clients";
 
 axios.defaults.headers.common["Authorization"] = CLIENT_ID;
@@ -262,7 +263,6 @@ export async function getFavorites(username) {
 export async function googleLogin(idToken) {
     try {
         let result = await axios.post(`${BASE_URL}/auth/google`, { token: idToken }, { withCredentials: true });
-        console.log(result);
         let { token } = result.data;
         saveToLocalStorage("_token", token);
 

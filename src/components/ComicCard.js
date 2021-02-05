@@ -29,7 +29,7 @@ const useStyles = makeStyles({
 
 const ComicCard = ({ description, name, comicID, isFavorite }) => {
     const classes = useStyles();
-    const sizes = ["320", "384", "512", "683", "800", "960"];
+    const sizes = ["320", "384", "512", "683", "800"];
     const srcSet = [];
     sizes.map((size) => srcSet.push(`${CDN}/${size}/${name} ${size}w`));
 

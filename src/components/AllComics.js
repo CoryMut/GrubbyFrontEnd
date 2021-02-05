@@ -16,8 +16,6 @@ import options from "../helpers/SRLWrapperOptions";
 
 import "./AllComics.css";
 
-const CDN = process.env.REACT_APP_CDN;
-
 const useStyles = makeStyles((theme) => ({
     "@global": {
         body: {
@@ -170,7 +168,6 @@ const AllComics = () => {
                                         description={comic.description}
                                         name={comic.name}
                                         comicID={comic.comic_id}
-                                        image={`${CDN}/384/${comic.name}`}
                                         canFavorite={true}
                                         favorite={false}
                                     ></ComicCard>

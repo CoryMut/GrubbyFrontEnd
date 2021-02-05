@@ -9,7 +9,6 @@ import AuthRoute from "./AuthRoute";
 import Login from "../components/Login";
 import Signup from "../components/Signup";
 import HomePage from "../components/HomePage";
-// import SimpleReactLightbox from "simple-react-lightbox";
 
 // import PrivacyPolicy from "../components/PrivacyPolicy";
 // import Secret from "../components/Secret";
@@ -64,13 +63,10 @@ const Routes = () => {
                     <ResetPasswordForm type="password" />
                 </Route>
                 <Route exact path="/all">
-                    {/* <SimpleReactLightbox> */}
                     <AllComics></AllComics>
-                    {/* </SimpleReactLightbox> */}
                 </Route>
                 <AuthRoute exact path="/favorites">
                     <Favorites />
-                    {/* <PaperPlaneLottie /> */}
                 </AuthRoute>
                 <AdminRoute exact path="/upload">
                     <UploadForm />

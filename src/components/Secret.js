@@ -135,7 +135,7 @@ const Secret = () => {
                     className={classes.jumbotron}
                     container
                     direction="row"
-                    justify="space-evenly"
+                    justifyContent="space-evenly"
                     alignItems="center"
                 >
                     <Grid item>

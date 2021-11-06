@@ -6,7 +6,7 @@ import { UserContext } from "./UserContext";
 import Comic from "./Comic";
 import CustomSnackBar from "../components/CustomSnackBar";
 
-import { makeStyles, createMuiTheme, ThemeProvider } from "@material-ui/core/styles";
+import { makeStyles, createTheme, ThemeProvider } from "@material-ui/core/styles";
 import useMediaQuery from "@material-ui/core/useMediaQuery";
 import Typography from "@material-ui/core/Typography";
 import ArrowBackIcon from "@material-ui/icons/ArrowBack";
@@ -29,7 +29,7 @@ const makeSrcSet = (name) => {
     return srcSet;
 };
 
-const theme = createMuiTheme({
+const theme = createTheme({
     palette: {
         primary: {
             main: "#FFFFFF",
@@ -102,36 +102,31 @@ const DisplayComic = () => {
         {
             key: 0,
             label: "Laughing",
-            icon:
-                "https://grubbythegrape.sfo2.cdn.digitaloceanspaces.com/assets/assets/Emoji1_24x24.png 1x, https://grubbythegrape.sfo2.cdn.digitaloceanspaces.com/assets/assets/Emoji1_48x48.png 2x",
+            icon: "https://grubbythegrape.sfo2.cdn.digitaloceanspaces.com/assets/assets/Emoji1_24x24.png 1x, https://grubbythegrape.sfo2.cdn.digitaloceanspaces.com/assets/assets/Emoji1_48x48.png 2x",
             count: 0,
         },
         {
             key: 1,
             label: "Clapping",
-            icon:
-                "https://grubbythegrape.sfo2.cdn.digitaloceanspaces.com/assets/assets/Emoji2_24x24.png 1x, https://grubbythegrape.sfo2.cdn.digitaloceanspaces.com/assets/assets/Emoji2_48x48.png 2x",
+            icon: "https://grubbythegrape.sfo2.cdn.digitaloceanspaces.com/assets/assets/Emoji2_24x24.png 1x, https://grubbythegrape.sfo2.cdn.digitaloceanspaces.com/assets/assets/Emoji2_48x48.png 2x",
             count: 0,
         },
         {
             key: 2,
             label: "ROFL",
-            icon:
-                "https://grubbythegrape.sfo2.cdn.digitaloceanspaces.com/assets/assets/Emoji3_24x24.png 1x, https://grubbythegrape.sfo2.cdn.digitaloceanspaces.com/assets/assets/Emoji3_48x48.png 2x",
+            icon: "https://grubbythegrape.sfo2.cdn.digitaloceanspaces.com/assets/assets/Emoji3_24x24.png 1x, https://grubbythegrape.sfo2.cdn.digitaloceanspaces.com/assets/assets/Emoji3_48x48.png 2x",
             count: 0,
         },
         {
             key: 3,
             label: "Grinning",
-            icon:
-                "https://grubbythegrape.sfo2.cdn.digitaloceanspaces.com/assets/assets/Emoji4_24x24.png 1x, https://grubbythegrape.sfo2.cdn.digitaloceanspaces.com/assets/assets/Emoji4_48x48.png 2x",
+            icon: "https://grubbythegrape.sfo2.cdn.digitaloceanspaces.com/assets/assets/Emoji4_24x24.png 1x, https://grubbythegrape.sfo2.cdn.digitaloceanspaces.com/assets/assets/Emoji4_48x48.png 2x",
             count: 0,
         },
         {
             key: 4,
             label: "Clown",
-            icon:
-                "https://grubbythegrape.sfo2.cdn.digitaloceanspaces.com/assets/assets/Emoji5_24x24.png 1x, https://grubbythegrape.sfo2.cdn.digitaloceanspaces.com/assets/assets/Emoji5_48x48.png 2x",
+            icon: "https://grubbythegrape.sfo2.cdn.digitaloceanspaces.com/assets/assets/Emoji5_24x24.png 1x, https://grubbythegrape.sfo2.cdn.digitaloceanspaces.com/assets/assets/Emoji5_48x48.png 2x",
             count: 0,
         },
     ]);

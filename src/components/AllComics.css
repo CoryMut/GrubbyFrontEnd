@@ -1,4 +1,8 @@
-.SRLImage {
+/* .SRLImage {
     transform: translate(-50%, -50%) !important;
     -webkit-transform: translate(-50%, -50%) !important;
+} */
+
+.SRLImage {
+    padding: 10px;
 }

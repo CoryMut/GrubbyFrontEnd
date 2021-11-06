@@ -188,7 +188,7 @@ const HomePage = () => {
                 </Alert>
             </Snackbar>
             <div className={classes.section1} name="section1">
-                <Grid container direction="column" justify="space-evenly" alignItems="center">
+                <Grid container direction="column" justifyContent="space-evenly" alignItems="center">
                     <div style={{ height: "100%", display: "flex", alignItems: "center" }}>
                         <DisplayComic></DisplayComic>
                     </div>
@@ -202,7 +202,7 @@ const HomePage = () => {
                         className={classes.jumbotron}
                         container
                         direction="row"
-                        justify="space-evenly"
+                        justifyContent="space-evenly"
                         alignItems="center"
                     >
                         <Grid item>

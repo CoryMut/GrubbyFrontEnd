@@ -23,7 +23,7 @@ exports[`should test NavBar component 1`] = `
         className="makeStyles-jumbotron-1"
         container={true}
         direction="row"
-        justify="space-evenly"
+        justifyContent="space-evenly"
       >
         <WithStyles(ForwardRef(Grid))
           item={true}
@@ -137,7 +137,7 @@ exports[`should test NavBar component 1`] = `
       alignItems="center"
       container={true}
       direction="column"
-      justify="space-evenly"
+      justifyContent="space-evenly"
     >
       <WithStyles(ForwardRef(Typography))
         className="makeStyles-comicfont-12"

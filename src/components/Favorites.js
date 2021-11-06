@@ -84,7 +84,7 @@ const Favorites = () => {
                             Looks like you do not currently have any favorite comics!<br></br>
                             <br></br>
                             You can add a comic to your favorites by clicking <FavoriteBorderIcon /> on each comic.
-                            <Grid container justify="center">
+                            <Grid container justifyContent="center">
                                 <Grid item lg={3} xl={3} key={defaultFav.comic_id}>
                                     <div className={classes.card}>
                                         <ComicCard

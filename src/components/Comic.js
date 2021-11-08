@@ -8,15 +8,28 @@ import "./pseudo.css";
 
 const useStyles = makeStyles((theme) => ({
     comic: {
-        border: "2px solid black",
-        width: "100%",
+        // border: "2px solid black",
+        // width: "100%",
         [theme.breakpoints.up("sm")]: {
             maxWidth: "760px",
         },
-        maxWidth: "760px",
+        // maxWidth: "760px",
         // margin: "0vh 1vw",
         userSelect: "none",
+
+        boxShadow:
+            "rgba(17, 17, 26, 0.1) 0px 4px 16px, rgba(17, 17, 26, 0.1) 0px 8px 24px, rgba(17, 17, 26, 0.1) 0px 16px 56px",
     },
+    // comic: {
+    //     border: "2px solid black",
+    //     width: "100%",
+    //     [theme.breakpoints.up("sm")]: {
+    //         maxWidth: "760px",
+    //     },
+    //     maxWidth: "760px",
+    //     // margin: "0vh 1vw",
+    //     userSelect: "none",
+    // },
     flex: {
         display: "flex",
         alignItems: "center",
@@ -42,6 +55,7 @@ const useStyles = makeStyles((theme) => ({
             width: "90%",
             flexDirection: "row",
         },
+        marginTop: "7px",
     },
     transparent: {
         opacity: 0,

@@ -24,6 +24,7 @@ const useStyles = makeStyles((theme) => ({
         "&:hover": {
             background: "rgb(234, 234, 234)",
         },
+        border: "1px solid rgba(0,0,0,0.1)",
     },
     hidden: {
         display: "none",

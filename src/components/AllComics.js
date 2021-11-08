@@ -1,12 +1,13 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useCallback, useRef } from "react";
 import { getAllComics, searchComics } from "../helpers/GrubbyAPI";
-import { useHistory, useLocation } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 
 import { makeStyles } from "@material-ui/core/styles";
 import Grid from "@material-ui/core/Grid";
 import Container from "@material-ui/core/Container";
 import Alert from "@material-ui/lab/Alert";
-import Pagination from "@material-ui/lab/Pagination";
+// import Pagination from "@material-ui/lab/Pagination";
+import Button from "@material-ui/core/Button";
 
 import ComicCard from "../components/ComicCard";
 import Search from "../components/Search";
@@ -14,18 +15,23 @@ import Search from "../components/Search";
 import { SRLWrapper } from "simple-react-lightbox";
 import options from "../helpers/SRLWrapperOptions";
 
+import Lottie from "lottie-react";
+import allComicsLoading from "../lotties/all-comics-loading.json";
+
 import "./AllComics.css";
 
 const useStyles = makeStyles((theme) => ({
     "@global": {
         body: {
-            backgroundColor: "#645579",
+            backgroundColor: "#FFFFFF",
+            // backgroundColor: "#645579",
         },
     },
     root: {
         display: "flex",
         marginTop: "2vh",
         flexDirection: "column",
+        minHeight: "110vh",
     },
     appBar: {
         zIndex: theme.zIndex.drawer + 1,
@@ -43,6 +49,18 @@ const useStyles = makeStyles((theme) => ({
         marginTop: "10vh",
         marginBottom: "5vh",
     },
+    lottie: {
+        display: "flex",
+        justifyContent: "center",
+        width: "75px",
+        background: "transparent",
+        margin: "2vh 0 4vh 0",
+    },
+    lottieWrapper: {
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+    },
 }));
 
 function useQuery() {
@@ -51,83 +69,113 @@ function useQuery() {
 
 const AllComics = () => {
     const classes = useStyles();
-    const history = useHistory();
+    // const history = useHistory();
     const q = useQuery();
+
+    let hardCount = useRef(undefined);
+
     const [alert, setAlert] = useState("");
     const [allComics, setAllComics] = useState([]);
     const [displayComics, setDisplayComics] = useState([]);
     const [page, setPage] = useState(Number(q.get("page")) || 1);
-    const [count, setCount] = useState(10);
+    const [maxPageCount, setMaxPageCount] = useState(undefined);
     const [query, setQuery] = useState(q.get("q") || null);
+    const [currentCount, setCurrentCount] = useState(0);
+    const [sort, setSort] = useState(false);
 
-    const handleChange = (event) => {
-        if (event.target.tagName === "BUTTON") {
-            if (event.target.tagName.children) {
-                if (event.target.children[0].children[0].getAttribute("d").includes("M10")) {
-                    setPage((page) => +page + 1);
-                    history.replace({
-                        pathname: "/all",
-                        search: query ? `?page=${+page + 1}&q=${query}` : `?page=${+page + 1}`,
-                    });
-                } else if (event.target.children[0].children[0].getAttribute("d").includes("M15")) {
-                    setPage((page) => +page - 1);
-                    history.replace({
-                        pathname: "/all",
-                        search: `?page=${+page - 1}`,
-                    });
-                }
-            } else {
-                history.replace({
-                    pathname: "/all",
-                    search: query ? `?page=${event.target.innerText}&q=${query}` : `?page=${event.target.innerText}`,
-                });
-                setPage(Number(event.target.innerText));
-            }
-        } else if (event.target.tagName === "svg") {
-            if (event.target.children[0].getAttribute("d").includes("M10")) {
-                setPage((page) => +page + 1);
-                history.replace({
-                    pathname: "/all",
-                    search: `?page=${+page + 1}`,
-                });
-            } else if (event.target.children[0].getAttribute("d").includes("M15")) {
-                setPage((page) => +page - 1);
-                history.replace({
-                    pathname: "/all",
-                    search: `?page=${+page - 1}`,
-                });
-            }
-        } else if (event.target.tagName === "path") {
-            if (event.target.getAttribute("d").includes("M10")) {
-                setPage((page) => +page + 1);
-                history.replace({
-                    pathname: "/all",
-                    search: `?page=${+page + 1}`,
-                });
-            } else if (event.target.getAttribute("d").includes("M15")) {
-                setPage((page) => +page - 1);
-                history.replace({
-                    pathname: "/all",
-                    search: `?page=${page - 1}`,
-                });
-            }
-        }
+    const [initialLoad, setInitialLoad] = useState(true);
+    const [loading, setLoading] = useState(false);
+    const [sorting, setSorting] = useState(false);
+
+    const [reset, setReset] = useState(false);
+
+    // const handleChange = (event) => {
+    //     if (event.target.tagName === "BUTTON") {
+    //         if (event.target.tagName.children) {
+    //             if (event.target.children[0].children[0].getAttribute("d").includes("M10")) {
+    //                 setPage((page) => +page + 1);
+    //                 history.replace({
+    //                     pathname: "/all",
+    //                     search: query ? `?page=${+page + 1}&q=${query}` : `?page=${+page + 1}`,
+    //                 });
+    //             } else if (event.target.children[0].children[0].getAttribute("d").includes("M15")) {
+    //                 setPage((page) => +page - 1);
+    //                 history.replace({
+    //                     pathname: "/all",
+    //                     search: `?page=${+page - 1}`,
+    //                 });
+    //             }
+    //         } else {
+    //             history.replace({
+    //                 pathname: "/all",
+    //                 search: query ? `?page=${event.target.innerText}&q=${query}` : `?page=${event.target.innerText}`,
+    //             });
+    //             setPage(Number(event.target.innerText));
+    //         }
+    //     } else if (event.target.tagName === "svg") {
+    //         if (event.target.children[0].getAttribute("d").includes("M10")) {
+    //             setPage((page) => +page + 1);
+    //             history.replace({
+    //                 pathname: "/all",
+    //                 search: `?page=${+page + 1}`,
+    //             });
+    //         } else if (event.target.children[0].getAttribute("d").includes("M15")) {
+    //             setPage((page) => +page - 1);
+    //             history.replace({
+    //                 pathname: "/all",
+    //                 search: `?page=${+page - 1}`,
+    //             });
+    //         }
+    //     } else if (event.target.tagName === "path") {
+    //         if (event.target.getAttribute("d").includes("M10")) {
+    //             setPage((page) => +page + 1);
+    //             history.replace({
+    //                 pathname: "/all",
+    //                 search: `?page=${+page + 1}`,
+    //             });
+    //         } else if (event.target.getAttribute("d").includes("M15")) {
+    //             setPage((page) => +page - 1);
+    //             history.replace({
+    //                 pathname: "/all",
+    //                 search: `?page=${page - 1}`,
+    //             });
+    //         }
+    //     }
+    // };
+
+    const toggleSort = () => {
+        setSort((sort) => !sort);
+        setPage(1);
+        setAllComics([]);
+        setDisplayComics([]);
+        setMaxPageCount(undefined);
     };
 
     useEffect(() => {
         async function getComics() {
             try {
+                setLoading(true);
                 let result;
+
                 if (query) {
-                    result = await searchComics(query, page);
+                    result = await searchComics(query, page, sort);
                 } else {
-                    result = await getAllComics(page);
+                    result = await getAllComics(page, sort);
                 }
-                let { comics, count } = result;
-                setAllComics(comics);
-                setDisplayComics(comics);
-                setCount(count);
-                window.scrollTo(0, 0);
+
+                let { comics, count, resultCount } = result;
+
+                setAllComics((allComics) => [...allComics, ...comics]);
+                setDisplayComics((displayComics) => [...displayComics, ...comics]);
+
+                // setMaxPageCount(count);
+                hardCount.current = count;
+                setCurrentCount(resultCount);
+                let loadingTimer = setTimeout(() => {
+                    setLoading(false);
+                }, [3000]);
+
+                return () => clearTimeout(loadingTimer);
             } catch (error) {
                 setAlert({
                     type: "error",
@@ -137,56 +185,111 @@ const AllComics = () => {
                 return;
             }
         }
-        getComics();
-    }, [page, query]);
+        if (reset === false) {
+            if (hardCount.current === undefined || page <= hardCount.current) {
+                getComics();
+            }
+        }
+    }, [page, sort, maxPageCount, query, reset]);
+
+    useEffect(() => {
+        hardCount.current = undefined;
+    }, [maxPageCount]);
+
+    useEffect(() => {
+        if (reset) {
+            setQuery(null);
+
+            setPage(1);
+
+            setDisplayComics([]);
+
+            hardCount.current = undefined;
+            setReset(false);
+        }
+    }, [reset]);
+
+    const loader = useRef(null);
+
+    const handleObserver = useCallback((entries) => {
+        const target = entries[0];
+        if (target.isIntersecting) {
+            setPage((prev) => prev + 1);
+        }
+        // console.log("HANDLE THAT THERE OBSERVER");
+    }, []);
+
+    useEffect(() => {
+        const option = {
+            root: null,
+            rootMargin: "20px",
+            threshold: 0,
+        };
+        const observer = new IntersectionObserver(handleObserver, option);
+        let currLoader = loader.current;
+        if (loader && currLoader) observer.observe(currLoader);
+
+        return () => observer.unobserve(currLoader);
+    }, [handleObserver]);
 
     return (
-        <div>
+        <div style={{ marginBottom: "5vh" }}>
             <div className={classes.root}>
                 <Container maxWidth="lg">
                     <Search
                         query={query}
-                        page={page}
-                        setPage={setPage}
                         setQuery={setQuery}
                         setDisplayComics={setDisplayComics}
                         setAlert={setAlert}
-                        allComics={allComics}
-                        setCount={setCount}
+                        setReset={setReset}
                     ></Search>
+                    <div style={{ display: "flex" }}>
+                        <Button onClick={toggleSort} style={{ marginTop: "5px" }}>
+                            {sort === false ? "Sorted: Oldest First" : "Sorted: Newest First"}
+                        </Button>
+                        <div style={{ alignSelf: "center", marginLeft: "20px" }}>{currentCount} result(s)</div>
+                    </div>
+
                     {alert && (
                         <Alert className={classes.alert} severity={alert.type}>
                             {alert.message}
                         </Alert>
                     )}
 
-                    <SRLWrapper options={options}>
-                        <Grid container spacing={3}>
-                            {displayComics.map((comic) => (
-                                <Grid item xs={12} lg={3} md={4} sm={6} key={comic.comic_id}>
-                                    <ComicCard
-                                        description={comic.description}
-                                        name={comic.name}
-                                        comicID={comic.comic_id}
-                                        canFavorite={true}
-                                        favorite={false}
-                                    ></ComicCard>
-                                </Grid>
-                            ))}
-                        </Grid>
-                    </SRLWrapper>
+                    {!sorting && (
+                        <SRLWrapper options={options}>
+                            <Grid container spacing={3}>
+                                {displayComics.map((comic) => (
+                                    <Grid item xs={12} lg={3} md={4} sm={6} key={comic.comic_id}>
+                                        <ComicCard
+                                            description={comic.description}
+                                            name={comic.name}
+                                            comicID={comic.comic_id}
+                                            canFavorite={true}
+                                            favorite={false}
+                                        ></ComicCard>
+                                    </Grid>
+                                ))}
+                            </Grid>
+                        </SRLWrapper>
+                    )}
+                    {sorting && (
+                        <div className={classes.lottieWrapper}>
+                            <div className={classes.lottie}>
+                                <Lottie animationData={allComicsLoading} />
+                            </div>
+                        </div>
+                    )}
                 </Container>
             </div>
-            <div className={classes.pagination}>
-                <Pagination
-                    count={count}
-                    variant="outlined"
-                    shape="rounded"
-                    size="large"
-                    page={Number(page)}
-                    onChange={handleChange}
-                />
-            </div>
+            {loading && (
+                <div className={classes.lottieWrapper}>
+                    <div className={classes.lottie}>
+                        <Lottie animationData={allComicsLoading} />
+                    </div>
+                </div>
+            )}
+            <div ref={loader}></div>
         </div>
     );
 };

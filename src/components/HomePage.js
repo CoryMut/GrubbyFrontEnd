@@ -27,11 +27,11 @@ const useStyles = makeStyles((theme) => ({
         backgroundColor: "white",
         backgroundSize: "cover",
         padding: "10vh 0px",
-        borderTop: "1px solid black",
+        // borderTop: "1px solid black",
     },
     section1: {
         backgroundRepeat: "repeat",
-        backgroundColor: "#645579",
+        // backgroundColor: "#645579",
         minHeight: "calc(99vh - 70px)",
         [theme.breakpoints.down("md")]: {
             minHeight: "calc(99vh - 64px)",
@@ -145,6 +145,60 @@ const useStyles = makeStyles((theme) => ({
     policy: {
         cursor: "pointer",
     },
+    mark: {
+        // maxWidth: "95vw",
+        width: "100%",
+        margin: "0 -0.4em",
+        padding: "0.5em 0.4em",
+        borderRadius: "1em 0.5em",
+        background: "transparent",
+        backgroundImage:
+            "linear-gradient(to right,rgba(100,85,121, 0.1),rgba(100,85,121, 0.7) 4%,rgba(100,85,121, 0.3))",
+        // "linear-gradient(to right,rgba(255, 225, 0, 0.1),rgba(255, 225, 0, 0.7) 4%,rgba(255, 225, 0, 0.3))",
+        boxDecorationBreak: "clone",
+        overflowX: "hidden !important",
+    },
+    lineWrapper: {
+        [theme.breakpoints.down("md")]: {
+            display: "none !important",
+        },
+    },
+    line: {
+        fontWeight: "400",
+        lineHeight: "1.7",
+        gap: "3rem",
+        fontSize: "1.2rem",
+        color: "#000",
+        overflowWrap: "break-word",
+        boxSizing: "border-box",
+        background: "#645579",
+        border: "0",
+        display: "block",
+        width: "98%",
+        height: "4px",
+        borderRadius: "4px",
+    },
+    topLine: {
+        transform: "rotate(3deg)",
+        margin: "10rem auto 1rem auto",
+    },
+    bottomLine: {
+        // transform: "rotate(3deg)",
+        margin: "0rem auto 5rem auto",
+    },
+    headline: {
+        fontFamily: "comicfont",
+        transform: "rotate(3deg)",
+        fontSize: "40px",
+        // margin: "0 auto 0 100px",
+        display: "flex",
+    },
+    headlineAuthor: {
+        margin: "0 auto 0 auto",
+    },
+    headlineTitle: {
+        margin: "0 auto 0 auto",
+    },
 }));
 
 const HomePage = () => {
@@ -195,6 +249,17 @@ const HomePage = () => {
 
                     <div name="latest_comic"></div>
                 </Grid>
+            </div>
+            <div
+                style={{ display: "flex", justifyContent: "center", flexDirection: "column" }}
+                className={classes.lineWrapper}
+            >
+                {/* <div className={classes.mark} /> */}
+                <hr className={`${classes.line} ${classes.topLine}`}></hr>
+                <div className={classes.headline}>
+                    <div className={classes.headlineTitle}>Grubby the grape</div>
+                    <div className={classes.headlineAuthor}>By Ian Mutchler</div>
+                </div>
             </div>
             <div name="top">
                 <div>
@@ -257,6 +322,9 @@ const HomePage = () => {
                             </Grid>
                         </Grid>
                     </Grid>
+                    {/* <div style={{ display: "flex", justifyContent: "center", flexDirection: "column" }}>
+                        <hr className={`${classes.line} ${classes.bottomLine}`}></hr>
+                    </div> */}
                     <RRLink to="/privacy">
                         <Typography variant="caption" component="div" className={classes.policy} align="center">
                             Privacy Policy

@@ -21,7 +21,8 @@ import MobileRandomComicButton from "../components/MobileRandomComicButton";
 const theme = createTheme({
     palette: {
         primary: {
-            main: "#e1bee7",
+            main: "#e0e0e0",
+            // main: "#e1bee7",
         },
         secondary: {
             main: "#FFFFFF",
@@ -46,6 +47,7 @@ const useStyles = makeStyles((theme) => ({
         margin: theme.spacing(0.5),
         // width: "60px",
         width: "fit-content",
+        border: "1px solid rgba(0,0,0,0.1)",
     },
     leftArrow: {
         float: "left",
@@ -80,6 +82,15 @@ const useStyles = makeStyles((theme) => ({
     },
     skipArrows: {
         maxWidth: "60px",
+    },
+    selected: {
+        margin: theme.spacing(0.5),
+        // width: "60px",
+        width: "fit-content",
+        border: "1px solid black",
+        "&:focus": {
+            backgroundColor: "#FFFFFF !important",
+        },
     },
 }));
 
@@ -217,6 +228,7 @@ function GlobalEmojiBar({
                                                         marginBottom: "5px",
                                                     }}
                                                     aria-labelledby={data.label}
+                                                    className={classes.chipFocus}
                                                 >
                                                     <img
                                                         srcSet={data.icon}
@@ -226,9 +238,10 @@ function GlobalEmojiBar({
                                                 </span>
                                             }
                                             label={data.count}
-                                            className={classes.chip}
+                                            className={reaction === data.label ? classes.selected : classes.chip}
                                             clickable={true}
-                                            color={reaction === data.label ? "primary" : "secondary"}
+                                            // color={reaction === data.label ? "primary" : "secondary"}
+                                            color={"secondary"}
                                             onClick={() => handleClick(data.label)}
                                         />
                                     </li>

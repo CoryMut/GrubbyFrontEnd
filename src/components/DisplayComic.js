@@ -19,6 +19,8 @@ import Alert from "@material-ui/lab/Alert";
 import Lottie from "lottie-react";
 import noAccessData from "../lotties/no-access.json";
 
+import PlaceholderComic from "./PlaceholderComic";
+
 const CDN = process.env.REACT_APP_CDN;
 
 const makeSrcSet = (name) => {
@@ -33,6 +35,9 @@ const theme = createTheme({
     palette: {
         primary: {
             main: "#FFFFFF",
+        },
+        secondary: {
+            main: "#000000",
         },
     },
 });
@@ -466,6 +471,7 @@ const DisplayComic = () => {
                         There was a problem getting your reaction info. Try refreshing?
                     </Alert>
                 )}
+                {/* <PlaceholderComic /> */}
                 {!isLoading && (
                     <div className={classes.comicWrapper}>
                         <div style={{ display: "flex", flexDirection: "column" }}>
@@ -478,7 +484,7 @@ const DisplayComic = () => {
                                     }
                                     className={matches ? classes.hide : leftArrow}
                                 >
-                                    <ArrowBackIcon color="primary" />
+                                    <ArrowBackIcon color="secondary" />
                                 </IconButton>
                             )}
                             {!matches && (
@@ -488,7 +494,7 @@ const DisplayComic = () => {
                                     }
                                     className={matches ? classes.hide : leftArrow}
                                 >
-                                    <SkipPreviousIcon color="primary" />
+                                    <SkipPreviousIcon color="secondary" />
                                 </IconButton>
                             )}
                         </div>
@@ -529,7 +535,7 @@ const DisplayComic = () => {
                                 className={matches ? classes.hide : rightArrow}
                                 style={{ visibility: "hidden" }}
                             >
-                                <ArrowForwardIcon color="primary" />
+                                <ArrowForwardIcon color="secondary" />
                             </IconButton>
                             <IconButton
                                 onClick={() =>
@@ -538,7 +544,7 @@ const DisplayComic = () => {
                                 className={matches ? classes.hide : rightArrow}
                                 style={{ visibility: "hidden" }}
                             >
-                                <SkipNextIcon color="primary" />
+                                <SkipNextIcon color="secondary" />
                             </IconButton>
                         </div>
                     </div>

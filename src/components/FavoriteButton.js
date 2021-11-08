@@ -49,6 +49,7 @@ const useStyles = makeStyles((theme) => ({
             marginRight: "auto",
             display: "block",
         },
+        border: "1px solid rgba(0,0,0,0.1)",
     },
     right: {
         // margin: theme.spacing(0.5),
@@ -76,6 +77,7 @@ const useStyles = makeStyles((theme) => ({
         [theme.breakpoints.up("lg")]: {
             marginLeft: "auto",
         },
+        border: "1px solid rgba(0,0,0,0.1)",
     },
 }));
 

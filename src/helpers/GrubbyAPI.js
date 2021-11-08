@@ -82,9 +82,9 @@ export async function getLatestComic() {
     }
 }
 
-export async function getAllComics(page) {
+export async function getAllComics(page, sort) {
     try {
-        let result = await axios.get(`${BASE_URL}/comic/all?page=${page}`, { withCredentials: true });
+        let result = await axios.get(`${BASE_URL}/comic/all?page=${page}&sort=${sort}`, { withCredentials: true });
         return result.data;
     } catch (error) {
         console.error("API Error:", error.response);
@@ -119,7 +119,7 @@ export async function getCharacters() {
     }
 }
 
-export async function searchComics(searchTerm, page = 1) {
+export async function searchComics(searchTerm, page = 1, sort = "false") {
     try {
         let result = await axios.get(
             `${BASE_URL}/comic/search`,
@@ -127,6 +127,7 @@ export async function searchComics(searchTerm, page = 1) {
                 params: {
                     searchTerm,
                     page,
+                    sort,
                 },
             },
             { withCredentials: true }

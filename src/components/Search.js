@@ -2,9 +2,9 @@ import React, { useState } from "react";
 import { useHistory } from "react-router-dom";
 
 import SearchBar from "../components/SearchBar";
-import { searchComics } from "../helpers/GrubbyAPI";
+import { searchComics, getAllComics } from "../helpers/GrubbyAPI";
 
-const Search = ({ setDisplayComics, setAlert, allComics, setCount, query, setQuery, page, setPage }) => {
+const Search = ({ setDisplayComics, setAlert, query, setQuery, setReset }) => {
     const history = useHistory();
     const [previous, setPrevious] = useState("");
     const [searchTerm, setSearchTerm] = useState(query ? query : "");
@@ -14,12 +14,11 @@ const Search = ({ setDisplayComics, setAlert, allComics, setCount, query, setQue
         if (event.target.value === "") {
             setAlert("");
             setPrevious("");
-            setDisplayComics(allComics);
+            setReset(true);
             history.replace({
                 pathname: "/all",
-                search: `?page=${page}`,
+                search: `?page=1`,
             });
-            setQuery(null);
         }
 
         setSearchTerm(event.target.value);
@@ -28,48 +27,31 @@ const Search = ({ setDisplayComics, setAlert, allComics, setCount, query, setQue
         }
     };
 
-    const handleClear = (event) => {
-        setSearchTerm("");
-        setAlert("");
-        setDisplayComics(allComics);
+    const handleClear = () => {
         history.replace({
             pathname: "/all",
             search: `?page=1`,
         });
-        setQuery((query) => null);
-        setPage((page) => 1);
+        setSearchTerm("");
+        setAlert("");
+
+        setReset(true);
     };
 
     const handleSubmit = async (event) => {
-        try {
-            event.preventDefault();
-
-            if (previous === searchTerm) {
-                return;
-            }
-
-            setSubmitStatus(true);
-            setAlert("");
-            // setParams((params) => `?q=${searchTerm}`);
-            history.replace({
-                pathname: "/all",
-                search: `?q=${searchTerm}`,
-            });
-            let result = await searchComics(searchTerm);
-            let { comics, count } = result;
-
-            if (comics.length === 0) {
-                setAlert({ type: "warning", message: `No comics found using ${searchTerm}` });
-            }
-
-            setDisplayComics(comics);
-            setCount(count);
-            setPrevious(searchTerm);
-            setQuery(searchTerm);
-        } catch (error) {
-            setAlert({ type: "error", message: ` Oh no! Something went wrong! Please try again.` });
+        event.preventDefault();
+        if (previous === searchTerm) {
             return;
         }
+
+        setSubmitStatus(true);
+        setAlert("");
+        history.replace({
+            pathname: "/all",
+            search: `?q=${searchTerm}`,
+        });
+        setDisplayComics([]);
+        setQuery(searchTerm);
     };
 
     return (

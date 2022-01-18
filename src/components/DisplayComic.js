@@ -43,6 +43,11 @@ const theme = createTheme({
 });
 
 const useStyles = makeStyles((theme) => ({
+    // "@global": {
+    //     body: {
+    //         fontFamily: "comicfont",
+    //     },
+    // },
     comicWrapper: {
         display: "flex",
         flexDirection: "row",

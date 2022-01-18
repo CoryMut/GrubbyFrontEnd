@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import { useHistory, useLocation, Redirect, Link } from "react-router-dom";
 import { useFormik } from "formik";
 import { UserContext } from "./UserContext";
@@ -83,9 +83,10 @@ const Login = () => {
         onSubmit: async (values) => {
             try {
                 let { token, user } = await loginUser(values);
+                console.log(user);
                 authContext.login(token);
                 authContext.handleAdmin(user.is_admin);
-                authContext.handleUser(user.username);
+                authContext.handleUser(user.username, user.displayName, user.id);
                 authContext.setDisplayName(user.displayName);
                 authContext.setRecentLogin(true);
 
@@ -103,9 +104,18 @@ const Login = () => {
         },
     });
 
-    if (authContext.user) {
-        return <Redirect to="/"></Redirect>;
-    }
+    useEffect(() => {
+        if (authContext.user) {
+            console.log("AUTH REDIRECT");
+            // return <Redirect to="/"></Redirect>;
+            history.replace(destination ? `/${destination}` : "/");
+        }
+    }, [authContext.user, history, destination]);
+
+    // if (authContext.user) {
+    //     console.log("AUTH REDIRECT");
+    //     return <Redirect to="/"></Redirect>;
+    // }
 
     return (
         <div className="Login">

@@ -30,6 +30,8 @@ const Secret = lazy(() => import("../components/Secret"));
 const VerifyUser = lazy(() => import("../components/VerifyUser"));
 const ResendEmailForm = lazy(() => import("../components/ResendEmailForm"));
 const ResetPasswordForm = lazy(() => import("../components/ResetPasswordForm"));
+const CardGame = lazy(() => import("../components/CardGame/CardGame"));
+const AskGrubby = lazy(() => import("../components/FoodAdvice/AskGrubby"));
 
 const Routes = () => {
     return (
@@ -63,7 +65,13 @@ const Routes = () => {
                     <ResetPasswordForm type="password" />
                 </Route>
                 <Route exact path="/all">
-                    <AllComics></AllComics>
+                    <AllComics />
+                </Route>
+                <Route exact path="/trivia">
+                    <CardGame />
+                </Route>
+                <Route exact path="/food-advice">
+                    <AskGrubby />
                 </Route>
                 <AuthRoute exact path="/favorites">
                     <Favorites />

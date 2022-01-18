@@ -174,18 +174,12 @@ const NavBar = () => {
                             <ListItemText primary="All Comics"></ListItemText>
                         </ListItem>
 
-                        <ListItem button component={Link} to="/trivia" onClick={closeMenu}>
-                            <ListItemIcon>
-                                <LocalActivityIcon />
-                            </ListItemIcon>
-                            <ListItemText primary="Trivia" />
-                        </ListItem>
-                        <ListItem button component={Link} to="/food-advice" onClick={closeMenu}>
+                        {/* <ListItem button component={Link} to="/food-advice" onClick={closeMenu}>
                             <ListItemIcon>
                                 <FastfoodIcon />
                             </ListItemIcon>
                             <ListItemText primary="Food Advice" />
-                        </ListItem>
+                        </ListItem> */}
 
                         {isLoggedIn && (
                             <ListItem button component={Link} onClick={closeMenu} to="/favorites">
@@ -195,7 +189,12 @@ const NavBar = () => {
                                 <ListItemText primary="Favorites"></ListItemText>
                             </ListItem>
                         )}
-
+                        <ListItem button component={Link} to="/trivia" onClick={closeMenu}>
+                            <ListItemIcon>
+                                <LocalActivityIcon />
+                            </ListItemIcon>
+                            <ListItemText primary="Trivia" />
+                        </ListItem>
                         {!isLoggedIn && (
                             <ListItem
                                 button

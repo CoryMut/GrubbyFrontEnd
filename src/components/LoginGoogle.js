@@ -1,7 +1,6 @@
 import React, { useContext } from "react";
-import { useGoogleLogin } from "react-google-login";
-import { GoogleLogin } from "react-google-login";
-import { useHistory } from "react-router-dom";
+import { useGoogleLogin, GoogleLogin } from "react-google-login";
+import { useHistory, useLocation } from "react-router-dom";
 
 import { UserContext } from "./UserContext";
 import { makeStyles } from "@material-ui/core/styles";
@@ -31,9 +30,15 @@ const useStyles = makeStyles((theme) => ({
 
 const clientId = GOOGLE_CLIENT_ID;
 
+function useQuery() {
+    return new URLSearchParams(useLocation().search);
+}
+
 function LoginGoogle() {
     const classes = useStyles();
     const history = useHistory();
+    const query = useQuery();
+    const destination = query.get("d");
     const { login, handleAdmin, handleUser, setRecentLogin, setDisplayName } = useContext(UserContext);
 
     const onSuccess = async (res) => {
@@ -43,10 +48,10 @@ function LoginGoogle() {
             let { token, user } = await googleLogin(id_token);
             login(token);
             handleAdmin(user.is_admin);
-            handleUser(user.username);
+            handleUser(user.username, user.displayName, user.id);
             setDisplayName(() => user.displayName);
             setRecentLogin(true);
-            history.push("/");
+            history.push(destination ? `/${destination}` : "/");
         } catch (error) {
             console.error(error);
             return;

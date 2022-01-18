@@ -28,6 +28,9 @@ import CollectionsBookmarkIcon from "@material-ui/icons/CollectionsBookmark";
 import PersonIcon from "@material-ui/icons/Person";
 import FavoriteIcon from "@material-ui/icons/Favorite";
 import SettingsIcon from "@material-ui/icons/Settings";
+import CasinoIcon from "@material-ui/icons/Casino";
+import FastfoodIcon from "@material-ui/icons/Fastfood";
+import LocalActivityIcon from "@material-ui/icons/LocalActivity";
 
 const drawerWidth = 240;
 
@@ -169,6 +172,19 @@ const NavBar = () => {
                                 <CollectionsBookmarkIcon></CollectionsBookmarkIcon>
                             </ListItemIcon>
                             <ListItemText primary="All Comics"></ListItemText>
+                        </ListItem>
+
+                        <ListItem button component={Link} to="/trivia" onClick={closeMenu}>
+                            <ListItemIcon>
+                                <LocalActivityIcon />
+                            </ListItemIcon>
+                            <ListItemText primary="Trivia" />
+                        </ListItem>
+                        <ListItem button component={Link} to="/food-advice" onClick={closeMenu}>
+                            <ListItemIcon>
+                                <FastfoodIcon />
+                            </ListItemIcon>
+                            <ListItemText primary="Food Advice" />
                         </ListItem>
 
                         {isLoggedIn && (

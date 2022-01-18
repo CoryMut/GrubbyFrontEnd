@@ -26,6 +26,7 @@ function UserProvider(props) {
     const [token, setToken] = useState(null);
     const [admin, setAdmin] = useState(false);
     const [user, setUser] = useState(null);
+    const [userId, setUserId] = useState(null);
     const [isLoading, setIsLoading] = useState(true);
     const [favorites, setFavorites] = useState([]);
     const [favLoading, setFavLoading] = useState(true);
@@ -44,6 +45,7 @@ function UserProvider(props) {
         setAdmin(false);
         setIsLoading(true);
         setUser(null);
+        setUserId(null);
         setFavorites([]);
         setRecentLogout(true);
         localStorage.removeItem("_token");
@@ -64,9 +66,10 @@ function UserProvider(props) {
         setAdmin(status);
     };
 
-    const handleUser = (username, name) => {
+    const handleUser = (username, name, id) => {
         setUser(() => username);
         setDisplayName(() => name);
+        setUserId(() => id);
     };
 
     const handleLoading = (status) => {
@@ -86,7 +89,7 @@ function UserProvider(props) {
                     return;
                 }
                 let result = await checkTokenStatus(storedData);
-                handleUser(result.user, result.name);
+                handleUser(result.user, result.name, result.id);
                 handleAdmin(result.isAdmin);
                 handleLoading(false);
                 return;
@@ -128,6 +131,7 @@ function UserProvider(props) {
                 logout: logout,
                 isLoading: isLoading,
                 user: user,
+                userId: userId,
                 handleUser: handleUser,
                 favorites: favorites,
                 setFavorites: setFavorites,

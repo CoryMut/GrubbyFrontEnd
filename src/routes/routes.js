@@ -70,9 +70,9 @@ const Routes = () => {
                 <Route exact path="/trivia">
                     <CardGame />
                 </Route>
-                <Route exact path="/food-advice">
+                {/* <Route exact path="/food-advice">
                     <AskGrubby />
-                </Route>
+                </Route> */}
                 <AuthRoute exact path="/favorites">
                     <Favorites />
                 </AuthRoute>

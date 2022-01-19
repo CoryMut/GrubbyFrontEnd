@@ -25,7 +25,11 @@ const CardGame = () => {
         longerTimerValue: 60,
     });
 
-    const [userInfo, setUserInfo] = useState({});
+    const [appearOnLeaderboards, setAppearOnLeaderboards] = useLocalStorage("appear-on-leaderboards", {
+        userChose: null,
+    });
+
+    const [userInfo, setUserInfo] = useState({ coins: 0, wins: 0 });
     const [newPlayer, setNewPlayer] = useState(true);
 
     useEffect(() => {
@@ -33,8 +37,13 @@ const CardGame = () => {
             try {
                 const result = await getUserInfo(userId);
                 let { newPlayer, info } = result;
-                setNewPlayer(newPlayer);
-                setUserInfo(info);
+                if (appearOnLeaderboards.userChose === false) {
+                    setNewPlayer(false);
+                    return;
+                } else {
+                    setNewPlayer(newPlayer);
+                    setUserInfo(info);
+                }
             } catch (error) {
                 console.log(error);
             }
@@ -42,13 +51,18 @@ const CardGame = () => {
         if (userId) {
             getCoinsAndWins();
         }
-    }, [userId]);
+    }, [userId, appearOnLeaderboards]);
 
     return (
-        <div>
+        <div style={{ minHeight: "859px !important", minWidth: "1388px" }}>
             {!startGame && !showRules && (
                 <div>
-                    <Settings settings={settings} setSettings={setSettings} />
+                    <Settings
+                        settings={settings}
+                        setSettings={setSettings}
+                        appearOnLeaderboards={appearOnLeaderboards}
+                        setAppearOnLeaderboards={setAppearOnLeaderboards}
+                    />
                     <Stats name={userInfo.name} wins={userInfo.wins} coins={userInfo.coins} />
                 </div>
             )}
@@ -62,7 +76,10 @@ const CardGame = () => {
                         setReset={setReset}
                         setShowRules={setShowRules}
                         newPlayer={newPlayer}
+                        setNewPlayer={setNewPlayer}
                         setUserInfo={setUserInfo}
+                        appearOnLeaderboards={appearOnLeaderboards}
+                        setAppearOnLeaderboards={setAppearOnLeaderboards}
                     />
                 </div>
             )}
@@ -80,6 +97,7 @@ const CardGame = () => {
                     settings={settings}
                     userInfo={userInfo}
                     setUserInfo={setUserInfo}
+                    appearOnLeaderboards={appearOnLeaderboards}
                 />
             )}
         </div>

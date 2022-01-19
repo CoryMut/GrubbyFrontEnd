@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import { withStyles } from "@material-ui/core/styles";
-import { Paper, Switch, FormControlLabel, Input, InputLabel } from "@material-ui/core";
+import { Paper, Switch, FormControlLabel, Input, InputLabel, Button } from "@material-ui/core";
 import SettingsIcon from "@material-ui/icons/Settings";
 
 const useStyles = makeStyles((theme) => ({
@@ -23,6 +23,11 @@ const useStyles = makeStyles((theme) => ({
             textAlign: "center",
         },
     },
+    cancelButton: {
+        fontFamily: "comicfont",
+        borderColor: "#645579",
+        color: "black",
+    },
 }));
 
 const MySwitch = withStyles({
@@ -39,17 +44,11 @@ const MySwitch = withStyles({
     track: {},
 })(Switch);
 
-const Settings = ({ settings, setSettings }) => {
+const Settings = ({ settings, setSettings, appearOnLeaderboards, setAppearOnLeaderboards }) => {
     const classes = useStyles();
-    const [show, setShow] = useState(false);
 
-    const [longerTimer, setLongerTimer] = useState(false);
-    const [noTimer, setNoTimer] = useState(false);
-
-    // const [timerSetting, setTimerSetting] = useState({ longerTimer: false, noTimer: false });
-
-    const handleClick = () => {
-        setShow((show) => !show);
+    const resetLeaderboardSetting = () => {
+        setAppearOnLeaderboards({ userChose: null });
     };
 
     const handleChange = (event) => {
@@ -116,6 +115,17 @@ const Settings = ({ settings, setSettings }) => {
                             label="No countdown timer"
                         />
                     </div>
+                    {appearOnLeaderboards.userChose === false && (
+                        <div className="text-center">
+                            <Button
+                                variant="outlined"
+                                className={classes.cancelButton}
+                                onClick={resetLeaderboardSetting}
+                            >
+                                Reset Leaderboard Preference
+                            </Button>
+                        </div>
+                    )}
                 </Paper>
             </div>
         </div>

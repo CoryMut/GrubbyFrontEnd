@@ -148,7 +148,18 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-const JustGrubby = ({ startGame, setStartGame, reset, setReset, setShowRules, newPlayer, setUserInfo }) => {
+const JustGrubby = ({
+    startGame,
+    setStartGame,
+    reset,
+    setReset,
+    setShowRules,
+    newPlayer,
+    setNewPlayer,
+    setUserInfo,
+    appearOnLeaderboards,
+    setAppearOnLeaderboards,
+}) => {
     const { displayName, userId } = useContext(UserContext);
     const classes = useStyles();
     const matches = useMediaQuery("(max-width:320px)");
@@ -164,6 +175,7 @@ const JustGrubby = ({ startGame, setStartGame, reset, setReset, setShowRules, ne
 
     const [name, setName] = useState(displayName);
     const [nameError, setNameError] = useState("");
+
     const handleNewPlayer = () => {
         setNewOpen(true);
     };
@@ -171,6 +183,7 @@ const JustGrubby = ({ startGame, setStartGame, reset, setReset, setShowRules, ne
     const handleNewClose = () => {
         setNewOpen(false);
         setName(displayName);
+        setNameError("");
     };
 
     const handleClickOpen = () => {
@@ -206,14 +219,22 @@ const JustGrubby = ({ startGame, setStartGame, reset, setReset, setShowRules, ne
     const registerUser = async () => {
         try {
             let result = await addUserToLeaderboard(userId, name);
-            console.log(result);
             setUserInfo(result);
+            setNewPlayer(false);
             handleNewClose();
             handleStart();
         } catch (error) {
             console.log(error);
             setNameError("Name already taken");
         }
+    };
+
+    const doNotAppear = () => {
+        setAppearOnLeaderboards(() => ({ userChose: false }));
+        setUserInfo({ coins: 0, wins: 0 });
+        handleClose();
+        handleNewClose();
+        handleStart();
     };
 
     useEffect(() => {
@@ -282,6 +303,8 @@ const JustGrubby = ({ startGame, setStartGame, reset, setReset, setShowRules, ne
                                                             ? newPlayer
                                                                 ? handleNewPlayer
                                                                 : handleStart
+                                                            : appearOnLeaderboards.userChose === false
+                                                            ? handleStart
                                                             : askToLogin
                                                     }
                                                 >
@@ -320,13 +343,14 @@ const JustGrubby = ({ startGame, setStartGame, reset, setReset, setShowRules, ne
                                 <DialogTitle id="alert-dialog-title">{"Appear on Leaderboards?"}</DialogTitle>
                                 <DialogContent>
                                     <DialogContentText id="alert-dialog-description">
-                                        You can play the game without an account! However, you will not appear on the
-                                        leaderboards. Would you like to login or play without appearing on the
-                                        leaderboards?
+                                        You can play the game without an account. However, you will not appear on the
+                                        leaderboards. If you do login, the coins you earn will come directly from Grubby
+                                        (and influence his ranking). <br /> <br />
+                                        Would you like to login or play without appearing on the leaderboards?
                                     </DialogContentText>
                                 </DialogContent>
                                 <DialogActions>
-                                    <Button onClick={handleClose} variant="outlined" className={classes.outlineButton}>
+                                    <Button onClick={doNotAppear} variant="outlined" className={classes.outlineButton}>
                                         I just want to play!
                                     </Button>
                                     <Link
@@ -350,32 +374,30 @@ const JustGrubby = ({ startGame, setStartGame, reset, setReset, setShowRules, ne
                                     <DialogContentText id="alert-dialog-description">
                                         If you would like to show up on the leaderboards, what would you like to be
                                         called?
-                                        <div className="d-flex justify-content-center">
+                                        <div className="text-center">
                                             <Input
                                                 value={name}
                                                 onChange={handleName}
                                                 inputProps={{ style: { textAlign: "center" } }}
                                                 error={nameError}
                                             />
-                                            {nameError && (
-                                                <small style={{ color: "red" }}>
-                                                    <ErrorOutlineIcon />
-                                                    {nameError}
-                                                </small>
-                                            )}
+                                            <div>
+                                                {nameError && (
+                                                    <small style={{ color: "red" }} className="mt-1">
+                                                        <ErrorOutlineIcon />
+                                                        {nameError}
+                                                    </small>
+                                                )}
+                                            </div>
                                         </div>
                                     </DialogContentText>
                                 </DialogContent>
                                 <DialogActions>
-                                    <Button
-                                        onClick={handleNewClose}
-                                        variant="outlined"
-                                        className={classes.outlineButton}
-                                    >
+                                    <Button onClick={doNotAppear} variant="outlined" className={classes.outlineButton}>
                                         No thanks, no leaderboards for me!
                                     </Button>
                                     <Button onClick={registerUser} variant="outlined" className={classes.normalButton}>
-                                        Call me, {name}!
+                                        Call me {name}!
                                     </Button>
                                 </DialogActions>
                             </Dialog>

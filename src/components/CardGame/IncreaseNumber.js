@@ -2,7 +2,7 @@ import React from "react";
 import { useSpring, animated, config } from "react-spring";
 import LocalAtmIcon from "@material-ui/icons/LocalAtm";
 
-function IncreaseNumber({ count, increase }) {
+function IncreaseNumber({ count = 0, increase = 0 }) {
     const { number } = useSpring({
         from: { number: Number(count) },
         number: Number(count) + Number(increase),

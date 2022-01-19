@@ -24,7 +24,6 @@ const useStyles = makeStyles({
 
 const CoinLeaders = ({ data, name = "" }) => {
     const classes = useStyles();
-
     return (
         // <TableContainer component={Paper} className="mr-5 mt-2">
         <TableContainer component={Paper} className="mt-4">

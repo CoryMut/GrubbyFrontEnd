@@ -101,7 +101,7 @@ const useStyles = makeStyles((theme) => ({
 
 const NavBar = () => {
     const matches = useMediaQuery("(max-width:320px)");
-
+    const desktopOnlyRoute = useMediaQuery("(min-width:1920px)");
     const classes = useStyles();
     const { isLoggedIn, logout, isAdmin } = useContext(UserContext);
     const [menu, setMenu] = useState(false);
@@ -189,12 +189,14 @@ const NavBar = () => {
                                 <ListItemText primary="Favorites"></ListItemText>
                             </ListItem>
                         )}
-                        <ListItem button component={Link} to="/trivia" onClick={closeMenu}>
-                            <ListItemIcon>
-                                <LocalActivityIcon />
-                            </ListItemIcon>
-                            <ListItemText primary="Trivia" />
-                        </ListItem>
+                        {desktopOnlyRoute && (
+                            <ListItem button component={Link} to="/trivia" onClick={closeMenu}>
+                                <ListItemIcon>
+                                    <LocalActivityIcon />
+                                </ListItemIcon>
+                                <ListItemText primary="Trivia" />
+                            </ListItem>
+                        )}
                         {!isLoggedIn && (
                             <ListItem
                                 button

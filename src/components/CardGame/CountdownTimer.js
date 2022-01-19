@@ -13,6 +13,7 @@ const useStyles = makeStyles((theme) => ({
         lineHeight: "185px",
         fontSize: "80px",
         boxShadow: "0 0 10px navy",
+        marginLeft: "3rem",
     },
     emergency: {
         fontSize: "160px",

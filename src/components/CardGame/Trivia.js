@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { makeStyles } from "@material-ui/styles";
 import { debounce } from "lodash";
+import parse from "html-react-parser";
+
 import { Button, IconButton } from "@material-ui/core";
 import MuiAlert from "@material-ui/lab/Alert";
 import Snackbar from "@material-ui/core/Snackbar";
@@ -15,8 +17,9 @@ import Bet from "./Bet";
 import ReduceNumber from "./ReduceNumber";
 import IncreaseNumber from "./IncreaseNumber";
 
+import { updateLeaderboardData, getQuestion } from "./api/CardGameAPI";
+
 import "./css/Trivia.css";
-import { updateLeaderboardData } from "./api/CardGameAPI";
 
 function Alert(props) {
     return <MuiAlert elevation={6} variant="filled" {...props} />;
@@ -228,7 +231,7 @@ const AnswerBlock = ({ text, handleSpeak, orientation, checkAnswer, value, quess
                 onClick={() => checkAnswer(value)}
                 disabled={typeof quessed === "boolean" ? false : true}
             >
-                <p className={classes.blockText}>{text}</p>
+                <p className={classes.blockText}>{parse(text)}</p>
             </Button>
         </div>
     );
@@ -245,17 +248,15 @@ const QuestionBlock = ({ text, handleSpeak }) => {
                 </IconButton>
             </div>
             <div className={classes.questionBlock}>
-                <p className={classes.blockText}>{text}</p>
+                <p className={classes.blockText}>{parse(text)}</p>
             </div>
         </div>
     );
 };
 
-const Trivia = ({ setReset, setStartGame, settings, userInfo, setUserInfo }) => {
+const Trivia = ({ setReset, setStartGame, settings, userInfo, setUserInfo, appearOnLeaderboards }) => {
     const classes = useStyles();
     const [loser, setLoser] = useState(false);
-
-    const [allQuestions, setAllQuestions] = useState([]);
 
     const [question, setQuestion] = useState("");
     const [content, setContent] = useState([]);
@@ -266,17 +267,11 @@ const Trivia = ({ setReset, setStartGame, settings, userInfo, setUserInfo }) => 
     const [resetCounter, setResetCounter] = useState(false);
 
     const [bet, setBet] = useState(null);
-    // const [coins, setCoins] = useState(100);
 
-    const [updateUserInfo, setUpdateUserInfo] = useState(false);
+    const [updateUserInfo, setUpdateUserInfo] = useState({ status: false, grubby: "increase" });
     const [springInfo, setSpringInfo] = useState({ ...defaultSpringInfo });
 
-    // const updateLocalInfo = () => {
-    //     setLocalInfo(() => ({...userInfo}))
-    // }
-
     const handleBet = (value) => {
-        console.log("HANDLE BET");
         setBet(value);
     };
 
@@ -300,63 +295,57 @@ const Trivia = ({ setReset, setStartGame, settings, userInfo, setUserInfo }) => 
         }
     };
 
-    const selectQuestion = (data = []) => {
-        if (data.length === 0) {
-            return;
-        }
-        let max = data.length;
-        let idx = Math.floor(Math.random() * max);
-        // let { question, content, correct } = data[idx];
-        let { question, content, correct } = data[idx];
-        setQuestion(question);
-        setContent(content);
-        setCorrect(correct);
-    };
-
     const nextQuestion = () => {
         setBet(null);
         setSpringInfo(() => ({ ...defaultSpringInfo }));
         setQuessed(false);
-        selectQuestion(allQuestions);
         setResetCounter(true);
     };
 
+    const playAgain = () => {
+        setLoser(false);
+        nextQuestion();
+    };
+
     useEffect(() => {
-        async function getQandA() {
+        async function getQ() {
             try {
-                // const result = await getGameData()
-                setAllQuestions(questions.games[0].questions);
+                let newQ = await getQuestion();
+                let { question, content, correct } = newQ;
+                setQuestion(question);
+                setContent(content);
+                setCorrect(correct);
             } catch (error) {
                 console.log(error);
             }
         }
-        getQandA();
-    }, []);
+        if (bet === null) {
+            getQ();
+        }
+    }, [bet]);
 
     useEffect(() => {
         preloadImage("https://grubbythegrape.sfo2.cdn.digitaloceanspaces.com/assets/assets/LoserStarburst.png");
     }, []);
 
     useEffect(() => {
-        if (allQuestions.length > 0) {
-            selectQuestion(allQuestions);
-        }
-    }, [allQuestions]);
-
-    useEffect(() => {
         async function updateInfo() {
             try {
-                await updateLeaderboardData(userInfo);
-                setUpdateUserInfo(false);
+                await updateLeaderboardData(userInfo, updateUserInfo.grubby, bet);
+                setUpdateUserInfo({ status: false, grubby: "increase" });
             } catch (error) {
                 console.log(error);
             }
         }
 
-        if (updateUserInfo) {
+        if (appearOnLeaderboards.userChose === false) {
+            return;
+        }
+
+        if (updateUserInfo.status) {
             updateInfo();
         }
-    }, [userInfo, updateUserInfo]);
+    }, [userInfo, updateUserInfo, bet, appearOnLeaderboards]);
 
     useEffect(() => {
         if (String(quessed) === String(correct)) {
@@ -369,7 +358,7 @@ const Trivia = ({ setReset, setStartGame, settings, userInfo, setUserInfo }) => 
                 });
                 return { ...userInfo, wins: Number(userInfo.wins) + 1, coins: Number(userInfo.coins) + Number(bet) };
             });
-            setUpdateUserInfo(true);
+            setUpdateUserInfo({ status: true, grubby: "decrease" });
         } else if (loser || (quessed && String(quessed) !== String(correct))) {
             setUserInfo((userInfo) => {
                 setSpringInfo(() => {
@@ -380,7 +369,7 @@ const Trivia = ({ setReset, setStartGame, settings, userInfo, setUserInfo }) => 
                 });
                 return { ...userInfo, coins: Number(userInfo.coins) - Number(bet) };
             });
-            setUpdateUserInfo(true);
+            setUpdateUserInfo({ status: true, grubby: "increase" });
         }
     }, [quessed, correct, setUserInfo, bet, loser]);
 
@@ -454,16 +443,19 @@ const Trivia = ({ setReset, setStartGame, settings, userInfo, setUserInfo }) => 
                 <div className={classes.boardWrapper}>
                     <div className={classes.questionWrapper}>
                         <QuestionBlock text={question} handleSpeak={debounceSpeak} />
-                        {!settings.noTimer && (
-                            <CountdownTimer
-                                startTime={settings.longerTimer ? settings.longerTimerValue : 10}
-                                setLoser={setLoser}
-                                style={{ position: "absolute", top: -80, right: "20%" }}
-                                paused={quessed !== false && quessed >= 0 ? true : false}
-                                reset={resetCounter}
-                                setReset={setResetCounter}
-                            />
-                        )}
+                        <div style={{ position: "relative" }}>
+                            {!settings.noTimer && (
+                                <CountdownTimer
+                                    startTime={settings.longerTimer ? settings.longerTimerValue : 10}
+                                    setLoser={setLoser}
+                                    style={{ position: "absolute", left: "1em", top: "-1em" }}
+                                    // paused={quessed !== false && quessed >= 0 ? true : false}
+                                    paused={quessed === correct}
+                                    reset={resetCounter}
+                                    setReset={setResetCounter}
+                                />
+                            )}
+                        </div>
                     </div>
 
                     <div className={classes.blockWrapper}>
@@ -472,7 +464,8 @@ const Trivia = ({ setReset, setStartGame, settings, userInfo, setUserInfo }) => 
                             handleSpeak={debounceSpeak}
                             orientation="left"
                             checkAnswer={checkAnswer}
-                            value={0}
+                            value={content[0]}
+                            // value={0}
                             quessed={quessed}
                             correct={correct}
                         />
@@ -481,7 +474,8 @@ const Trivia = ({ setReset, setStartGame, settings, userInfo, setUserInfo }) => 
                             handleSpeak={debounceSpeak}
                             orientation="right"
                             checkAnswer={checkAnswer}
-                            value={1}
+                            value={content[1]}
+                            // value={1}
                             quessed={quessed}
                             correct={correct}
                         />
@@ -492,7 +486,8 @@ const Trivia = ({ setReset, setStartGame, settings, userInfo, setUserInfo }) => 
                             handleSpeak={debounceSpeak}
                             orientation="left"
                             checkAnswer={checkAnswer}
-                            value={2}
+                            value={content[2]}
+                            // value={2}
                             quessed={quessed}
                             correct={correct}
                         />
@@ -501,14 +496,15 @@ const Trivia = ({ setReset, setStartGame, settings, userInfo, setUserInfo }) => 
                             handleSpeak={debounceSpeak}
                             orientation="right"
                             checkAnswer={checkAnswer}
-                            value={3}
+                            value={content[3]}
+                            // value={3}
                             quessed={quessed}
                             correct={correct}
                         />
                     </div>
                     {quessed === correct && (
-                        <div>
-                            <div style={{ position: "relative" }}>
+                        <div style={{ position: "relative" }}>
+                            <div style={{ position: "absolute", top: "3em", left: 0 }}>
                                 <p className={classes.speechBubbleText}>
                                     Ouch, that's gonna hurt my wallet. <br />
                                     (Good job, though!)
@@ -536,7 +532,7 @@ const Trivia = ({ setReset, setStartGame, settings, userInfo, setUserInfo }) => 
                     )}
                 </div>
             )}
-            {loser && <SplitBoard handleCancel={handleCancel} />}
+            {loser && <SplitBoard handleCancel={playAgain} />}
         </div>
     );
 };

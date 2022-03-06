@@ -1,10 +1,10 @@
 import React, { useState } from "react";
-import { useHistory } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 import SearchBar from "../components/SearchBar";
 
 const Search = ({ setDisplayComics, setAlert, query, setQuery, setReset }) => {
-    const history = useHistory();
+    const history = useNavigate();
     const [previous, setPrevious] = useState("");
     const [searchTerm, setSearchTerm] = useState(query ? query : "");
     const [submitStatus, setSubmitStatus] = useState(false);

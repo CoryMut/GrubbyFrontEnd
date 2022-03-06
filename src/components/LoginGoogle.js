@@ -1,6 +1,6 @@
 import React, { useContext } from "react";
 import { useGoogleLogin, GoogleLogin } from "react-google-login";
-import { useHistory, useLocation } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 
 import { UserContext } from "./UserContext";
 import { makeStyles } from "@material-ui/core/styles";
@@ -36,7 +36,7 @@ function useQuery() {
 
 function LoginGoogle() {
     const classes = useStyles();
-    const history = useHistory();
+    const history = useNavigate();
     const query = useQuery();
     const destination = query.get("d");
     const { login, handleAdmin, handleUser, setRecentLogin, setDisplayName } = useContext(UserContext);

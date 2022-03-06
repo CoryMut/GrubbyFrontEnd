@@ -83,65 +83,10 @@ const AllComics = () => {
     const [currentCount, setCurrentCount] = useState(0);
     const [sort, setSort] = useState(false);
 
-    const [initialLoad, setInitialLoad] = useState(true);
     const [loading, setLoading] = useState(false);
-    const [sorting, setSorting] = useState(false);
+    const [sorting] = useState(false);
 
     const [reset, setReset] = useState(false);
-
-    // const handleChange = (event) => {
-    //     if (event.target.tagName === "BUTTON") {
-    //         if (event.target.tagName.children) {
-    //             if (event.target.children[0].children[0].getAttribute("d").includes("M10")) {
-    //                 setPage((page) => +page + 1);
-    //                 history.replace({
-    //                     pathname: "/all",
-    //                     search: query ? `?page=${+page + 1}&q=${query}` : `?page=${+page + 1}`,
-    //                 });
-    //             } else if (event.target.children[0].children[0].getAttribute("d").includes("M15")) {
-    //                 setPage((page) => +page - 1);
-    //                 history.replace({
-    //                     pathname: "/all",
-    //                     search: `?page=${+page - 1}`,
-    //                 });
-    //             }
-    //         } else {
-    //             history.replace({
-    //                 pathname: "/all",
-    //                 search: query ? `?page=${event.target.innerText}&q=${query}` : `?page=${event.target.innerText}`,
-    //             });
-    //             setPage(Number(event.target.innerText));
-    //         }
-    //     } else if (event.target.tagName === "svg") {
-    //         if (event.target.children[0].getAttribute("d").includes("M10")) {
-    //             setPage((page) => +page + 1);
-    //             history.replace({
-    //                 pathname: "/all",
-    //                 search: `?page=${+page + 1}`,
-    //             });
-    //         } else if (event.target.children[0].getAttribute("d").includes("M15")) {
-    //             setPage((page) => +page - 1);
-    //             history.replace({
-    //                 pathname: "/all",
-    //                 search: `?page=${+page - 1}`,
-    //             });
-    //         }
-    //     } else if (event.target.tagName === "path") {
-    //         if (event.target.getAttribute("d").includes("M10")) {
-    //             setPage((page) => +page + 1);
-    //             history.replace({
-    //                 pathname: "/all",
-    //                 search: `?page=${+page + 1}`,
-    //             });
-    //         } else if (event.target.getAttribute("d").includes("M15")) {
-    //             setPage((page) => +page - 1);
-    //             history.replace({
-    //                 pathname: "/all",
-    //                 search: `?page=${page - 1}`,
-    //             });
-    //         }
-    //     }
-    // };
 
     const toggleSort = () => {
         setSort((sort) => !sort);
@@ -216,7 +161,6 @@ const AllComics = () => {
         if (target.isIntersecting) {
             setPage((prev) => prev + 1);
         }
-        // console.log("HANDLE THAT THERE OBSERVER");
     }, []);
 
     useEffect(() => {

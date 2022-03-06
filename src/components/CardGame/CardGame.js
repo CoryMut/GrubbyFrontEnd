@@ -1,8 +1,7 @@
 import React, { useState, useEffect, useContext } from "react";
 import { UserContext } from "../UserContext";
-import { getUserInfo, getQuestion } from "./api/CardGameAPI";
+import { getUserInfo } from "./api/CardGameAPI";
 
-import PlaceMat from "./PlaceMat";
 import JustGrubby from "./JustGrubby";
 import Trivia from "./Trivia";
 import Rules from "./Rules";

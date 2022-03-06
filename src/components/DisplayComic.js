@@ -19,8 +19,6 @@ import Alert from "@material-ui/lab/Alert";
 import Lottie from "lottie-react";
 import noAccessData from "../lotties/no-access.json";
 
-import PlaceholderComic from "./PlaceholderComic";
-
 const CDN = process.env.REACT_APP_CDN;
 
 const makeSrcSet = (name) => {

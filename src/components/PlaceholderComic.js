@@ -1,13 +1,5 @@
 import React from "react";
-import { makeStyles, createTheme, ThemeProvider } from "@material-ui/core/styles";
-
-const theme = createTheme({
-    palette: {
-        primary: {
-            main: "#FFFFFF",
-        },
-    },
-});
+import { makeStyles } from "@material-ui/core/styles";
 
 const useStyles = makeStyles((theme) => ({
     comicWrapper: {

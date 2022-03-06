@@ -9,14 +9,16 @@ import "./pseudo.css";
 const useStyles = makeStyles((theme) => ({
     comic: {
         // border: "2px solid black",
-        // width: "100%",
+        width: "100%",
         [theme.breakpoints.up("sm")]: {
             maxWidth: "760px",
         },
         // maxWidth: "760px",
         // margin: "0vh 1vw",
         userSelect: "none",
-
+        [theme.breakpoints.down("md")]: {
+            width: "98%",
+        },
         boxShadow:
             "rgba(17, 17, 26, 0.1) 0px 4px 16px, rgba(17, 17, 26, 0.1) 0px 8px 24px, rgba(17, 17, 26, 0.1) 0px 16px 56px",
     },
@@ -35,6 +37,9 @@ const useStyles = makeStyles((theme) => ({
         alignItems: "center",
         justifyContent: "center",
         margin: "0 1vw",
+        [theme.breakpoints.down("md")]: {
+            margin: "0",
+        },
         flexDirection: "column",
         // width: "100%",
         // height: "100%",

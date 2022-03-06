@@ -6,12 +6,9 @@ import Filter from "bad-words";
 
 import Grid from "@material-ui/core/Grid";
 import Typography from "@material-ui/core/Typography";
-import CachedIcon from "@material-ui/icons/Cached";
 import useMediaQuery from "@material-ui/core/useMediaQuery";
-import Snackbar from "@material-ui/core/Snackbar";
-import MuiAlert from "@material-ui/lab/Alert";
 import Slide from "@material-ui/core/Slide";
-import { Button, Input, Link, TextField } from "@material-ui/core";
+import { Button, Input, Link } from "@material-ui/core";
 import Dialog from "@material-ui/core/Dialog";
 import DialogActions from "@material-ui/core/DialogActions";
 import DialogContent from "@material-ui/core/DialogContent";
@@ -21,10 +18,6 @@ import ErrorOutlineIcon from "@material-ui/icons/ErrorOutline";
 import Eyes from "./BlinkEyes";
 
 import "./css/JustGrubby.css";
-
-function Alert(props) {
-    return <MuiAlert elevation={6} variant="filled" {...props} />;
-}
 
 const useStyles = makeStyles((theme) => ({
     jumbotron: {

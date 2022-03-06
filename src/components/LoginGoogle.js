@@ -62,7 +62,7 @@ function LoginGoogle() {
         console.log("Login failed: ", res);
     };
 
-    const { signIn } = useGoogleLogin({
+    useGoogleLogin({
         onSuccess,
         onFailure,
         clientId,

@@ -104,8 +104,6 @@ const WinLeaders = ({ data, name = "" }) => {
 };
 
 const Leaderboards = ({ name }) => {
-    const classes = useStyles();
-
     const [coinsData, setCoinsData] = useState([]);
     const [winsData, setWinsData] = useState([]);
 

@@ -31,7 +31,7 @@ const VerifyUser = lazy(() => import("../components/VerifyUser"));
 const ResendEmailForm = lazy(() => import("../components/ResendEmailForm"));
 const ResetPasswordForm = lazy(() => import("../components/ResetPasswordForm"));
 const CardGame = lazy(() => import("../components/CardGame/CardGame"));
-const AskGrubby = lazy(() => import("../components/FoodAdvice/AskGrubby"));
+// const AskGrubby = lazy(() => import("../components/FoodAdvice/AskGrubby"));
 
 const Routes = () => {
     return (

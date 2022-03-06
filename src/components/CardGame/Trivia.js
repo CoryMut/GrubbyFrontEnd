@@ -12,7 +12,6 @@ import LocalAtmIcon from "@material-ui/icons/LocalAtm";
 import WhatshotIcon from "@material-ui/icons/Whatshot";
 
 import CountdownTimer from "./CountdownTimer";
-import questions from "./questions.json";
 import Bet from "./Bet";
 import ReduceNumber from "./ReduceNumber";
 import IncreaseNumber from "./IncreaseNumber";

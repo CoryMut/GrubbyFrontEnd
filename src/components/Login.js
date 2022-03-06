@@ -1,5 +1,5 @@
 import React, { useState, useContext, useEffect } from "react";
-import { useHistory, useLocation, Redirect, Link } from "react-router-dom";
+import { useHistory, useLocation, Link } from "react-router-dom";
 import { useFormik } from "formik";
 import { UserContext } from "./UserContext";
 
@@ -83,7 +83,6 @@ const Login = () => {
         onSubmit: async (values) => {
             try {
                 let { token, user } = await loginUser(values);
-                console.log(user);
                 authContext.login(token);
                 authContext.handleAdmin(user.is_admin);
                 authContext.handleUser(user.username, user.displayName, user.id);
@@ -97,8 +96,7 @@ const Login = () => {
                 }
             } catch (error) {
                 console.error(error);
-                // let { message } = error;
-                // setError("Invalid Credentials");
+
                 setError(error);
             }
         },
@@ -106,16 +104,9 @@ const Login = () => {
 
     useEffect(() => {
         if (authContext.user) {
-            console.log("AUTH REDIRECT");
-            // return <Redirect to="/"></Redirect>;
             history.replace(destination ? `/${destination}` : "/");
         }
     }, [authContext.user, history, destination]);
-
-    // if (authContext.user) {
-    //     console.log("AUTH REDIRECT");
-    //     return <Redirect to="/"></Redirect>;
-    // }
 
     return (
         <div className="Login">

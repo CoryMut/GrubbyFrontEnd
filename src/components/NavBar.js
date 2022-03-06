@@ -28,8 +28,6 @@ import CollectionsBookmarkIcon from "@material-ui/icons/CollectionsBookmark";
 import PersonIcon from "@material-ui/icons/Person";
 import FavoriteIcon from "@material-ui/icons/Favorite";
 import SettingsIcon from "@material-ui/icons/Settings";
-import CasinoIcon from "@material-ui/icons/Casino";
-import FastfoodIcon from "@material-ui/icons/Fastfood";
 import LocalActivityIcon from "@material-ui/icons/LocalActivity";
 
 const drawerWidth = 240;

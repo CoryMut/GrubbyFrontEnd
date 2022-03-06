@@ -52,7 +52,6 @@ export async function addUserToLeaderboard(id, name) {
             data: { id: id, name: name },
             withCredentials: true,
         });
-        console.log(result);
         return result?.data?.info;
     } catch (error) {
         console.log(error);

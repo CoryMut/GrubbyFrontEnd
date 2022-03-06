@@ -3,7 +3,6 @@ import { makeStyles } from "@material-ui/core/styles";
 import { Paper } from "@material-ui/core";
 
 import AssignmentIcon from "@material-ui/icons/Assignment";
-import PersonIcon from "@material-ui/icons/Person";
 import LocalAtmIcon from "@material-ui/icons/LocalAtm";
 import WhatshotIcon from "@material-ui/icons/Whatshot";
 

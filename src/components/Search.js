@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import { useHistory } from "react-router-dom";
 
 import SearchBar from "../components/SearchBar";
-import { searchComics, getAllComics } from "../helpers/GrubbyAPI";
 
 const Search = ({ setDisplayComics, setAlert, query, setQuery, setReset }) => {
     const history = useHistory();

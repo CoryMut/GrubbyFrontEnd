@@ -72,7 +72,7 @@ const AllComics = () => {
     // const history = useNavigate();
     const q = useQuery();
 
-    let hardCount = useRef(undefined);
+    // let hardCount = useRef(undefined);
 
     const [alert, setAlert] = useState("");
     const [allComics, setAllComics] = useState([]);
@@ -80,7 +80,7 @@ const AllComics = () => {
     const [page, setPage] = useState(Number(q.get("page")) || 1);
     const [maxPageCount, setMaxPageCount] = useState(undefined);
     const [query, setQuery] = useState(q.get("q") || null);
-    const [currentCount, setCurrentCount] = useState(0);
+
     const [sort, setSort] = useState(false);
 
     const [loading, setLoading] = useState(false);
@@ -88,12 +88,19 @@ const AllComics = () => {
 
     const [reset, setReset] = useState(false);
 
+    const [currentCount, setCurrentCount] = useState(0);
+    const [hardCount, setHardCount] = useState(20);
+
+    const [get, setGet] = useState(true);
+
     const toggleSort = () => {
+        setCurrentCount(0);
         setSort((sort) => !sort);
-        setPage(1);
+        // setPage(1);
         setAllComics([]);
         setDisplayComics([]);
-        setMaxPageCount(undefined);
+        // setMaxPageCount(undefined);
+        setGet(true);
     };
 
     useEffect(() => {
@@ -101,24 +108,22 @@ const AllComics = () => {
             try {
                 setLoading(true);
                 let result;
-
                 if (query) {
-                    result = await searchComics(query, page, sort);
+                    result = await searchComics(query, currentCount, sort);
                 } else {
-                    result = await getAllComics(page, sort);
+                    result = await getAllComics(currentCount, sort);
                 }
-
-                let { comics, count, resultCount } = result;
-
+                let { comics, offset, resultCount } = result;
+                setGet(() => false);
                 setAllComics((allComics) => [...allComics, ...comics]);
                 setDisplayComics((displayComics) => [...displayComics, ...comics]);
 
-                // setMaxPageCount(count);
-                hardCount.current = count;
-                setCurrentCount(resultCount);
+                setHardCount(() => Number(resultCount));
+                setCurrentCount(() => Number(offset));
+
                 let loadingTimer = setTimeout(() => {
                     setLoading(false);
-                }, [3000]);
+                }, [1000]);
 
                 return () => clearTimeout(loadingTimer);
             } catch (error) {
@@ -130,36 +135,40 @@ const AllComics = () => {
                 return;
             }
         }
-        if (reset === false) {
-            if (hardCount.current === undefined || page <= hardCount.current) {
+        if (reset === false && get === true) {
+            if (Number(currentCount) === 0 || Number(currentCount) < Number(hardCount)) {
                 getComics();
             }
         }
-    }, [page, sort, maxPageCount, query, reset]);
-
-    useEffect(() => {
-        hardCount.current = undefined;
-    }, [maxPageCount]);
+        // }, [page, sort, maxPageCount, query, reset]);
+    }, [currentCount, reset, hardCount, sort, query, get]);
 
     useEffect(() => {
         if (reset) {
-            setQuery(null);
+            setQuery(() => null);
 
-            setPage(1);
+            setCurrentCount(() => 0);
 
-            setDisplayComics([]);
-
-            hardCount.current = undefined;
-            setReset(false);
+            setDisplayComics(() => []);
+            // setReset(false);
+            // setGet(true);
         }
     }, [reset]);
+
+    useEffect(() => {
+        if (currentCount === 0) {
+            setReset(false);
+            setGet(true);
+        }
+    }, [currentCount]);
 
     const loader = useRef(null);
 
     const handleObserver = useCallback((entries) => {
         const target = entries[0];
         if (target.isIntersecting) {
-            setPage((prev) => prev + 1);
+            // setPage((prev) => prev + 1);
+            setGet(true);
         }
     }, []);
 
@@ -186,12 +195,14 @@ const AllComics = () => {
                         setDisplayComics={setDisplayComics}
                         setAlert={setAlert}
                         setReset={setReset}
-                    ></Search>
+                        setGet={setGet}
+                        setCurrentCount={setCurrentCount}
+                    />
                     <div style={{ display: "flex" }}>
                         <Button onClick={toggleSort} style={{ marginTop: "5px" }}>
                             {sort === false ? "Sorted: Oldest First" : "Sorted: Newest First"}
                         </Button>
-                        <div style={{ alignSelf: "center", marginLeft: "20px" }}>{currentCount} result(s)</div>
+                        <div style={{ alignSelf: "center", marginLeft: "20px" }}>{hardCount} result(s)</div>
                     </div>
 
                     {alert && (

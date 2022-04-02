@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 
 import SearchBar from "../components/SearchBar";
 
-const Search = ({ setDisplayComics, setAlert, query, setQuery, setReset }) => {
+const Search = ({ setDisplayComics, setAlert, query, setQuery, setReset, setGet, setCurrentCount }) => {
     const history = useNavigate();
     const [previous, setPrevious] = useState("");
     const [searchTerm, setSearchTerm] = useState(query ? query : "");
@@ -14,9 +14,13 @@ const Search = ({ setDisplayComics, setAlert, query, setQuery, setReset }) => {
             setAlert("");
             setPrevious("");
             setReset(true);
-            history.replace({
+            // history.replace({
+            //     pathname: "/all",
+            //     search: `?page=1`,
+            // });
+            history({
                 pathname: "/all",
-                search: `?page=1`,
+                // search: `?page=1`,
             });
         }
 
@@ -27,13 +31,17 @@ const Search = ({ setDisplayComics, setAlert, query, setQuery, setReset }) => {
     };
 
     const handleClear = () => {
-        history.replace({
+        // history.replace({
+        //     pathname: "/all",
+        //     search: `?page=1`,
+        // });
+        history({
             pathname: "/all",
-            search: `?page=1`,
+            // search: `?page=1`,
         });
         setSearchTerm("");
         setAlert("");
-
+        setPrevious("");
         setReset(true);
     };
 
@@ -42,15 +50,20 @@ const Search = ({ setDisplayComics, setAlert, query, setQuery, setReset }) => {
         if (previous === searchTerm) {
             return;
         }
-
         setSubmitStatus(true);
         setAlert("");
-        history.replace({
+        // history.replace({
+        //     pathname: "/all",
+        //     search: `?q=${searchTerm}`,
+        // });
+        history({
             pathname: "/all",
             search: `?q=${searchTerm}`,
         });
         setDisplayComics([]);
-        setQuery(searchTerm);
+        setQuery(() => searchTerm);
+        setPrevious(() => searchTerm);
+        setCurrentCount(() => 0);
     };
 
     return (
@@ -61,7 +74,7 @@ const Search = ({ setDisplayComics, setAlert, query, setQuery, setReset }) => {
             handleClear={handleClear}
             submitStatus={submitStatus}
             searchTerm={searchTerm}
-        ></SearchBar>
+        />
     );
 };
 

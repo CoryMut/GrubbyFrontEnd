@@ -58,9 +58,7 @@ function LoginGoogle() {
         }
     };
 
-    const onFailure = (res) => {
-        console.log("Login failed: ", res);
-    };
+    const onFailure = (res) => {};
 
     useGoogleLogin({
         onSuccess,

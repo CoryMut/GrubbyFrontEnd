@@ -104,7 +104,6 @@ const Login = () => {
 
     useEffect(() => {
         if (authContext.user) {
-            // history.replace(destination ? `/${destination}` : "/");
             history(destination ? `/${destination}` : "/", { replace: true });
         }
     }, [authContext.user, history, destination]);

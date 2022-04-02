@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useCallback, useContext } from "react";
-import { useHistory, useLocation } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 
 import { getLatestComic, getComic, getUserEmoteData, getGlobalEmote } from "../helpers/GrubbyAPI";
 import { UserContext } from "./UserContext";
@@ -93,7 +93,7 @@ function useQuery() {
 
 const DisplayComic = () => {
     const classes = useStyles();
-    const history = useHistory();
+    const history = useNavigate();
     const query = useQuery();
     const searchParam = query.get("c");
     const matches = useMediaQuery("(max-width:900px)");
@@ -261,9 +261,9 @@ const DisplayComic = () => {
                 }))
             );
             if (comic_id !== unofficialCount) {
-                history.replace(`?c=${comic_id}`);
+                history(`?c=${comic_id}`, { replace: true });
             } else {
-                history.replace("/");
+                history("/", { replace: true });
             }
         },
         [history]

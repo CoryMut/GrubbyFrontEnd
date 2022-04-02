@@ -1,5 +1,5 @@
 import React from "react";
-import { useParams, Link, Redirect } from "react-router-dom";
+import { useParams, Link, Navigate } from "react-router-dom";
 
 import { makeStyles } from "@material-ui/core/styles";
 
@@ -118,7 +118,7 @@ const VerifyUser = () => {
     const matches = useMediaQuery("(max-width:320px)");
 
     if (acceptStatus.includes(status) === false) {
-        return <Redirect to="/"></Redirect>;
+        return <Navigate to="/"></Navigate>;
     }
 
     return (

@@ -1,5 +1,5 @@
 import React, { useState, useContext, useEffect } from "react";
-import { useHistory, useLocation, Link } from "react-router-dom";
+import { useNavigate, useLocation, Link } from "react-router-dom";
 import { useFormik } from "formik";
 import { UserContext } from "./UserContext";
 
@@ -70,7 +70,7 @@ const Login = () => {
     const authContext = useContext(UserContext);
     const query = useQuery();
     const destination = query.get("d");
-    const history = useHistory();
+    const history = useNavigate();
     const classes = useStyles();
     const [error, setError] = useState("");
 
@@ -104,7 +104,7 @@ const Login = () => {
 
     useEffect(() => {
         if (authContext.user) {
-            history.replace(destination ? `/${destination}` : "/");
+            history(destination ? `/${destination}` : "/", { replace: true });
         }
     }, [authContext.user, history, destination]);
 

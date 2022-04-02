@@ -3223,7 +3223,7 @@ const questions = [
                     "In the programming language &quot;Python&quot;, which of these statements would display the string &quot;Hello World&quot; correctly?",
                 correct_answer: "print(&quot;Hello World&quot;)",
                 incorrect_answers: [
-                    "console.log(&quot;Hello World&quot;)",
+                    "
                     "echo &quot;Hello World&quot;",
                     "printf(&quot;Hello World&quot;)",
                 ],
@@ -6172,7 +6172,7 @@ const questions = [
                     "In the programming language &quot;Python&quot;, which of these statements would display the string &quot;Hello World&quot; correctly?",
                 correct_answer: "print(&quot;Hello World&quot;)",
                 incorrect_answers: [
-                    "console.log(&quot;Hello World&quot;)",
+                    "
                     "echo &quot;Hello World&quot;",
                     "printf(&quot;Hello World&quot;)",
                 ],

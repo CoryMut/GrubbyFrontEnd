@@ -1,5 +1,5 @@
 import React, { lazy, Suspense } from "react";
-import { Route, Switch, Redirect } from "react-router-dom";
+import { Route, Routes, Navigate } from "react-router-dom";
 
 import PaperPlaneLottie from "../components/PaperPlaneLottie";
 
@@ -33,59 +33,36 @@ const ResetPasswordForm = lazy(() => import("../components/ResetPasswordForm"));
 const CardGame = lazy(() => import("../components/CardGame/CardGame"));
 // const AskGrubby = lazy(() => import("../components/FoodAdvice/AskGrubby"));
 
-const Routes = () => {
+const AppRoutes = () => {
     return (
         <Suspense fallback={<PaperPlaneLottie delay={800} />}>
-            <Switch>
-                <Route exact path="/">
-                    <HomePage />
-                </Route>
-                <Route exact path="/login">
-                    <Login></Login>
-                </Route>
-                <Route exact path="/signup">
-                    <Signup></Signup>
-                </Route>
-                <Route exact path="/privacy">
-                    <PrivacyPolicy />
-                </Route>
-                <Route exact path="/secret">
-                    <Secret />
-                </Route>
-                <Route path="/verify/:status">
-                    <VerifyUser />
-                </Route>
-                <Route exact path="/resend-email">
-                    <ResendEmailForm type="verification" />
-                </Route>
-                <Route exact path="/reset">
-                    <ResendEmailForm type="password" />
-                </Route>
-                <Route path="/reset-password/:id/:token">
-                    <ResetPasswordForm type="password" />
-                </Route>
-                <Route exact path="/all">
-                    <AllComics />
-                </Route>
-                <Route exact path="/trivia">
-                    <CardGame />
-                </Route>
-                {/* <Route exact path="/food-advice">
-                    <AskGrubby />
-                </Route> */}
-                <AuthRoute exact path="/favorites">
-                    <Favorites />
-                </AuthRoute>
-                <AdminRoute exact path="/upload">
-                    <UploadForm />
-                </AdminRoute>
-                <AdminRoute exact path="/admin">
-                    <AdminPortal />
-                </AdminRoute>
-                <Redirect to="/" />
-            </Switch>
+            <Routes>
+                <Route path="/" element={<HomePage />} />
+                <Route path="/login" element={<Login />} />
+                <Route path="/signup" element={<Signup />} />
+                <Route path="/privacy" element={<PrivacyPolicy />} />
+                <Route path="/secret" element={<Secret />} />
+                <Route path="/verify/:status" element={<VerifyUser />} />
+                <Route path="/resend-email" element={<ResendEmailForm type="verification" />} />
+                <Route path="/reset" element={<ResendEmailForm type="password" />} />
+                <Route path="/reset-password/:id/:token" element={<ResendEmailForm type="password" />} />
+                <Route path="/all" element={<AllComics />} />
+                <Route path="/trivia" element={<CardGame />} />
+                <Route
+                    path="/favorites"
+                    element={
+                        <AuthRoute>
+                            <Favorites />
+                        </AuthRoute>
+                    }
+                />
+                {/* <AuthRoute path="/favorites" element={<Favorites />} /> */}
+                {/* <AdminRoute path="/upload" element={<UploadForm />} />
+                <AdminRoute path="/admin" element={<AdminRoute />} /> */}
+                <Route path="*" element={<Navigate to="/" replace />} />
+            </Routes>
         </Suspense>
     );
 };
 
-export default Routes;
+export default AppRoutes;

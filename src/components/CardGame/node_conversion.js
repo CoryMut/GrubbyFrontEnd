@@ -46,9 +46,6 @@ mapResults.forEach((m) => {
     finalResults.push(m);
 });
 
-console.log(`FOUND ${finalResults.length} QUESTIONS`);
-console.log(`EXCLUDED ${duplicateResults.length} DUPLICATES`);
-
 fs.writeFile("allResults.json", JSON.stringify(finalResults), (err) => {
     if (err) {
         console.error(err);

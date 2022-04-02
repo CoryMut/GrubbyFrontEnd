@@ -1,7 +1,7 @@
 import React, { useState, useContext } from "react";
 import { UserContext } from "./UserContext";
-// import { useHistory, Redirect, Link } from "react-router-dom";
-import { Redirect, Link } from "react-router-dom";
+// import { useNavigate, Navigate, Link } from "react-router-dom";
+import { Navigate, Link } from "react-router-dom";
 
 import { useFormik } from "formik";
 import * as Yup from "yup";
@@ -95,7 +95,7 @@ const SignupSchema = Yup.object().shape({
 });
 
 const Signup = () => {
-    // const history = useHistory();
+    // const history = useNavigate();
     const classes = useStyles();
     const authContext = useContext(UserContext);
     const [error, setError] = useState("");
@@ -128,7 +128,7 @@ const Signup = () => {
     });
 
     if (authContext.user) {
-        return <Redirect to="/"></Redirect>;
+        return <Navigate to="/"></Navigate>;
     }
 
     if (email) {

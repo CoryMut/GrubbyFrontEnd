@@ -5,7 +5,7 @@ import { render } from "@testing-library/react";
 import { MemoryRouter } from "react-router";
 
 jest.mock("react-router-dom", () => ({
-    useHistory: () => ({
+    useNavigate: () => ({
         push: jest.fn(),
     }),
     useLocation: () => ({

@@ -1954,7 +1954,7 @@
             "echo &quot;Hello World&quot;",
             "print(&quot;Hello World&quot;)",
             "printf(&quot;Hello World&quot;)",
-            "console.log(&quot;Hello World&quot;)"
+            "
         ],
         "correct": "print(&quot;Hello World&quot;)"
     },

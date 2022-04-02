@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useCallback } from "react";
 import { checkTokenStatus, getFavorites } from "../helpers/GrubbyAPI";
-import { useHistory } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 const UserContext = React.createContext({
     isLoggedIn: false,
@@ -22,7 +22,7 @@ const UserContext = React.createContext({
 });
 
 function UserProvider(props) {
-    const history = useHistory();
+    const history = useNavigate();
     const [token, setToken] = useState(null);
     const [admin, setAdmin] = useState(false);
     const [user, setUser] = useState(null);

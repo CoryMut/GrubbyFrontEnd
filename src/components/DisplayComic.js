@@ -93,7 +93,7 @@ function useQuery() {
 
 const DisplayComic = () => {
     const classes = useStyles();
-    const history = useNavigate();
+    const navigate = useNavigate();
     const query = useQuery();
     const searchParam = query.get("c");
     const matches = useMediaQuery("(max-width:900px)");
@@ -207,7 +207,7 @@ const DisplayComic = () => {
                 setVisitedComics(() => ({
                     ...visitedComics,
                 }));
-                setEmoteData(() => ({ ...result }));
+                // setEmoteData(() => ({ ...result }));
 
                 comicSwitch(visitedComics[id], count);
 
@@ -261,12 +261,12 @@ const DisplayComic = () => {
                 }))
             );
             if (comic_id !== unofficialCount) {
-                history(`?c=${comic_id}`, { replace: true });
+                navigate(`?c=${comic_id}`, { replace: true });
             } else {
-                history("/", { replace: true });
+                navigate("/", { replace: true });
             }
         },
-        [history]
+        [navigate]
     );
 
     useEffect(() => {

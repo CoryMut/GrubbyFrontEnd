@@ -70,7 +70,7 @@ const Login = () => {
     const authContext = useContext(UserContext);
     const query = useQuery();
     const destination = query.get("d");
-    const history = useNavigate();
+    const navigate = useNavigate();
     const classes = useStyles();
     const [error, setError] = useState("");
 
@@ -90,9 +90,11 @@ const Login = () => {
                 authContext.setRecentLogin(true);
 
                 if (destination) {
-                    history.push(`/${destination}`);
+                    navigate(`/${destination}`);
+                    return;
                 } else {
-                    history.push("/");
+                    navigate("/");
+                    return;
                 }
             } catch (error) {
                 console.error(error);
@@ -104,9 +106,10 @@ const Login = () => {
 
     useEffect(() => {
         if (authContext.user) {
-            history(destination ? `/${destination}` : "/", { replace: true });
+            navigate(destination ? `/${destination}` : "/", { replace: true });
+            return;
         }
-    }, [authContext.user, history, destination]);
+    }, [authContext.user, navigate, destination]);
 
     return (
         <div className="Login">

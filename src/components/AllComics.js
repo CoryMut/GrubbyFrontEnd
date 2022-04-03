@@ -69,7 +69,7 @@ function useQuery() {
 
 const AllComics = () => {
     const classes = useStyles();
-    // const history = useNavigate();
+    // const navigate = useNavigate();
     const q = useQuery();
 
     // let hardCount = useRef(undefined);

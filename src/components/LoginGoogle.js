@@ -36,7 +36,7 @@ function useQuery() {
 
 function LoginGoogle() {
     const classes = useStyles();
-    const history = useNavigate();
+    const navigate = useNavigate();
     const query = useQuery();
     const destination = query.get("d");
     const { login, handleAdmin, handleUser, setRecentLogin, setDisplayName } = useContext(UserContext);
@@ -51,7 +51,8 @@ function LoginGoogle() {
             handleUser(user.username, user.displayName, user.id);
             setDisplayName(() => user.displayName);
             setRecentLogin(true);
-            history.push(destination ? `/${destination}` : "/");
+            navigate(destination ? `/${destination}` : "/");
+            return;
         } catch (error) {
             console.error(error);
             return;

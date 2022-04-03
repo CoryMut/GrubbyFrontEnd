@@ -1,9 +1,9 @@
 import { useNavigate } from "react-router-dom";
 
 function AuthRoute({ children }) {
-    const history = useNavigate();
+    const navigate = useNavigate();
     if (!localStorage.getItem("_token")) {
-        history.push("/");
+        navigate("/");
     }
     return children;
 }

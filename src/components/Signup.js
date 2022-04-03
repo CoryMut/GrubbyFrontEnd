@@ -95,7 +95,7 @@ const SignupSchema = Yup.object().shape({
 });
 
 const Signup = () => {
-    // const history = useNavigate();
+    // const navigate = useNavigate();
     const classes = useStyles();
     const authContext = useContext(UserContext);
     const [error, setError] = useState("");

@@ -45,7 +45,7 @@ const AppRoutes = () => {
                 <Route path="/verify/:status" element={<VerifyUser />} />
                 <Route path="/resend-email" element={<ResendEmailForm type="verification" />} />
                 <Route path="/reset" element={<ResendEmailForm type="password" />} />
-                <Route path="/reset-password/:id/:token" element={<ResendEmailForm type="password" />} />
+                <Route path="/reset-password/:id/:token" element={<ResetPasswordForm type="password" />} />
                 <Route path="/all" element={<AllComics />} />
                 <Route path="/trivia" element={<CardGame />} />
                 <Route
@@ -56,9 +56,22 @@ const AppRoutes = () => {
                         </AuthRoute>
                     }
                 />
-                {/* <AuthRoute path="/favorites" element={<Favorites />} /> */}
-                {/* <AdminRoute path="/upload" element={<UploadForm />} />
-                <AdminRoute path="/admin" element={<AdminRoute />} /> */}
+                <Route
+                    path="/upload"
+                    element={
+                        <AdminRoute>
+                            <UploadForm />
+                        </AdminRoute>
+                    }
+                />
+                <Route
+                    path="/admin"
+                    element={
+                        <AdminRoute>
+                            <AdminPortal />
+                        </AdminRoute>
+                    }
+                />
                 <Route path="*" element={<Navigate to="/" replace />} />
             </Routes>
         </Suspense>

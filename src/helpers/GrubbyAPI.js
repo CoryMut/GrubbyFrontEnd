@@ -5,6 +5,7 @@ const BASE_URL = process.env.REACT_APP_SERVER_URL;
 const CLIENT_ID = process.env.REACT_APP_CLIENT_ID || "something_secret_and_secure_for_clients";
 
 axios.defaults.headers.common["Authorization"] = CLIENT_ID;
+axios.defaults.timeout = 3000;
 
 export async function registerUser(data) {
     try {

@@ -22,7 +22,7 @@ const UserContext = React.createContext({
 });
 
 function UserProvider(props) {
-    const history = useNavigate();
+    const navigate = useNavigate();
     const [token, setToken] = useState(null);
     const [admin, setAdmin] = useState(false);
     const [user, setUser] = useState(null);
@@ -49,8 +49,8 @@ function UserProvider(props) {
         setFavorites([]);
         setRecentLogout(true);
         localStorage.removeItem("_token");
-        history.push("/");
-    }, [history]);
+        navigate("/");
+    }, [navigate]);
 
     const silentLogout = useCallback(() => {
         setToken(null);
@@ -59,8 +59,8 @@ function UserProvider(props) {
         setUser(null);
         setFavorites([]);
         localStorage.removeItem("_token");
-        history.push("/");
-    }, [history]);
+        navigate("/");
+    }, [navigate]);
 
     const handleAdmin = (status) => {
         setAdmin(status);

@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import SearchBar from "../components/SearchBar";
 
 const Search = ({ setDisplayComics, setAlert, query, setQuery, setReset, setGet, setCurrentCount }) => {
-    const history = useNavigate();
+    const navigate = useNavigate();
     const [previous, setPrevious] = useState("");
     const [searchTerm, setSearchTerm] = useState(query ? query : "");
     const [submitStatus, setSubmitStatus] = useState(false);
@@ -14,11 +14,11 @@ const Search = ({ setDisplayComics, setAlert, query, setQuery, setReset, setGet,
             setAlert("");
             setPrevious("");
             setReset(true);
-            // history.replace({
+            // navigate.replace({
             //     pathname: "/all",
             //     search: `?page=1`,
             // });
-            history({
+            navigate({
                 pathname: "/all",
                 // search: `?page=1`,
             });
@@ -31,11 +31,11 @@ const Search = ({ setDisplayComics, setAlert, query, setQuery, setReset, setGet,
     };
 
     const handleClear = () => {
-        // history.replace({
+        // navigate.replace({
         //     pathname: "/all",
         //     search: `?page=1`,
         // });
-        history({
+        navigate({
             pathname: "/all",
             // search: `?page=1`,
         });
@@ -52,11 +52,11 @@ const Search = ({ setDisplayComics, setAlert, query, setQuery, setReset, setGet,
         }
         setSubmitStatus(true);
         setAlert("");
-        // history.replace({
+        // navigate.replace({
         //     pathname: "/all",
         //     search: `?q=${searchTerm}`,
         // });
-        history({
+        navigate({
             pathname: "/all",
             search: `?q=${searchTerm}`,
         });

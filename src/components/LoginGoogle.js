@@ -1,5 +1,5 @@
-import React, { useContext } from "react";
-import { useGoogleLogin, GoogleLogin } from "react-google-login";
+import React, { useContext, useEffect } from "react";
+import { GoogleLogin } from "react-google-login";
 import { useNavigate, useLocation } from "react-router-dom";
 
 import { UserContext } from "./UserContext";
@@ -59,15 +59,28 @@ function LoginGoogle() {
         }
     };
 
-    const onFailure = (res) => {};
+    const onFailure = (error) => {
+        console.error("Google login failed:", error);
+    };
 
-    useGoogleLogin({
-        onSuccess,
-        onFailure,
-        clientId,
-        isSignedIn: false,
-        accessType: "offline",
-    });
+    useEffect(() => {
+        if (!clientId) {
+            console.error("Missing REACT_APP_GOOGLE_CLIENT_ID. Google login is disabled.");
+        }
+    }, []);
+
+    if (!clientId) {
+        return (
+            <Button
+                variant="contained"
+                className={classes.google}
+                disabled
+                title="Google login is unavailable because REACT_APP_GOOGLE_CLIENT_ID is not configured."
+            >
+                Login with Google Unavailable
+            </Button>
+        );
+    }
 
     return (
         <div>

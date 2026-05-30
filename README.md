@@ -14,10 +14,11 @@ The frontend is hosted on **Vercel** (free tier). The backend API is hosted on *
 
 Set the following environment variables in the Vercel project dashboard (Settings → Environment Variables):
 
-| Variable               | Value                                                    |
-| ---------------------- | -------------------------------------------------------- |
-| `REACT_APP_SERVER_URL` | `https://grubbybackend-production.up.railway.app`        |
-| `REACT_APP_CDN`        | `https://grubbythegrape.sfo2.cdn.digitaloceanspaces.com` |
+| Variable                     | Value                                                    |
+| ---------------------------- | -------------------------------------------------------- |
+| `REACT_APP_SERVER_URL`       | `https://grubbybackend-production.up.railway.app`        |
+| `REACT_APP_CDN`              | `https://grubbythegrape.sfo2.cdn.digitaloceanspaces.com` |
+| `REACT_APP_GOOGLE_CLIENT_ID` | `your-google-client-id.apps.googleusercontent.com`       |
 
 > **Note:** `REACT_APP_*` variables are baked in at build time by Create React App, so they must be set in Vercel before deploying.
 
@@ -58,10 +59,11 @@ Before the first deploy, add the required environment variables:
 
 1. In the project setup screen (or later via **Settings → Environment Variables**), add:
 
-    | Variable               | Value                                                    | Environments                     |
-    | ---------------------- | -------------------------------------------------------- | -------------------------------- |
-    | `REACT_APP_SERVER_URL` | `https://grubbybackend-production.up.railway.app`        | Production, Preview, Development |
-    | `REACT_APP_CDN`        | `https://grubbythegrape.sfo2.cdn.digitaloceanspaces.com` | Production, Preview, Development |
+    | Variable                     | Value                                                    | Environments                     |
+    | ---------------------------- | -------------------------------------------------------- | -------------------------------- |
+    | `REACT_APP_SERVER_URL`       | `https://grubbybackend-production.up.railway.app`        | Production, Preview, Development |
+    | `REACT_APP_CDN`              | `https://grubbythegrape.sfo2.cdn.digitaloceanspaces.com` | Production, Preview, Development |
+    | `REACT_APP_GOOGLE_CLIENT_ID` | `your-google-client-id.apps.googleusercontent.com`       | Production, Preview, Development |
 
 2. Click **Save** after adding each variable.
 
